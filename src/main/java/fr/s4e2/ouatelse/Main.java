@@ -1,4 +1,4 @@
-package sample;
+package fr.s4e2.ouatelse;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
