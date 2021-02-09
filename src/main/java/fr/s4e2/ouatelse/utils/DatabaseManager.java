@@ -1,26 +1,42 @@
 package fr.s4e2.ouatelse.utils;
 
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.dao.GenericRawResults;
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
+import fr.s4e2.ouatelse.objects.User;
 import lombok.Getter;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class DatabaseManager {
     @Getter
-    private Connection connection;
+    private ConnectionSource connectionSource;
 
     public DatabaseManager() {
         try {
-            Class.forName("org.sqlite.JDBC");
-            this.connection = DriverManager.getConnection("jdbc:sqlite:sqlite.db");
-        } catch (ClassNotFoundException | SQLException e) {
+            this.connectionSource = new JdbcConnectionSource("jdbc:sqlite:sqlite.db");
+            this.setupTables();
+            this.displayTables();
+        } catch (SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
     }
 
-    public void close() throws SQLException {
-        connection.close();
+    public void close() throws IOException {
+        connectionSource.close();
+    }
+
+    public void setupTables() throws SQLException {
+        TableUtils.createTableIfNotExists(connectionSource, User.class);
+    }
+
+    public void displayTables() throws SQLException {
+        GenericRawResults<String[]> results =
+                DaoManager.createDao(connectionSource, User.class).queryRaw("SELECT name FROM sqlite_master WHERE type = 'table'");
+        results.forEach(r -> System.out.println(r[0]));
     }
 }
