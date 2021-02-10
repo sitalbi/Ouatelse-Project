@@ -1,5 +1,6 @@
 package fr.s4e2.ouatelse.objects;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,10 +31,13 @@ public class Person {
     @DatabaseField(canBeNull = false)
     private Date birthDate;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, dataType = DataType.ENUM_INTEGER)
     private Civility civility;
 
-    @DatabaseField(canBeNull = false)
-    private PersonStatus status;
+    @DatabaseField(canBeNull = false, dataType = DataType.ENUM_INTEGER)
+    private PersonState status;
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private Address address;
 }
 
