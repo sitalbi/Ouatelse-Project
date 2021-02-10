@@ -21,6 +21,8 @@ public class Cart {
     private Date date;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private Store store;
+    private Product product;
 
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private Client client;
 }

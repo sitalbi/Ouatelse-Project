@@ -26,19 +26,10 @@ public class Product {
     private double sellingPrice;
 
     @DatabaseField(canBeNull = false)
-    private double sellingPriceWithTaxes;
-
-    @DatabaseField(canBeNull = false)
     private double purchasePrice;
 
     @DatabaseField(canBeNull = false)
-    private double purchasePriceWithTaxes;
-
-    @DatabaseField(canBeNull = false)
-    private int productReference;
-
-    @DatabaseField(canBeNull = false)
-    private String color;
+    private int reference;
 
     @DatabaseField(canBeNull = false)
     private String brand;
@@ -49,10 +40,9 @@ public class Product {
     @DatabaseField(canBeNull = false)
     private String category;
 
-    //@DatabaseField(foreign = true, foreignAutoRefresh = true)
-    //private ProductType productType; ce serait mieux que ce soit
-    // un attribut de la classe produit plutôt qu'une classe productType
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private Vendor soldBy;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private Provider selledBy;
+    private Store store;
 }

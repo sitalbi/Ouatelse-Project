@@ -23,7 +23,4 @@ public class Address {
 
     @DatabaseField()
     private String details;
-
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private User user;
 }
