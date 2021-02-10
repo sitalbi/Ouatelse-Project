@@ -5,9 +5,9 @@ import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import fr.s4e2.ouatelse.objects.Products;
-import fr.s4e2.ouatelse.objects.Providers;
-import fr.s4e2.ouatelse.objects.Stores;
+import fr.s4e2.ouatelse.objects.Product;
+import fr.s4e2.ouatelse.objects.Provider;
+import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import lombok.Getter;
 
@@ -35,9 +35,9 @@ public class DatabaseManager {
 
     public void setupTables() throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, User.class);
-        TableUtils.createTableIfNotExists(connectionSource, Providers.class);
-        TableUtils.createTableIfNotExists(connectionSource, Products.class);
-        TableUtils.createTableIfNotExists(connectionSource, Stores.class);
+        TableUtils.createTableIfNotExists(connectionSource, Provider.class);
+        TableUtils.createTableIfNotExists(connectionSource, Product.class);
+        TableUtils.createTableIfNotExists(connectionSource, Store.class);
     }
 
     public void displayTables() throws SQLException {

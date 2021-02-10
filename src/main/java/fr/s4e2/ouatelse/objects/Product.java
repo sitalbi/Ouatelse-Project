@@ -1,5 +1,6 @@
 package fr.s4e2.ouatelse.objects;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
@@ -9,8 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@DatabaseTable(tableName = "products")
-public class Products {
+@DatabaseTable(tableName = "product")
+public class Product {
 
     @DatabaseField(generatedId = true)
     private long id;
@@ -42,8 +43,8 @@ public class Products {
     @DatabaseField(canBeNull = false)
     private String brand;
 
-    //@DatabaseField(canBeNull = false)
-    //private State state; enum?
+    @DatabaseField(canBeNull = false, dataType = DataType.ENUM_INTEGER)
+    private ProductState state;
 
     @DatabaseField(canBeNull = false)
     private String category;
@@ -53,5 +54,5 @@ public class Products {
     // un attribut de la classe produit plutôt qu'une classe productType
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private Providers selledBy;
+    private Provider selledBy;
 }

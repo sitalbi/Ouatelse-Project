@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@DatabaseTable(tableName = "clients")
+@DatabaseTable(tableName = "client")
 public class Client extends Person {
 
     @DatabaseField(canBeNull = false)
