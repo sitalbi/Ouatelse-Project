@@ -16,6 +16,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         DatabaseManager databaseManager = new DatabaseManager();
+        databaseManager.setupTables();
         databaseManager.close();
     }
 }
