@@ -33,12 +33,13 @@ public class DatabaseManager {
     public void setupTables() throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, Address.class);
         TableUtils.createTableIfNotExists(connectionSource, Availability.class);
+        TableUtils.createTableIfNotExists(connectionSource, Cart.class);
         TableUtils.createTableIfNotExists(connectionSource, Client.class);
         TableUtils.createTableIfNotExists(connectionSource, Product.class);
-        TableUtils.createTableIfNotExists(connectionSource, Provider.class);
         TableUtils.createTableIfNotExists(connectionSource, Salary.class);
         TableUtils.createTableIfNotExists(connectionSource, Store.class);
         TableUtils.createTableIfNotExists(connectionSource, User.class);
+        TableUtils.createTableIfNotExists(connectionSource, Vendor.class);
     }
 
     public void displayTables() throws SQLException {

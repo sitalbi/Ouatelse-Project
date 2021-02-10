@@ -37,8 +37,4 @@ public class User extends Person {
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Store workingStore;
-
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private Address address;
-
 }
