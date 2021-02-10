@@ -9,18 +9,21 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@DatabaseTable(tableName = "client")
-public class Client extends Person {
+@DatabaseTable(tableName = "address")
+public class Address {
+
+    @DatabaseField(generatedId = true)
+    private long id;
 
     @DatabaseField(canBeNull = false)
-    private String homePhoneNumber;
+    private int zipCode;
 
     @DatabaseField(canBeNull = false)
-    private String workPhoneNumber;
-
-    @DatabaseField(canBeNull = false)
-    private String fax;
+    private String city;
 
     @DatabaseField()
     private String details;
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private User user;
 }

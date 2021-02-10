@@ -1,36 +1,37 @@
 package fr.s4e2.ouatelse.objects;
 
-import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Getter
 @Setter
 @NoArgsConstructor
-@DatabaseTable(tableName = "user")
-public class User extends Person {
+@DatabaseTable(tableName = "salary")
+public class Salary {
+
+    @DatabaseField(generatedId = true)
+    private long id;
 
     @DatabaseField(canBeNull = false)
-    private String credentials;
+    private byte month;
 
     @DatabaseField(canBeNull = false)
-    private String password;
+    private double grossSalary;
 
     @DatabaseField(canBeNull = false)
-    private Job job;
+    private double employerCharges;
 
     @DatabaseField(canBeNull = false)
-    private Date hiringDate;
+    private double employeeCharges;
 
     @DatabaseField(canBeNull = false)
-    private int hoursPerWeek;
+    private boolean imposable;
 
-    @ForeignCollectionField(eager = true)
-    private ForeignCollection<Salary> salarySheets;
+    //ded?
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private User user;
 }
