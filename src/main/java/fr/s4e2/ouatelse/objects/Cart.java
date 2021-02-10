@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,5 +17,10 @@ public class Cart {
     @DatabaseField(generatedId = true)
     private long id;
 
+    @DatabaseField(canBeNull = false)
+    private Date date;
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private Store store;
 
 }

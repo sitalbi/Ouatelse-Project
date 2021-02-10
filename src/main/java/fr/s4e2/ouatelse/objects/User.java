@@ -1,6 +1,7 @@
 package fr.s4e2.ouatelse.objects;
 
 import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -22,7 +23,7 @@ public class User extends Person {
     @DatabaseField(canBeNull = false)
     private String password;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, dataType = DataType.ENUM_INTEGER)
     private Job job;
 
     @DatabaseField(canBeNull = false)
@@ -33,4 +34,11 @@ public class User extends Person {
 
     @ForeignCollectionField(eager = true)
     private ForeignCollection<Salary> salarySheets;
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private Store workingStore;
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private Address address;
+
 }
