@@ -6,26 +6,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Getter
 @Setter
 @NoArgsConstructor
-@DatabaseTable(tableName = "users")
-public class User extends Person {
+@DatabaseTable(tableName = "clients")
+public class Client extends Person {
 
     @DatabaseField(canBeNull = false)
-    private String credentials;
+    private String homePhoneNumber;
 
     @DatabaseField(canBeNull = false)
-    private String password;
+    private String workPhoneNumber;
 
     @DatabaseField(canBeNull = false)
-    private Job job;
+    private String fax;
 
-    @DatabaseField(canBeNull = false)
-    private Date hiringDate;
-
-    @DatabaseField(canBeNull = false)
-    private int hoursPerWeek;
+    @DatabaseField
+    private String details;
 }
