@@ -9,18 +9,21 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@DatabaseTable(tableName = "stores")
-public class Stores {
+@DatabaseTable(tableName = "provider")
+public class Provider {
 
     @DatabaseField(generatedId = true)
     private long id;
 
     @DatabaseField(canBeNull = false)
-    private String password;
+    private String name;
 
     @DatabaseField(canBeNull = false)
-    private String address;
+    private String email;
 
     @DatabaseField(canBeNull = false)
-    private String city;
+    private int contractState;
+
+    @DatabaseField(canBeNull = false)
+    private String phoneNumber;
 }
