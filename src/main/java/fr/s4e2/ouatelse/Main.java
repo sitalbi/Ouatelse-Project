@@ -20,7 +20,7 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("mainWindow.fxml")));
 
-        primaryStage.setTitle("FXML Welcome");
+        primaryStage.setTitle("Ouatelse Main Window");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
