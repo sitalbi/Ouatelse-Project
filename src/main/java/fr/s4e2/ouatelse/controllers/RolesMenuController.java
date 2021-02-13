@@ -85,10 +85,16 @@ public class RolesMenuController implements Initializable {
         this.loadRoleList();
     }
 
+    /**
+     * Creates and stores a new role with empty permissions
+     *
+     * @param mouseEvent The mouse click event
+     */
     @FXML
     private void onAddButtonClick(MouseEvent mouseEvent) {
-        if (newRoleNameField.getText().isEmpty() && !newRoleNameField.getText().equals(NAME_ERROR_MESSAGE)) {
-            newRoleNameField.setText(NAME_ERROR_MESSAGE);
+        if (newRoleNameField.getText().isEmpty()) {
+            newRoleNameField.setPromptText("Please enter a name");
+            newRoleNameField.getParent().requestFocus();
             return;
         }
 
@@ -104,11 +110,21 @@ public class RolesMenuController implements Initializable {
         this.rolesListView.getSelectionModel().select(newRole);
     }
 
+    /**
+     * Simply closes the current window
+     *
+     * @param mouseEvent The mouse click event
+     */
     public void onDoneButtonClick(MouseEvent mouseEvent) {
         Stage stage = (Stage) this.deletePermissionButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Add a permission to a role and saves the modifications in the database
+     *
+     * @param mouseEvent The mouse click event
+     */
     public void onAddPermissionButtonClick(MouseEvent mouseEvent) {
         if (currentRole == null) return;
 
@@ -120,6 +136,11 @@ public class RolesMenuController implements Initializable {
         this.saveRole(currentRole);
     }
 
+    /**
+     * Remove a permission to a role and saves the modifications in the database
+     *
+     * @param mouseEvent The mouse click event
+     */
     public void onDeletePermissionButtonClick(MouseEvent mouseEvent) {
         if (currentRole == null) return;
 
@@ -147,6 +168,9 @@ public class RolesMenuController implements Initializable {
         this.clearPermissionLists();
     }
 
+    /**
+     * Load the roles into the ListView rolesListView
+     */
     private void loadRoleList() {
         this.rolesListView.getItems().clear();
         try {
@@ -173,6 +197,9 @@ public class RolesMenuController implements Initializable {
         });
     }
 
+    /**
+     * Clears the ListView permissionsRoleHas and permissionsRoleHasnt
+     */
     private void clearPermissionLists() {
         this.permissionsRoleHas.getItems().clear();
         this.permissionsRoleHasnt.getItems().clear();
