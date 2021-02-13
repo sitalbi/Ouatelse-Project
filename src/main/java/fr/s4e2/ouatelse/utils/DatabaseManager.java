@@ -36,6 +36,7 @@ public class DatabaseManager {
         TableUtils.createTableIfNotExists(connectionSource, Cart.class);
         TableUtils.createTableIfNotExists(connectionSource, Client.class);
         TableUtils.createTableIfNotExists(connectionSource, Product.class);
+        TableUtils.createTableIfNotExists(connectionSource, Role.class);
         TableUtils.createTableIfNotExists(connectionSource, Salary.class);
         TableUtils.createTableIfNotExists(connectionSource, Store.class);
         TableUtils.createTableIfNotExists(connectionSource, User.class);
