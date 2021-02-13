@@ -59,7 +59,7 @@ public class RolesMenuController implements Initializable {
              *
              * @param observable The {@code ObservableValue} which value changed
              * @param oldValue   The old value
-             * @param newValue
+             * @param newValue   The new value
              */
             @Override
             public void changed(ObservableValue<? extends Role> observable, Role oldValue, Role newValue) {
@@ -131,6 +131,11 @@ public class RolesMenuController implements Initializable {
         this.saveRole(currentRole);
     }
 
+    /**
+     * Deletes a role
+     *
+     * @param mouseEvent The mouse click event
+     */
     public void onDeleteButtonClick(MouseEvent mouseEvent) {
         try {
             Role selectedRole = this.rolesListView.getSelectionModel().getSelectedItem();
@@ -152,6 +157,12 @@ public class RolesMenuController implements Initializable {
         }
     }
 
+    /**
+     * Loads the permissions the role has in the ListView permissionsRoleHas and the permissions the role hasn't in
+     * the ListView permissionsRoleHasnt
+     *
+     * @param role The selected role
+     */
     private void loadPermissionLists(Role role) {
         this.clearPermissionLists();
         role.getPermissions().forEach(permission -> this.permissionsRoleHas.getItems().add(permission));
@@ -167,6 +178,11 @@ public class RolesMenuController implements Initializable {
         this.permissionsRoleHasnt.getItems().clear();
     }
 
+    /**
+     * Saves changes on the role entity
+     *
+     * @param role a chosen role
+     */
     private void saveRole(Role role) {
         try {
             this.roleDao.update(role);
