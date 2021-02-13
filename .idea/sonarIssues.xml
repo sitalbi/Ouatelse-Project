@@ -53,6 +53,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/rolesMenuController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/main.fxml">
           <value>
             <set />
@@ -99,6 +104,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/resources/mainWindow.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/resources/rolesMenuWindow.fxml">
           <value>
             <set />
           </value>
