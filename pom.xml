@@ -84,6 +84,15 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/java/fr/s4e2/ouatelse/resources</directory>
+                <includes>
+                    <include>**/*.fxml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.projectlombok</groupId>
