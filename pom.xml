@@ -86,7 +86,7 @@
     <build>
         <resources>
             <resource>
-                <directory>src/main/java/fr/s4e2/ouatelse/resources</directory>
+                <directory>src/main/java/resources</directory>
                 <includes>
                     <include>**/*.fxml</include>
                 </includes>
