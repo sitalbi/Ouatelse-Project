@@ -22,8 +22,8 @@ public class User extends Person {
     @DatabaseField(canBeNull = false)
     private String password;
 
-    @DatabaseField(canBeNull = false, dataType = DataType.ENUM_INTEGER)
-    private Job job;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private Role role;
 
     @DatabaseField(canBeNull = false)
     private Date hiringDate;
