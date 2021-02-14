@@ -22,7 +22,6 @@ import java.util.stream.Stream;
 
 public class RolesMenuController implements Initializable {
 
-    private final static String NAME_ERROR_MESSAGE = "Error : Enter a name";
     public ListView<Permission> permissionsRoleHas;
     public ListView<Permission> permissionsRoleHasnt;
     public TextField newRoleNameField;
@@ -48,6 +47,7 @@ public class RolesMenuController implements Initializable {
         this.permissionsRoleHas.setDisable(true);
         this.permissionsRoleHasnt.setDisable(true);
 
+        // Enables or disables button on select and unselect
         this.rolesListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Role>() {
             /**
              * This method needs to be provided by an implementation of
@@ -116,6 +116,7 @@ public class RolesMenuController implements Initializable {
      */
     @FXML
     private void onAddButtonClick(MouseEvent mouseEvent) {
+        // Displays a hint if the conditions aren't met
         if (newRoleNameField.getText().isEmpty()) {
             newRoleNameField.setPromptText("Please enter a name");
             newRoleNameField.getParent().requestFocus();
@@ -164,6 +165,7 @@ public class RolesMenuController implements Initializable {
         if (selectedPermission == null) return;
         currentRole.getPermissions().add(selectedPermission);
 
+        // Saves role state and disables buttons
         loadPermissionLists(currentRole);
         this.saveRole(currentRole);
         this.deletePermissionButton.setDisable(true);
@@ -182,6 +184,7 @@ public class RolesMenuController implements Initializable {
         if (selectedPermission == null) return;
         currentRole.getPermissions().remove(selectedPermission);
 
+        // Saves role state and disables buttons
         loadPermissionLists(currentRole);
         this.saveRole(currentRole);
         this.deletePermissionButton.setDisable(true);
