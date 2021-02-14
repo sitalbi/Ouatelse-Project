@@ -42,6 +42,12 @@ public class RolesMenuController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        try {
+            this.roleDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), Role.class);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
         this.addPermissionButton.setDisable(true);
         this.deletePermissionButton.setDisable(true);
         this.permissionsRoleHas.setDisable(true);
@@ -212,12 +218,7 @@ public class RolesMenuController implements Initializable {
      */
     private void loadRoleList() {
         this.rolesListView.getItems().clear();
-        try {
-            this.roleDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), Role.class);
-            this.roleDao.forEach(role -> rolesListView.getItems().add(role));
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+        this.roleDao.forEach(role -> rolesListView.getItems().add(role));
     }
 
     /**
