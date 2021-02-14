@@ -140,6 +140,7 @@ public class RolesMenuController implements Initializable {
         }
 
         this.loadRoleList();
+        this.newRoleNameField.setText("");
         this.rolesListView.getSelectionModel().select(newRole);
     }
 
