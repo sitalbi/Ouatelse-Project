@@ -14,18 +14,27 @@ import lombok.Setter;
 @DatabaseTable(tableName = "store")
 public class Store {
 
-    @DatabaseField(generatedId = true)
-    private long id;
+    @DatabaseField(id = true, canBeNull = false)
+    private String id;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField
     private String password;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField
     private String address;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField
     private String city;
 
     @ForeignCollectionField(eager = true)
     private ForeignCollection<Product> products;
+
+    public Store(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return this.getId();
+    }
 }
