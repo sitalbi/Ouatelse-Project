@@ -8,13 +8,6 @@
 - Couleur
 - Type ??
 
-**User :**
-
-- On a viré "Téléphone domicile" et "Téléphone travail" par "Téléphone mobile"
-- Fax
-- Commentaire
-- Identifiant de connexion
-
 **Cart :**
 
 - Fusion date / heure
@@ -22,6 +15,10 @@
 **PaySheet :**
 
 - ded
+
+**Store :**
+
+- Adresse : String -> Address
 
 ## Spécifications
 
