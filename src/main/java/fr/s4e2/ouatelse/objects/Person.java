@@ -25,7 +25,7 @@ public class Person {
     @DatabaseField(canBeNull = false)
     private String mobilePhoneNumber;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, unique = true)
     private String email;
 
     @DatabaseField(canBeNull = false)

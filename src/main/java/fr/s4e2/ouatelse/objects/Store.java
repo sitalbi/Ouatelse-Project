@@ -35,6 +35,9 @@ public class Store {
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Address address;
 
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, canBeNull = true)
+    private User manager;
+
     @ForeignCollectionField(eager = true)
     private ForeignCollection<Product> products;
 
