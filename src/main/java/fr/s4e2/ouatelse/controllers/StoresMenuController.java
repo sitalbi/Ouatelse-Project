@@ -5,6 +5,7 @@ import com.j256.ormlite.dao.DaoManager;
 import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.objects.Address;
 import fr.s4e2.ouatelse.objects.Store;
+import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.utils.Utils;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,10 +25,12 @@ public class StoresMenuController implements Initializable {
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
     private static final String STORE_ALREADY_EXISTS = "Ce magasin existe déjà!";
     private static final String NOT_A_ZIPCODE = "Le code postal est incorrect!";
+    private static final String MANAGER_NOT_FOUND = "Responsable du magasin pas trouvé!";
     private static final String PASSWORD_NOT_MATCHING = "Mot de passe non concordants!";
 
     public ListView<Store> storesListView;
     public TextField newStoreNameField;
+    public TextField newStoreManagerField;
     public TextField newStoreAddressField;
     public TextField newStoreCityField;
     public TextField newStoreZipcodeField;
@@ -37,6 +40,7 @@ public class StoresMenuController implements Initializable {
 
     private Dao<Store, String> storeDao;
     private Dao<Address, String> addressDao;
+    private Dao<User, String> userDao;
     private Store currentStore;
 
     /**
@@ -52,6 +56,7 @@ public class StoresMenuController implements Initializable {
         try {
             this.storeDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), Store.class);
             this.addressDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), Address.class);
+            this.userDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), User.class);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -95,11 +100,13 @@ public class StoresMenuController implements Initializable {
         if (newStoreNameField.getText().trim().isEmpty() || newStoreAddressField.getText().trim().isEmpty() || newStoreCityField.getText().trim().isEmpty()
                 || newStoreZipcodeField.getText().trim().isEmpty()) {
             this.errorMessage.setText(TEXT_FIELD_EMPTY_HINT);
+            this.newStoreNameField.getParent().requestFocus();
             return;
         }
 
         if (currentStore == null && (newStorePasswordField.getText().isEmpty() || newStoreConfirmPasswordField.getText().isEmpty())) {
             this.errorMessage.setText(TEXT_FIELD_EMPTY_HINT);
+            this.newStoreNameField.getParent().requestFocus();
             return;
         }
 
@@ -107,12 +114,14 @@ public class StoresMenuController implements Initializable {
         Integer zipCode = Utils.getNumber(newStoreZipcodeField.getText().trim());
         if (zipCode == null || zipCode > 99999) {
             this.errorMessage.setText(NOT_A_ZIPCODE);
+            this.newStoreNameField.getParent().requestFocus();
             return;
         }
 
         // passwords don't match
         if (!newStorePasswordField.getText().equals(newStoreConfirmPasswordField.getText())) {
             this.errorMessage.setText(PASSWORD_NOT_MATCHING);
+            this.newStoreNameField.getParent().requestFocus();
             return;
         }
 
@@ -128,17 +137,35 @@ public class StoresMenuController implements Initializable {
             }
         }
 
+        // store manager (can be their credentials or email)
+        String managerInput = this.newStoreManagerField.getText().trim();
+        User manager = null;
+        if (!managerInput.isEmpty()) {
+            for (User user : this.userDao) {
+                if (user.getCredentials().equals(managerInput) || user.getEmail().equals(managerInput)) {
+                    manager = user;
+                    break;
+                }
+            }
+            if (manager == null) {
+                this.errorMessage.setText(MANAGER_NOT_FOUND);
+                this.newStoreNameField.getParent().requestFocus();
+                return;
+            }
+        }
+
         if (currentStore != null) {
             // edits store
             try {
-                currentStore.getAddress().setZipCode(zipCode);
-                currentStore.getAddress().setCity(newStoreCityField.getText().trim());
-                currentStore.getAddress().setAddress(newStoreAddressField.getText().trim());
+                this.currentStore.getAddress().setZipCode(zipCode);
+                this.currentStore.getAddress().setCity(newStoreCityField.getText().trim());
+                this.currentStore.getAddress().setAddress(newStoreAddressField.getText().trim());
                 this.addressDao.update(currentStore.getAddress());
 
                 if (!newStoreConfirmPasswordField.getText().isEmpty()) {
-                    currentStore.setPassword(newStoreConfirmPasswordField.getText());
+                    this.currentStore.setPassword(newStoreConfirmPasswordField.getText());
                 }
+                this.currentStore.setManager(manager);
                 this.storeDao.update(currentStore);
             } catch (SQLException exception) {
                 exception.printStackTrace();
@@ -159,6 +186,7 @@ public class StoresMenuController implements Initializable {
             try {
                 newStore = new Store(newStoreNameField.getText().trim());
                 newStore.setPassword(newStoreConfirmPasswordField.getText());
+                newStore.setManager(manager);
                 newStore.setAddress(newAddress);
                 this.storeDao.create(newStore);
             } catch (SQLException exception) {
@@ -197,7 +225,6 @@ public class StoresMenuController implements Initializable {
         stage.close();
     }
 
-
     /**
      * Load the selected store's informations into the editable fields
      *
@@ -210,6 +237,10 @@ public class StoresMenuController implements Initializable {
         this.newStoreNameField.setText(store.getId());
         this.newStoreNameField.setDisable(true);
 
+        if (store.getManager() != null) {
+            this.newStoreManagerField.setText(store.getManager().getEmail());
+        }
+
         if (store.getAddress() == null) return;
         this.newStoreAddressField.setText(store.getAddress().getAddress());
         this.newStoreCityField.setText(store.getAddress().getCity());
@@ -221,6 +252,7 @@ public class StoresMenuController implements Initializable {
      */
     private void clearStoreInformation() {
         this.newStoreNameField.setText("");
+        this.newStoreManagerField.setText("");
         this.newStoreAddressField.setText("");
         this.newStoreCityField.setText("");
         this.newStoreZipcodeField.setText("");

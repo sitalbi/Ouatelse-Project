@@ -19,7 +19,7 @@ import java.util.Date;
 @DatabaseTable(tableName = "user")
 public class User extends Person {
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, unique = true)
     private String credentials;
 
     @DatabaseField(canBeNull = false)

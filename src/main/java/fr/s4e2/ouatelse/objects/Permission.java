@@ -6,8 +6,6 @@ import com.j256.ormlite.field.DatabaseField;
 public enum Permission {
     @DatabaseField(dataType = DataType.ENUM_STRING)
     ADMIN,
-    ROLE_ADD,
-    ROLE_DELETE,
-    PERMISSION_ADD,
-    PERMISSION_REMOVE
+    ROLE_MANAGEMENT,
+    STORE_MANAGEMENT
 }
