@@ -66,8 +66,6 @@ public class RolesMenuController implements Initializable {
                 if (newValue != null) {
                     currentRole = newValue;
 
-                    addPermissionButton.setDisable(false);
-                    deletePermissionButton.setDisable(false);
                     permissionsRoleHas.setDisable(false);
                     permissionsRoleHasnt.setDisable(false);
 
@@ -75,13 +73,39 @@ public class RolesMenuController implements Initializable {
                 } else {
                     currentRole = null;
 
-                    addPermissionButton.setDisable(true);
-                    deletePermissionButton.setDisable(true);
                     permissionsRoleHas.setDisable(true);
                     permissionsRoleHasnt.setDisable(true);
                 }
             }
         });
+
+        ChangeListener<Permission> changeListener = new ChangeListener<Permission>() {
+            /**
+             * This method needs to be provided by an implementation of
+             * {@code ChangeListener}. It is called if the value of an
+             * {@link ObservableValue} changes.
+             * <p>
+             * In general is is considered bad practice to modify the observed value in
+             * this method.
+             *
+             * @param observable The {@code ObservableValue} which value changed
+             * @param oldValue   The old value
+             * @param newValue   The new value
+             */
+            @Override
+            public void changed(ObservableValue<? extends Permission> observable, Permission oldValue, Permission newValue) {
+                if (newValue != null) {
+                    addPermissionButton.setDisable(false);
+                    deletePermissionButton.setDisable(false);
+                } else {
+                    addPermissionButton.setDisable(true);
+                }
+            }
+        };
+
+        this.permissionsRoleHas.getSelectionModel().selectedItemProperty().addListener(changeListener);
+        this.permissionsRoleHasnt.getSelectionModel().selectedItemProperty().addListener(changeListener);
+
         this.loadRoleList();
     }
 
@@ -96,6 +120,14 @@ public class RolesMenuController implements Initializable {
             newRoleNameField.setPromptText("Please enter a name");
             newRoleNameField.getParent().requestFocus();
             return;
+        }
+        for (Role role : this.roleDao) {
+            if (role.getName().equals(newRoleNameField.getText())) {
+                newRoleNameField.clear();
+                newRoleNameField.setPromptText("Role already exists");
+                newRoleNameField.getParent().requestFocus();
+                return;
+            }
         }
 
         Role newRole = null;
@@ -134,6 +166,8 @@ public class RolesMenuController implements Initializable {
 
         loadPermissionLists(currentRole);
         this.saveRole(currentRole);
+        this.deletePermissionButton.setDisable(true);
+        this.addPermissionButton.setDisable(true);
     }
 
     /**
@@ -150,6 +184,8 @@ public class RolesMenuController implements Initializable {
 
         loadPermissionLists(currentRole);
         this.saveRole(currentRole);
+        this.deletePermissionButton.setDisable(true);
+        this.addPermissionButton.setDisable(true);
     }
 
     /**
