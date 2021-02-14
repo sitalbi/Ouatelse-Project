@@ -26,7 +26,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("mainWindow.fxml")));
 
-        primaryStage.setTitle("Ouatelse Main Window");
+        primaryStage.setTitle("Ouatelse - Menu Principal");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

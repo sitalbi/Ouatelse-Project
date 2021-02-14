@@ -31,6 +31,8 @@ public class RolesMenuController implements Initializable {
     private ListView<Role> rolesListView;
     private Dao<Role, Long> roleDao;
     private Role currentRole = null;
+    private static final String TEXT_FIELD_HINT = "Veuillez saisir un nom";
+    private static final String ROLE_ALREADY_EXISTS = "Ce rôle existe déjà!";
 
     /**
      * Called to initialize a controller after its root element has been
@@ -52,6 +54,8 @@ public class RolesMenuController implements Initializable {
         this.deletePermissionButton.setDisable(true);
         this.permissionsRoleHas.setDisable(true);
         this.permissionsRoleHasnt.setDisable(true);
+
+        this.newRoleNameField.setPromptText(TEXT_FIELD_HINT);
 
         // Enables or disables button on select and unselect
         this.rolesListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Role>() {
@@ -123,15 +127,15 @@ public class RolesMenuController implements Initializable {
     @FXML
     private void onAddButtonClick(MouseEvent mouseEvent) {
         // Displays a hint if the conditions aren't met
-        if (newRoleNameField.getText().isEmpty()) {
-            newRoleNameField.setPromptText("Please enter a name");
-            newRoleNameField.getParent().requestFocus();
+        if (newRoleNameField.getText().trim().isEmpty()) {
+            this.newRoleNameField.setPromptText(TEXT_FIELD_HINT);
+            this.newRoleNameField.getParent().requestFocus();
             return;
         }
-        for (Role role : this.roleDao) {
+        for (Role role : roleDao) {
             if (role.getName().equals(newRoleNameField.getText())) {
                 newRoleNameField.clear();
-                newRoleNameField.setPromptText("Role already exists");
+                newRoleNameField.setPromptText(ROLE_ALREADY_EXISTS);
                 newRoleNameField.getParent().requestFocus();
                 return;
             }
@@ -168,9 +172,9 @@ public class RolesMenuController implements Initializable {
     public void onAddPermissionButtonClick(MouseEvent mouseEvent) {
         if (currentRole == null) return;
 
-        Permission selectedPermission = this.permissionsRoleHasnt.getSelectionModel().getSelectedItem();
+        Permission selectedPermission = permissionsRoleHasnt.getSelectionModel().getSelectedItem();
         if (selectedPermission == null) return;
-        currentRole.getPermissions().add(selectedPermission);
+        this.currentRole.getPermissions().add(selectedPermission);
 
         // Saves role state and disables buttons
         loadPermissionLists(currentRole);
@@ -187,9 +191,9 @@ public class RolesMenuController implements Initializable {
     public void onDeletePermissionButtonClick(MouseEvent mouseEvent) {
         if (currentRole == null) return;
 
-        Permission selectedPermission = this.permissionsRoleHas.getSelectionModel().getSelectedItem();
+        Permission selectedPermission = permissionsRoleHas.getSelectionModel().getSelectedItem();
         if (selectedPermission == null) return;
-        currentRole.getPermissions().remove(selectedPermission);
+        this.currentRole.getPermissions().remove(selectedPermission);
 
         // Saves role state and disables buttons
         loadPermissionLists(currentRole);
@@ -205,7 +209,7 @@ public class RolesMenuController implements Initializable {
      */
     public void onDeleteButtonClick(MouseEvent mouseEvent) {
         try {
-            Role selectedRole = this.rolesListView.getSelectionModel().getSelectedItem();
+            Role selectedRole = rolesListView.getSelectionModel().getSelectedItem();
             this.roleDao.delete(selectedRole);
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -230,7 +234,7 @@ public class RolesMenuController implements Initializable {
      */
     private void loadPermissionLists(Role role) {
         this.clearPermissionLists();
-        role.getPermissions().forEach(permission -> this.permissionsRoleHas.getItems().add(permission));
+        role.getPermissions().forEach(permission -> permissionsRoleHas.getItems().add(permission));
         Stream.of(Permission.values()).forEachOrdered(permission -> {
             if (!role.getPermissions().contains(permission)) {
                 this.permissionsRoleHasnt.getItems().add(permission);
