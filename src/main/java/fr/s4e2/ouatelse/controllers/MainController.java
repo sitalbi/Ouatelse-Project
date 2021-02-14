@@ -9,12 +9,14 @@ import java.util.Objects;
 
 public class MainController {
 
+    private static final String WINDOW_TITLE_ROLES = "Ouatelse - Menu Gestion des Rôles";
+
     public void onRolesMenuClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("rolesMenuWindow.fxml")));
 
         Stage stage = new Stage();
         stage.setScene(new Scene(loader.load()));
-        stage.setTitle("Roles menu");
+        stage.setTitle(WINDOW_TITLE_ROLES);
         stage.show();
     }
 }
