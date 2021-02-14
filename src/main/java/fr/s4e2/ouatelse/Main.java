@@ -1,15 +1,11 @@
 package fr.s4e2.ouatelse;
 
 import fr.s4e2.ouatelse.utils.DatabaseManager;
+import fr.s4e2.ouatelse.utils.Utils;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Objects;
 
 public class Main extends Application {
 
@@ -23,11 +19,9 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("mainWindow.fxml")));
-
+    public void start(Stage primaryStage) {
+        primaryStage = Utils.buildStage("mainWindow.fxml");
         primaryStage.setTitle("Ouatelse - Menu Principal");
-        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 }
