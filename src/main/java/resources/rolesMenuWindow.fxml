@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Text?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/8.0.171" fx:controller="fr.s4e2.ouatelse.controllers.rolesMenuController">
-    <children>
-        <Text layoutX="269.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Roles menu"/>
-    </children>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="376.0" prefWidth="530.0"
+            xmlns="http://javafx.com/javafx/11.0.1" fx:controller="fr.s4e2.ouatelse.controllers.RolesMenuController">
+   <children>
+      <ListView fx:id="rolesListView" layoutX="14.0" layoutY="14.0" prefHeight="98.0" prefWidth="343.0"/>
+      <TextField fx:id="newRoleNameField" layoutX="368.0" layoutY="14.0"/>
+      <Button layoutX="368.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#onAddButtonClick"
+              prefHeight="25.0" prefWidth="149.0" text="Ajouter"/>
+      <ListView fx:id="permissionsRoleHas" layoutX="14.0" layoutY="128.0" prefHeight="200.0" prefWidth="200.0"/>
+      <ListView fx:id="permissionsRoleHasnt" layoutX="317.0" layoutY="128.0" prefHeight="200.0" prefWidth="200.0"/>
+      <Button layoutX="409.0" layoutY="339.0" mnemonicParsing="false" onMouseClicked="#onDoneButtonClick"
+              prefHeight="25.0" prefWidth="108.0" text="OK"/>
+      <Button fx:id="addPermissionButton" layoutX="249.0" layoutY="188.0" mnemonicParsing="false"
+              onMouseClicked="#onAddPermissionButtonClick" text="&lt;&lt;"/>
+      <Button fx:id="deletePermissionButton" layoutX="249.0" layoutY="228.0" mnemonicParsing="false"
+              onMouseClicked="#onDeletePermissionButtonClick" text="&gt;&gt;"/>
+      <Button layoutX="368.0" layoutY="87.0" mnemonicParsing="false" onMouseClicked="#onDeleteButtonClick"
+              prefHeight="25.0" prefWidth="149.0" text="Supprimer"/>
+   </children>
 </AnchorPane>
