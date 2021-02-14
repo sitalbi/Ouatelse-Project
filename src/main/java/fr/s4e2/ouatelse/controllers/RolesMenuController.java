@@ -133,17 +133,17 @@ public class RolesMenuController implements Initializable {
             return;
         }
         for (Role role : roleDao) {
-            if (role.getName().equals(newRoleNameField.getText())) {
-                newRoleNameField.clear();
-                newRoleNameField.setPromptText(ROLE_ALREADY_EXISTS);
-                newRoleNameField.getParent().requestFocus();
+            if (role.getName().equals(newRoleNameField.getText().trim())) {
+                this.newRoleNameField.clear();
+                this.newRoleNameField.setPromptText(ROLE_ALREADY_EXISTS);
+                this.newRoleNameField.getParent().requestFocus();
                 return;
             }
         }
 
         Role newRole = null;
         try {
-            newRole = new Role(newRoleNameField.getText());
+            newRole = new Role(newRoleNameField.getText().trim());
             this.roleDao.create(newRole);
         } catch (SQLException exception) {
             exception.printStackTrace();
