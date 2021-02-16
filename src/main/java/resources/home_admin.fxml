@@ -70,28 +70,28 @@
       <items>
         <AnchorPane>
           <children>
-                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="8.0" prefHeight="183.0" prefWidth="222.0" text="Ventes">
+                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="8.0" prefHeight="183.0" prefWidth="222.0" text="Gestion des utilisateurs" textAlignment="CENTER" wrapText="true">
                      <graphic>
-                        <FontAwesomeIconView glyphName="SHOPPING_CART" size="30.0" />
+                        <FontAwesomeIconView glyphName="USER_MD" size="30.0" />
                      </graphic>
                      <font>
                         <Font size="24.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="191.0" prefHeight="183.0" prefWidth="221.0" text="Clients">
+                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="191.0" prefHeight="183.0" prefWidth="221.0" text="Gestion des rôles">
                      <graphic>
-                        <FontAwesomeIconView glyphName="USERS" size="30.0" />
+                        <FontAwesomeIconView glyphName="PAPERCLIP" size="30.0" />
                      </graphic>
                      <font>
                         <Font size="24.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="374.0" prefHeight="183.0" prefWidth="221.0" text="Produits">
+                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="374.0" prefHeight="183.0" prefWidth="221.0" text="Paramètres">
                      <font>
                         <Font size="24.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIconView glyphName="COFFEE" size="30.0" />
+                        <FontAwesomeIconView glyphName="COGS" size="30.0" />
                      </graphic>
                   </JFXButton>
           </children>
@@ -109,9 +109,9 @@
                            </textFill>
                         </Label>
                         <Circle fill="WHITE" layoutX="215.0" layoutY="232.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-                        <Pane layoutX="115.0" layoutY="345.0" prefHeight="125.0" prefWidth="200.0">
+                        <Pane layoutX="65.0" layoutY="345.0" prefHeight="125.0" prefWidth="300.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="1.0" prefHeight="27.0" prefWidth="199.0" style="&#10;" text="Vendeur" textAlignment="CENTER" wrapText="false">
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="1.0" prefHeight="32.0" prefWidth="300.0" style="&#10;" text="Administrateur Système" textAlignment="CENTER" wrapText="false">
                                  <font>
                                     <Font size="22.0" fx:id="x121" />
                                  </font>
@@ -119,7 +119,7 @@
                                     <Color red="0.624" green="0.624" blue="0.624" fx:id="x221" />
                                  </textFill>
                               </Label>
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="49.0" prefHeight="27.0" prefWidth="200.0" style="&#10;" text="{{name}}" textAlignment="CENTER" wrapText="false">
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="49.0" prefHeight="27.0" prefWidth="300.0" style="&#10;" text="{{name}}" textAlignment="CENTER" wrapText="false">
                                  <font>
                                     <Font size="18.0" fx:id="x12" />
                                  </font>
@@ -127,7 +127,7 @@
                                     <Color red="0.624" green="0.624" blue="0.624" fx:id="x22" />
                                  </textFill>
                               </Label>
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="76.0" prefHeight="27.0" prefWidth="200.0" style="&#10;" text="{{email}}" textAlignment="CENTER" wrapText="false">
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="76.0" prefHeight="27.0" prefWidth="300.0" style="&#10;" text="{{email}}" textAlignment="CENTER" wrapText="false">
                                  <font>
                                     <Font size="14.0" fx:id="x122" />
                                  </font>
