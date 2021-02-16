@@ -95,7 +95,7 @@ public class StoresMenuController implements Initializable {
      *
      * @param mouseEvent The mouse click event
      */
-    public void onAddButtonClick(MouseEvent mouseEvent) {
+    public void onAddButtonClick(MouseEvent mouseEvent) throws SQLException {
         // fields that must be filled in
         if (newStoreNameField.getText().trim().isEmpty() || newStoreAddressField.getText().trim().isEmpty() || newStoreCityField.getText().trim().isEmpty()
                 || newStoreZipcodeField.getText().trim().isEmpty()) {
@@ -141,12 +141,11 @@ public class StoresMenuController implements Initializable {
         String managerInput = this.newStoreManagerField.getText().trim();
         User manager = null;
         if (!managerInput.isEmpty()) {
-            for (User user : this.userDao) {
-                if (user.getCredentials().equals(managerInput) || user.getEmail().equals(managerInput)) {
-                    manager = user;
-                    break;
-                }
-            }
+            manager = this.userDao.query(this.userDao.queryBuilder()
+                    .where().eq("credentials", managerInput)
+                    .or().eq("email", managerInput)
+                    .prepare()
+            ).stream().findFirst().orElse(null);
             if (manager == null) {
                 this.errorMessage.setText(MANAGER_NOT_FOUND);
                 this.newStoreNameField.getParent().requestFocus();
