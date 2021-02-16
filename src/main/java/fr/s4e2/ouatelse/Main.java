@@ -20,8 +20,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage = Utils.buildStage("mainWindow.fxml");
-        primaryStage.setTitle("Ouatelse - Menu Principal");
+        primaryStage = Utils.buildStage("home_vendor.fxml");
+        primaryStage.setTitle("Ouatelse - Menu Test");
         primaryStage.show();
     }
 }
