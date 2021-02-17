@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class StoresMenuController implements Initializable {
@@ -27,6 +28,7 @@ public class StoresMenuController implements Initializable {
     private static final String NOT_A_ZIPCODE = "Le code postal est incorrect!";
     private static final String MANAGER_NOT_FOUND = "Responsable du magasin pas trouvé!";
     private static final String PASSWORD_NOT_MATCHING = "Mot de passe non concordants!";
+    private static final String ADDRESS_ALREADY_IN_USE = "Un magasin existe déjà à cette adresse";
 
     public ListView<Store> storesListView;
     public TextField newStoreNameField;
@@ -83,6 +85,7 @@ public class StoresMenuController implements Initializable {
                     loadStoreInformation(newValue);
                 } else {
                     currentStore = null;
+                    clearStoreInformation();
                 }
             }
         });
@@ -149,6 +152,31 @@ public class StoresMenuController implements Initializable {
             if (manager == null) {
                 this.errorMessage.setText(MANAGER_NOT_FOUND);
                 this.newStoreNameField.getParent().requestFocus();
+                return;
+            }
+        }
+
+        // Address already in use
+        boolean addressAlreadyInUse = false;
+        Address inputtedAddress = this.addressDao.query(this.addressDao.queryBuilder().where()
+                .eq("zipCode", zipCode)
+                .and().eq("city", newStoreCityField.getText().trim())
+                .and().eq("address", newStoreAddressField.getText().trim())
+                .prepare()).stream().findFirst().orElse(null);
+        if (inputtedAddress != null) {
+            List<Store> allExistingStores = this.storeDao.query(this.storeDao.queryBuilder().selectColumns("address_id").prepare());
+            for (Store store : allExistingStores) {
+                if (store.getAddress().getId() == inputtedAddress.getId()) {
+                    addressAlreadyInUse = true;
+                    break;
+                }
+            }
+            if (addressAlreadyInUse) {
+                this.newStoreAddressField.clear();
+                this.newStoreCityField.clear();
+                this.newStoreZipcodeField.clear();
+                this.errorMessage.setText(ADDRESS_ALREADY_IN_USE);
+                this.newStoreAddressField.getParent().requestFocus();
                 return;
             }
         }
