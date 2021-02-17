@@ -70,7 +70,7 @@
       <items>
         <AnchorPane>
           <children>
-                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="8.0" prefHeight="183.0" prefWidth="222.0" text="Établissements">
+                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="4.0" prefHeight="183.0" prefWidth="222.0" text="Établissements" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
                      <graphic>
                         <FontAwesomeIconView glyphName="INSTITUTION" size="30.0" />
                      </graphic>
@@ -78,7 +78,7 @@
                         <Font size="24.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="191.0" prefHeight="183.0" prefWidth="221.0" text="Monitoring">
+                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="187.0" prefHeight="183.0" prefWidth="221.0" text="Monitoring" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="187.0">
                      <graphic>
                         <FontAwesomeIconView glyphName="SIGNAL" size="30.0" />
                      </graphic>
@@ -86,7 +86,7 @@
                         <Font size="24.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="374.0" prefHeight="183.0" prefWidth="221.0" text="Paramètres">
+                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="370.0" prefHeight="183.0" prefWidth="221.0" text="Paramètres" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="370.0">
                      <graphic>
                         <FontAwesomeIconView glyphName="COGS" size="30.0" text="" />
                      </graphic>
@@ -100,7 +100,7 @@
           <content>
             <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="430.0">
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="158.0" layoutY="14.0" style="&#10;" text="Accueil" textAlignment="CENTER" wrapText="false">
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="158.0" layoutY="14.0" style="&#10;" text="Accueil" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="158.0" AnchorPane.rightAnchor="158.0" AnchorPane.topAnchor="14.0">
                            <font>
                               <Font size="36.0" fx:id="x11" />
                            </font>
@@ -108,8 +108,8 @@
                               <Color red="0.624" green="0.624" blue="0.624" fx:id="x21" />
                            </textFill>
                         </Label>
-                        <Circle fill="WHITE" layoutX="215.0" layoutY="232.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-                        <Pane layoutX="115.0" layoutY="345.0" prefHeight="125.0" prefWidth="200.0">
+                        <Circle fill="WHITE" layoutX="215.0" layoutY="232.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="115.0" />
+                        <Pane layoutX="115.0" layoutY="345.0" prefHeight="125.0" prefWidth="200.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="115.0">
                            <children>
                               <Label alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="1.0" prefHeight="27.0" prefWidth="199.0" style="&#10;" text="Directeur" textAlignment="CENTER" wrapText="false">
                                  <font>
@@ -143,14 +143,14 @@
         </ScrollPane>
         <AnchorPane>
           <children>
-            <Label alignment="CENTER" layoutX="84.0" layoutY="14.0" style="&#10;" text="Détails" textAlignment="CENTER" wrapText="false">
+            <Label alignment="CENTER" layoutX="84.0" layoutY="14.0" style="&#10;" text="Détails" textAlignment="CENTER" wrapText="false" AnchorPane.bottomAnchor="516.0" AnchorPane.leftAnchor="84.0" AnchorPane.rightAnchor="83.0" AnchorPane.topAnchor="14.0">
                      <font>
                 <Font size="18.0" fx:id="x1" />
                      </font>
                      <textFill>
                 <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
                      </textFill></Label>
-                  <JFXButton layoutX="48.0" layoutY="528.0" text="Déconnexion">
+                  <JFXButton layoutX="48.0" layoutY="528.0" text="Déconnexion" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="526.0">
                      <graphic>
                         <FontAwesomeIconView glyphName="SIGN_OUT" />
                      </graphic>

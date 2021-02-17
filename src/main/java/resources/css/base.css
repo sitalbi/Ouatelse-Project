@@ -1,0 +1,40 @@
+/* MENU BAR */
+.menu-bar {
+    -fx-background-color: #242e41;
+}
+
+.menu {
+    -fx-background-color: #242e41;
+}
+
+.menu .label {
+    -fx-text-fill: white;
+}
+
+.menu-item:focused, .menu:hover, .menu:focused, .menu:selected, .menu:armed {
+    -fx-background-color: #2f3b52;
+}
+
+.menu-item {
+    -fx-background-color: #242e41;
+}
+
+/* CONTENT */
+.left-container {
+    -fx-background-color: #242e41;
+}
+
+.content {
+    -fx-background-color: #2f3b52;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+.right-container {
+    -fx-background-color: #2f3b52;
+}
+
+/* FOOTER */
+.footer {
+    -fx-background-color: #242e41;
+}
