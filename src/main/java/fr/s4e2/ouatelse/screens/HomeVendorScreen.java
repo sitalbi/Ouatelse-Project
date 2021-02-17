@@ -1,8 +1,8 @@
 package fr.s4e2.ouatelse.screens;
 
-public class HomeScreenVendor extends BaseScreen {
+public class HomeVendorScreen extends BaseScreen {
 
-    public HomeScreenVendor() {
+    public HomeVendorScreen() {
         super("home_vendor.fxml", "Ouatelse - Vendeur");
         this.addStyleSheet("css/home.css");
     }
