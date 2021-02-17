@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
@@ -11,9 +11,9 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.*?>
 <?import java.net.URL?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="600.0"
-            prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="fr.s4e2.ouatelse.controllers.HomeHrManagerController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0"
+            minWidth="800.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1"
+            fx:controller="fr.s4e2.ouatelse.controllers.HomeController">
     <top>
         <MenuBar fx:id="menuBar" stylesheets="@css/base.css" BorderPane.alignment="CENTER">
             <menus>
@@ -50,56 +50,9 @@
         </HBox>
     </bottom>
     <left>
-        <VBox alignment="TOP_CENTER" prefHeight="353.0" prefWidth="175.0" styleClass="left-container"
-              BorderPane.alignment="CENTER">
+        <VBox fx:id="verticalButtonsBar" alignment="TOP_CENTER" prefHeight="353.0" prefWidth="175.0"
+              styleClass="left-container" BorderPane.alignment="CENTER">
             <children>
-                <JFXButton contentDisplay="TOP" onMouseClicked="#onEmployeeManagementButtonClick" prefHeight="1000.0"
-                           prefWidth="1000.0" text="Gestion Employés" textAlignment="CENTER" textFill="WHITE"
-                           wrapText="true">
-                    <graphic>
-                        <FontAwesomeIconView fill="RED" glyphName="WRENCH" size="30.0"/>
-                    </graphic>
-                    <font>
-                        <Font size="18.0"/>
-                    </font>
-                    <cursor>
-                        <Cursor fx:constant="HAND"/>
-                    </cursor>
-                </JFXButton>
-                <JFXButton contentDisplay="TOP" onMouseClicked="#onPlanningButtonClick" prefHeight="1000.0"
-                           prefWidth="1000.0" text="Planning" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                    <graphic>
-                        <FontAwesomeIconView fill="RED" glyphName="CALENDAR" size="30.0"/>
-                    </graphic>
-                    <font>
-                        <Font size="18.0"/>
-                    </font>
-                    <cursor>
-                        <Cursor fx:constant="HAND"/>
-                    </cursor>
-                </JFXButton>
-                <JFXButton contentDisplay="TOP" onMouseClicked="#onSalaryManagementButtonClick" prefHeight="1000.0"
-                           prefWidth="1000.0" text="Gestion Salaire" textAlignment="CENTER" textFill="WHITE"
-                           wrapText="true">
-                    <graphic>
-                        <FontAwesomeIconView fill="RED" glyphName="MONEY" size="30.0"/>
-                    </graphic>
-                    <font>
-                        <Font size="18.0"/>
-                    </font>
-                </JFXButton>
-                <JFXButton contentDisplay="TOP" onMouseClicked="#onParametersButtonClick" prefHeight="1000.0"
-                           prefWidth="1000.0" text="Paramètres" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                    <graphic>
-                        <FontAwesomeIconView fill="RED" glyphName="COGS" size="30.0"/>
-                    </graphic>
-                    <font>
-                        <Font size="18.0"/>
-                    </font>
-                    <cursor>
-                        <Cursor fx:constant="HAND"/>
-                    </cursor>
-                </JFXButton>
             </children>
         </VBox>
     </left>
@@ -153,9 +106,9 @@
                         GridPane.rowIndex="1"/>
                 <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-2.0" layoutY="14.0"
-                               prefHeight="35.0" prefWidth="345.0" text="Directeur Ressources Humaines"
-                               textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                        <Label fx:id="roleField" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0"
+                               layoutY="14.0" prefHeight="35.0" prefWidth="344.0" text="{{role}}" textAlignment="CENTER"
+                               textFill="WHITE" wrapText="true">
                             <font>
                                 <Font size="24.0"/>
                             </font>
