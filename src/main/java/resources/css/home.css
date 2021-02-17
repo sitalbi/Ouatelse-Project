@@ -3,14 +3,6 @@
     -fx-text-fill: white;
 }
 
-.content {
-    -fx-background-color: #2f3b52;
-    -fx-text-fill: white;
-    -fx-alignment: center;
-    -fx-text-alignment: center;
-    -fx-border-color: transparent #242e41 transparent transparent;
-}
-
 .right-container {
     -fx-background-color: #2f3b52;
     -fx-text-fill: white;
