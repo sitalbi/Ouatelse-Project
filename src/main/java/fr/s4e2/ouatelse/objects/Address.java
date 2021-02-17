@@ -21,6 +21,12 @@ public class Address {
     @DatabaseField(canBeNull = false)
     private String city;
 
-    @DatabaseField()
-    private String details;
+    @DatabaseField(canBeNull = false)
+    private String address;
+
+    public Address(int zipCode, String city, String address) {
+        this.zipCode = zipCode;
+        this.city = city;
+        this.address = address;
+    }
 }
