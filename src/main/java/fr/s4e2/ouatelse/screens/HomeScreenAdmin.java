@@ -1,8 +1,8 @@
 package fr.s4e2.ouatelse.screens;
 
-public class AdminHomeScreen extends BaseScreen {
+public class HomeScreenAdmin extends BaseScreen {
 
-    public AdminHomeScreen() {
+    public HomeScreenAdmin() {
         super("home_admin.fxml", "Ouatelse - Administrateur Système");
         this.addStyleSheet("css/home.css");
     }
