@@ -17,6 +17,8 @@ public class HomeController extends BaseController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        super.initialize(location, resources);
+
         //todo : implement
         this.homeAdminName.setText("Simon Caillat");
         this.homeAdminEmail.setText("simon.caillat@etu.u-bordeaux.fr");
