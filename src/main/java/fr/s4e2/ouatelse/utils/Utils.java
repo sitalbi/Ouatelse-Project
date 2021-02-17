@@ -28,7 +28,9 @@ public class Utils {
         stage.getIcons().add(OUATELSE_ICON);
         stage.initModality(Modality.APPLICATION_MODAL);
         try {
-            stage.setScene(new Scene(loader.load()));
+            Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add("css/base.css");
+            stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
         }
