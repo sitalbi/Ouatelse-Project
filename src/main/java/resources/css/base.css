@@ -37,3 +37,17 @@
 .footer {
     -fx-background-color: #242e41;
 }
+
+/* OTHER */
+.content {
+    -fx-background-color: #2f3b52;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-border-color: transparent #242e41 transparent transparent;
+}
+
+.input {
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #d3d3d3;
+}
