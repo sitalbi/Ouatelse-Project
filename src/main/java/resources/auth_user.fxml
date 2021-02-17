@@ -49,7 +49,6 @@
     </bottom>
     <stylesheets>
         <URL value="@css/base.css"/>
-        <URL value="@css/auth.css"/>
     </stylesheets>
     <center>
         <GridPane alignment="CENTER" maxWidth="10000.0" prefHeight="10000.0" styleClass="content"
@@ -77,13 +76,13 @@
                     </font>
                 </Label>
                 <JFXTextField alignment="CENTER" focusColor="RED" prefHeight="35.0" prefWidth="250.0" promptText="Email"
-                              styleClass="input" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <font>
                         <Font size="16.0"/>
                     </font>
                 </JFXTextField>
                 <JFXTextField alignment="CENTER" focusColor="RED" prefHeight="35.0" prefWidth="250.0"
-                              promptText="Mot de passe" styleClass="input" unFocusColor="WHITE" GridPane.columnIndex="1"
+                              promptText="Mot de passe" unFocusColor="WHITE" GridPane.columnIndex="1"
                               GridPane.rowIndex="3">
                     <font>
                         <Font size="16.0"/>

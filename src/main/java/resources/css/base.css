@@ -47,7 +47,11 @@
     -fx-border-color: transparent #242e41 transparent transparent;
 }
 
-.input {
+.text-field {
     -fx-text-fill: white;
     -fx-prompt-text-fill: #d3d3d3;
+}
+
+.text-field:focused {
+    -fx-prompt-text-fill: transparent;
 }
