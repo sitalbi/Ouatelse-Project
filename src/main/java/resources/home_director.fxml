@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <MenuBar VBox.vgrow="NEVER">
+      <menus>
+        <Menu mnemonicParsing="false" text="Fichier">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Préférences…" />
+            <MenuItem mnemonicParsing="false" text="Quitter" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Aide">
+          <items>
+            <MenuItem mnemonicParsing="false" text="À propos" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <SplitPane dividerPositions="0.2505567928730512, 0.7505567928730512" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      <items>
+        <AnchorPane>
+          <children>
+                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="4.0" prefHeight="183.0" prefWidth="222.0" text="Établissements" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="INSTITUTION" size="30.0" />
+                     </graphic>
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="187.0" prefHeight="183.0" prefWidth="221.0" text="Monitoring" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="187.0">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="SIGNAL" size="30.0" />
+                     </graphic>
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutY="370.0" prefHeight="183.0" prefWidth="221.0" text="Paramètres" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="370.0">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="COGS" size="30.0" text="" />
+                     </graphic>
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </JFXButton>
+          </children>
+        </AnchorPane>
+        <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
+          <content>
+            <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="430.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="158.0" layoutY="14.0" style="&#10;" text="Accueil" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="158.0" AnchorPane.rightAnchor="158.0" AnchorPane.topAnchor="14.0">
+                           <font>
+                              <Font size="36.0" fx:id="x11" />
+                           </font>
+                           <textFill>
+                              <Color red="0.624" green="0.624" blue="0.624" fx:id="x21" />
+                           </textFill>
+                        </Label>
+                        <Circle fill="WHITE" layoutX="215.0" layoutY="232.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="115.0" />
+                        <Pane layoutX="115.0" layoutY="345.0" prefHeight="125.0" prefWidth="200.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="115.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="1.0" prefHeight="27.0" prefWidth="199.0" style="&#10;" text="Directeur" textAlignment="CENTER" wrapText="false">
+                                 <font>
+                                    <Font size="22.0" fx:id="x121" />
+                                 </font>
+                                 <textFill>
+                                    <Color red="0.624" green="0.624" blue="0.624" fx:id="x221" />
+                                 </textFill>
+                              </Label>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="49.0" prefHeight="27.0" prefWidth="200.0" style="&#10;" text="{{name}}" textAlignment="CENTER" wrapText="false">
+                                 <font>
+                                    <Font size="18.0" fx:id="x12" />
+                                 </font>
+                                 <textFill>
+                                    <Color red="0.624" green="0.624" blue="0.624" fx:id="x22" />
+                                 </textFill>
+                              </Label>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="76.0" prefHeight="27.0" prefWidth="200.0" style="&#10;" text="{{email}}" textAlignment="CENTER" wrapText="false">
+                                 <font>
+                                    <Font size="14.0" fx:id="x122" />
+                                 </font>
+                                 <textFill>
+                                    <Color red="0.624" green="0.624" blue="0.624" fx:id="x222" />
+                                 </textFill>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+            </AnchorPane>
+          </content>
+        </ScrollPane>
+        <AnchorPane>
+          <children>
+            <Label alignment="CENTER" layoutX="84.0" layoutY="14.0" style="&#10;" text="Détails" textAlignment="CENTER" wrapText="false" AnchorPane.bottomAnchor="516.0" AnchorPane.leftAnchor="84.0" AnchorPane.rightAnchor="83.0" AnchorPane.topAnchor="14.0">
+                     <font>
+                <Font size="18.0" fx:id="x1" />
+                     </font>
+                     <textFill>
+                <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
+                     </textFill></Label>
+                  <JFXButton layoutX="48.0" layoutY="528.0" text="Déconnexion" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="526.0">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="SIGN_OUT" />
+                     </graphic>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </JFXButton>
+          </children>
+        </AnchorPane>
+      </items>
+    </SplitPane>
+    <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
+      <children>
+        <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Copyright © Ouatelse. All rights reserved." HBox.hgrow="ALWAYS">
+          <font>
+            <Font size="11.0" fx:id="x3" />
+          </font>
+          <textFill>
+            <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
+          </textFill>
+        </Label>
+        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
+        <Label font="$x3" maxWidth="-1.0" text="Version {{version}}" textFill="$x4" HBox.hgrow="NEVER" />
+      </children>
+      <padding>
+        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+      </padding>
+    </HBox>
+  </children>
+</VBox>
