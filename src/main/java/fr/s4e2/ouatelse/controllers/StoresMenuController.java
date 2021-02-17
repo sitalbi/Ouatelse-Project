@@ -167,7 +167,8 @@ public class StoresMenuController implements Initializable {
             List<Store> allExistingStores = this.storeDao.query(this.storeDao.queryBuilder().selectColumns("address_id").prepare());
             for (Store store : allExistingStores) {
                 if (store.getAddress().getId() == inputtedAddress.getId()) {
-                    addressAlreadyInUse = true;
+                    if (this.currentStore == null || !store.getId().equals(this.currentStore.getId()))
+                        addressAlreadyInUse = true;
                     break;
                 }
             }
