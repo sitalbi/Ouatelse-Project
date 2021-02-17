@@ -47,11 +47,11 @@
     -fx-border-color: transparent #242e41 transparent transparent;
 }
 
-.text-field {
+.text-field, .password-field {
     -fx-text-fill: white;
     -fx-prompt-text-fill: #d3d3d3;
 }
 
-.text-field:focused {
+.text-field:focused, .password-field:focused {
     -fx-prompt-text-fill: transparent;
 }
