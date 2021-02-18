@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="Fichier">
-            <items>
-                  <MenuItem id="menuBarFilePreferences" mnemonicParsing="false" text="Préférences" />
-              <MenuItem id="menuBarFileQuit" mnemonicParsing="false" text="Quitter" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Aide">
-            <items>
-              <MenuItem id="menuBarHelpAbout" mnemonicParsing="false" text="À propos" />
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="fr.s4e2.ouatelse.controllers.BaseController">
+    <top>
+        <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="Fichier">
+                    <items>
+                        <MenuItem id="menuBarFilePreferences" mnemonicParsing="false" onAction="#onPreferences"
+                                  text="Préférences"/>
+                        <MenuItem id="menuBarFileQuit" mnemonicParsing="false" onAction="#onQuit" text="Quitter"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Aide">
+                    <items>
+                        <MenuItem id="menuBarHelpAbout" mnemonicParsing="false" onAction="#onAbout" text="À propos"/>
             </items>
           </Menu>
         </menus>

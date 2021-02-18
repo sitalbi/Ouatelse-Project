@@ -8,20 +8,21 @@ import fr.s4e2.ouatelse.objects.Role;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
-public class RolesMenuController implements Initializable {
+public class RolesMenuController extends BaseController {
 
+    private static final String TEXT_FIELD_HINT = "Veuillez saisir un nom";
+    private static final String ROLE_ALREADY_EXISTS = "Ce rôle existe déjà!";
     public ListView<Permission> permissionsRoleHas;
     public ListView<Permission> permissionsRoleHasnt;
     public TextField newRoleNameField;
@@ -31,8 +32,6 @@ public class RolesMenuController implements Initializable {
     private ListView<Role> rolesListView;
     private Dao<Role, Long> roleDao;
     private Role currentRole = null;
-    private static final String TEXT_FIELD_HINT = "Veuillez saisir un nom";
-    private static final String ROLE_ALREADY_EXISTS = "Ce rôle existe déjà!";
 
     /**
      * Called to initialize a controller after its root element has been
@@ -44,6 +43,8 @@ public class RolesMenuController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        super.initialize(location, resources);
+
         try {
             this.roleDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), Role.class);
         } catch (SQLException exception) {
@@ -89,6 +90,35 @@ public class RolesMenuController implements Initializable {
             }
         });
 
+        this.rolesListView.setOnKeyReleased(event -> {
+            if (event.getCode() != KeyCode.ESCAPE) return;
+
+            Role role = rolesListView.getSelectionModel().getSelectedItem();
+            if (role == null) return;
+            rolesListView.getSelectionModel().clearSelection();
+            currentRole = null;
+
+            permissionsRoleHas.getItems().clear();
+            permissionsRoleHasnt.getItems().clear();
+
+            permissionsRoleHas.setDisable(true);
+            permissionsRoleHasnt.setDisable(true);
+        });
+        this.permissionsRoleHas.setOnKeyReleased(event -> {
+            if (event.getCode() != KeyCode.ESCAPE) return;
+
+            Permission permission = permissionsRoleHas.getSelectionModel().getSelectedItem();
+            if (permission == null) return;
+            permissionsRoleHas.getSelectionModel().clearSelection();
+        });
+        this.permissionsRoleHasnt.setOnKeyReleased(event -> {
+            if (event.getCode() != KeyCode.ESCAPE) return;
+
+            Permission permission = permissionsRoleHasnt.getSelectionModel().getSelectedItem();
+            if (permission == null) return;
+            permissionsRoleHasnt.getSelectionModel().clearSelection();
+        });
+
         ChangeListener<Permission> changeListener = new ChangeListener<Permission>() {
             /**
              * This method needs to be provided by an implementation of
@@ -109,6 +139,7 @@ public class RolesMenuController implements Initializable {
                     deletePermissionButton.setDisable(false);
                 } else {
                     addPermissionButton.setDisable(true);
+                    deletePermissionButton.setDisable(true);
                 }
             }
         };
@@ -149,19 +180,12 @@ public class RolesMenuController implements Initializable {
             exception.printStackTrace();
         }
 
-        this.loadRoleList();
         this.newRoleNameField.setText("");
-        this.rolesListView.getSelectionModel().select(newRole);
-    }
+        this.newRoleNameField.setPromptText("Veuillez saisir un nom");
 
-    /**
-     * Simply closes the current window
-     *
-     * @param mouseEvent The mouse click event
-     */
-    public void onDoneButtonClick(MouseEvent mouseEvent) {
-        Stage stage = (Stage) this.deletePermissionButton.getScene().getWindow();
-        stage.close();
+        this.rolesListView.getItems().add(newRole);
+        this.rolesListView.getSelectionModel().select(newRole);
+        this.newRoleNameField.getParent().requestFocus();
     }
 
     /**
