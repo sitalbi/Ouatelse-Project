@@ -9,19 +9,18 @@ import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.utils.Utils;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class StoresMenuController implements Initializable {
+public class ManagementStoreController extends BaseController {
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
     private static final String STORE_ALREADY_EXISTS = "Ce magasin existe déjà!";
     private static final String NOT_A_ZIPCODE = "Le code postal est incorrect!";
@@ -85,6 +84,15 @@ public class StoresMenuController implements Initializable {
                     currentStore = null;
                 }
             }
+        });
+
+        this.storesListView.setOnKeyReleased(event -> {
+            if (event.getCode() != KeyCode.ESCAPE) return;
+
+            Store store = storesListView.getSelectionModel().getSelectedItem();
+            if (store == null) return;
+            storesListView.getSelectionModel().clearSelection();
+            this.clearStoreInformation();
         });
 
         this.loadStoresList();
@@ -212,16 +220,6 @@ public class StoresMenuController implements Initializable {
         }
         this.loadStoresList();
         this.clearStoreInformation();
-    }
-
-    /**
-     * Simply closes the current window
-     *
-     * @param mouseEvent The mouse click event
-     */
-    public void onDoneButtonClick(MouseEvent mouseEvent) {
-        Stage stage = (Stage) this.storesListView.getScene().getWindow();
-        stage.close();
     }
 
     /**

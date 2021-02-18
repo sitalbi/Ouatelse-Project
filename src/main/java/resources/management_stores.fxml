@@ -1,21 +1,271 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane prefHeight="375.0" prefWidth="530.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.s4e2.ouatelse.controllers.StoresMenuController">
-    <children>
-        <ListView fx:id="storesListView" layoutX="14.0" layoutY="14.0" prefHeight="121.0" prefWidth="175.0" />
-        <TextField fx:id="newStoreNameField" alignment="CENTER" layoutX="282.0" layoutY="14.0" promptText="Identifiant du magasin" />
-      <TextField fx:id="newStoreManagerField" layoutX="208.0" layoutY="46.0" promptText="Responsable du Magasin" />
-      <TextField fx:id="newStoreAddressField" layoutX="364.0" layoutY="46.0" prefHeight="25.0" prefWidth="149.0" promptText="Adresse" />
-      <TextField fx:id="newStoreCityField" layoutX="364.0" layoutY="74.0" promptText="Ville" />
-      <TextField fx:id="newStoreZipcodeField" layoutX="364.0" layoutY="101.0" promptText="Code postal" />
-      <PasswordField fx:id="newStorePasswordField" layoutX="208.0" layoutY="74.0" promptText="Mot de passe" />
-      <PasswordField fx:id="newStoreConfirmPasswordField" layoutX="208.0" layoutY="101.0" promptText="Confirmer mot de passe" />
-      <Label fx:id="errorMessage" alignment="CENTER" layoutX="199.0" layoutY="126.0" prefHeight="17.0" prefWidth="316.0" textAlignment="CENTER" textFill="#ff0033" wrapText="true" />
-        <Button layoutX="282.0" layoutY="143.0" mnemonicParsing="false" onMouseClicked="#onAddButtonClick" prefHeight="25.0" prefWidth="149.0" text="Confirmer" />
-      <Button layoutX="418.0" layoutY="336.0" mnemonicParsing="false" onMouseClicked="#onDoneButtonClick" prefHeight="25.0" prefWidth="100.0" text="OK" />
-      <Button layoutX="14.0" layoutY="143.0" mnemonicParsing="false" onMouseClicked="#onDeleteButtonClick" prefHeight="25.0" prefWidth="175.0" text="Supprimer" />
-    </children>
-</AnchorPane>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="600.0"
+            prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="fr.s4e2.ouatelse.controllers.ManagementStoreController">
+    <top>
+        <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="Fichier">
+                    <items>
+                        <MenuItem id="menuBarFilePreferences" mnemonicParsing="false" onAction="#onPreferences"
+                                  text="Préférences"/>
+                        <MenuItem id="menuBarFileQuit" mnemonicParsing="false" onAction="#onQuit" text="Quitter"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Aide">
+                    <items>
+                        <MenuItem id="menuBarHelpAbout" mnemonicParsing="false" onAction="#onAbout" text="À propos"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <bottom>
+        <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" styleClass="footer">
+            <children>
+                <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0"
+                       text="Copyright © Ouatelse. All rights reserved." HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font size="11.0" fx:id="x3"/>
+                    </font>
+                    <textFill>
+                        <Color red="0.625" green="0.625" blue="0.625" fx:id="x4"/>
+                    </textFill>
+                </Label>
+                <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS"/>
+                <Label font="$x3" maxWidth="-1.0" text="Version ${project.version}" textFill="$x4" HBox.hgrow="NEVER"/>
+            </children>
+            <padding>
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>
+            </padding>
+        </HBox>
+    </bottom>
+    <center>
+        <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="content" BorderPane.alignment="CENTER">
+            <top>
+                <HBox alignment="CENTER" prefHeight="78.0" prefWidth="798.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="313.0"
+                               text="Gestion des Magasins" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                            <font>
+                                <Font size="32.0"/>
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+            </top>
+            <center>
+                <JFXTabPane BorderPane.alignment="CENTER">
+                    <tabs>
+                        <Tab closable="false" text="Informations">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+                            </content>
+                            <graphic>
+                                <FontAwesomeIconView fill="WHITE" glyphName="GLOBE"/>
+                            </graphic>
+                        </Tab>
+                        <Tab closable="false" text="Rapport">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+                            </content>
+                            <graphic>
+                                <FontAwesomeIconView fill="WHITE" glyphName="BOOK"/>
+                            </graphic>
+                        </Tab>
+                        <Tab closable="false" text="Paramètres">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <GridPane alignment="BOTTOM_RIGHT" layoutX="130.0" layoutY="25.0"
+                                                  AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="130.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                                            </rowConstraints>
+                                            <children>
+                                                <JFXListView fx:id="storesListView" prefHeight="100.0" prefWidth="538.0"
+                                                             style="-fx-background-color: #2f3b52; -fx-border-width: 0;"/>
+                                                <JFXButton alignment="CENTER" onMouseClicked="#onDeleteButtonClick"
+                                                           prefHeight="30.0" prefWidth="130.0"
+                                                           style="-fx-background-color: red;" text="Supprimer"
+                                                           textAlignment="CENTER" textFill="WHITE" wrapText="true"
+                                                           GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                    <graphic>
+                                                        <FontAwesomeIconView fill="WHITE" glyphName="REMOVE"/>
+                                                    </graphic>
+                                                    <cursor>
+                                                        <Cursor fx:constant="HAND"/>
+                                                    </cursor>
+                                                    <GridPane.margin>
+                                                        <Insets top="8.0"/>
+                                                    </GridPane.margin>
+                                                </JFXButton>
+                                            </children>
+                                        </GridPane>
+                                        <GridPane layoutX="120.0" layoutY="134.0" style="-fx-background-color: #2f3b52;"
+                                                  AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="130.0"
+                                                  AnchorPane.rightAnchor="130.0" AnchorPane.topAnchor="170.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                                            </rowConstraints>
+                                            <children>
+                                                <JFXTextField fx:id="newStoreNameField" alignment="CENTER"
+                                                              focusColor="RED" prefHeight="35.0" prefWidth="250.0"
+                                                              promptText="Identifiant du magasin" unFocusColor="WHITE"
+                                                              GridPane.columnSpan="2">
+                                                    <font>
+                                                        <Font size="15.0"/>
+                                                    </font>
+                                                    <GridPane.margin>
+                                                        <Insets bottom="15.0"/>
+                                                    </GridPane.margin>
+                                                    <padding>
+                                                        <Insets top="20.0"/>
+                                                    </padding>
+                                                </JFXTextField>
+                                                <JFXTextField fx:id="newStoreAddressField" alignment="CENTER"
+                                                              focusColor="RED" prefHeight="35.0" prefWidth="250.0"
+                                                              promptText="Adresse" unFocusColor="WHITE"
+                                                              GridPane.rowIndex="1">
+                                                    <font>
+                                                        <Font size="15.0"/>
+                                                    </font>
+                                                    <GridPane.margin>
+                                                        <Insets bottom="15.0" right="25.0"/>
+                                                    </GridPane.margin>
+                                                </JFXTextField>
+                                                <JFXTextField fx:id="newStoreCityField" alignment="CENTER"
+                                                              focusColor="RED" prefHeight="35.0" prefWidth="250.0"
+                                                              promptText="Ville" unFocusColor="WHITE"
+                                                              GridPane.rowIndex="2">
+                                                    <font>
+                                                        <Font size="15.0"/>
+                                                    </font>
+                                                    <GridPane.margin>
+                                                        <Insets bottom="15.0" right="25.0"/>
+                                                    </GridPane.margin>
+                                                </JFXTextField>
+                                                <JFXTextField fx:id="newStoreZipcodeField" alignment="CENTER"
+                                                              focusColor="RED" prefHeight="35.0" prefWidth="250.0"
+                                                              promptText="Code Postal" unFocusColor="WHITE"
+                                                              GridPane.rowIndex="3">
+                                                    <font>
+                                                        <Font size="15.0"/>
+                                                    </font>
+                                                    <GridPane.margin>
+                                                        <Insets bottom="15.0" right="25.0"/>
+                                                    </GridPane.margin>
+                                                </JFXTextField>
+                                                <JFXTextField fx:id="newStoreManagerField" alignment="CENTER"
+                                                              focusColor="RED" prefHeight="35.0" prefWidth="250.0"
+                                                              promptText="Responsable du Magasin" unFocusColor="WHITE"
+                                                              GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                    <font>
+                                                        <Font size="15.0"/>
+                                                    </font>
+                                                    <GridPane.margin>
+                                                        <Insets bottom="15.0" left="25.0"/>
+                                                    </GridPane.margin>
+                                                </JFXTextField>
+                                                <JFXPasswordField fx:id="newStorePasswordField" alignment="CENTER"
+                                                                  focusColor="RED" prefHeight="35.0" prefWidth="250.0"
+                                                                  promptText="Mot de passe" unFocusColor="WHITE"
+                                                                  GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                    <font>
+                                                        <Font size="15.0"/>
+                                                    </font>
+                                                    <GridPane.margin>
+                                                        <Insets bottom="15.0" left="25.0"/>
+                                                    </GridPane.margin>
+                                                </JFXPasswordField>
+                                                <JFXPasswordField fx:id="newStoreConfirmPasswordField"
+                                                                  alignment="CENTER" focusColor="RED" prefHeight="35.0"
+                                                                  prefWidth="250.0" promptText="Confirmer mot de passe"
+                                                                  unFocusColor="WHITE" GridPane.columnIndex="1"
+                                                                  GridPane.rowIndex="3">
+                                                    <font>
+                                                        <Font size="15.0"/>
+                                                    </font>
+                                                    <GridPane.margin>
+                                                        <Insets bottom="15.0" left="25.0"/>
+                                                    </GridPane.margin>
+                                                </JFXPasswordField>
+                                                <JFXButton alignment="CENTER" onMouseClicked="#onAddButtonClick"
+                                                           prefHeight="30.0" prefWidth="130.0"
+                                                           style="-fx-background-color: red;" text="Confirmer"
+                                                           textAlignment="CENTER" textFill="WHITE" wrapText="true"
+                                                           GridPane.columnSpan="2" GridPane.halignment="CENTER"
+                                                           GridPane.rowIndex="5">
+                                                    <graphic>
+                                                        <FontAwesomeIconView fill="WHITE" glyphName="CHECK"/>
+                                                    </graphic>
+                                                    <cursor>
+                                                        <Cursor fx:constant="HAND"/>
+                                                    </cursor>
+                                                    <GridPane.margin>
+                                                        <Insets top="15.0"/>
+                                                    </GridPane.margin>
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                </JFXButton>
+                                                <Label fx:id="errorMessage" alignment="CENTER" contentDisplay="CENTER"
+                                                       prefHeight="30.0" prefWidth="540.0" text=" "
+                                                       textAlignment="CENTER" textFill="#ff0033" wrapText="true"
+                                                       GridPane.columnSpan="2" GridPane.halignment="CENTER"
+                                                       GridPane.rowIndex="4">
+                                                    <font>
+                                                        <Font size="14.0"/>
+                                                    </font>
+                                                    <padding>
+                                                        <Insets bottom="5.0" top="5.0"/>
+                                                    </padding>
+                                                </Label>
+                                            </children>
+                                            <padding>
+                                                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
+                                            </padding>
+                                        </GridPane>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                            <graphic>
+                                <FontAwesomeIconView fill="WHITE" glyphName="COGS"/>
+                            </graphic>
+                        </Tab>
+                    </tabs>
+                </JFXTabPane>
+            </center>
+        </BorderPane>
+    </center>
+    <stylesheets>
+        <URL value="@css/base.css"/>
+        <URL value="@css/management.css"/>
+    </stylesheets>
+</BorderPane>

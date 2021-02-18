@@ -11,7 +11,7 @@
 <?import java.net.URL?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="600.0"
             prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="fr.s4e2.ouatelse.controllers.RolesMenuController">
+            fx:controller="fr.s4e2.ouatelse.controllers.ManagementRoleController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
             <menus>
@@ -94,7 +94,7 @@
                                         <Cursor fx:constant="HAND"/>
                                     </cursor>
                                     <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="PLUS"/>
+                                        <FontAwesomeIconView fill="WHITE" glyphName="CHECK"/>
                                     </graphic>
                                 </JFXButton>
                                 <Pane layoutX="10.0" layoutY="61.0" prefHeight="10.0"/>
@@ -108,7 +108,7 @@
                                         <Cursor fx:constant="HAND"/>
                                     </cursor>
                                     <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="MINUS"/>
+                                        <FontAwesomeIconView fill="WHITE" glyphName="REMOVE"/>
                                     </graphic>
                                 </JFXButton>
                             </children>
