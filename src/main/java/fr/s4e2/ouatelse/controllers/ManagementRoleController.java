@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
-public class RolesMenuController extends BaseController {
+public class ManagementRoleController extends BaseController {
 
     private static final String TEXT_FIELD_HINT = "Veuillez saisir un nom";
     private static final String ROLE_ALREADY_EXISTS = "Ce rôle existe déjà!";

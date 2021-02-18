@@ -14,5 +14,30 @@
 }
 
 .jfx-rippler {
-    -jfx-rippler-fill: #ff8080;
+    -jfx-rippler-fill: #b30000;
+}
+
+/* TAB */
+.tab {
+    -fx-pref-height: 3.5em;
+    -fx-background-color: red;
+    -fx-text-fill: white;
+}
+
+jfx-tab-pane {
+    -fx-text-fill: white;
+}
+
+.tab-header-background {
+    -fx-background-color: red;
+    -fx-text-fill: white;
+}
+
+.tab-selected-line {
+    -fx-background-color: #ff8080;
+    -fx-pref-height: 0.25em;
+}
+
+.text-field, .password-field {
+    -fx-text-fill: #ffbfbf;
 }
