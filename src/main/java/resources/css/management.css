@@ -17,6 +17,10 @@
     -jfx-rippler-fill: #b30000;
 }
 
+.combo-box {
+    -fx-background-color: #242e41;
+}
+
 /* TAB */
 .tab {
     -fx-pref-height: 3.5em;
