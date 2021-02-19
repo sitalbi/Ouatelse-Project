@@ -30,7 +30,6 @@ public class HomeController extends BaseController {
     public VBox verticalButtonsBar;
     public Label roleField;
     private User currentUser;
-
     @FXML
     private Label homeAdminName;
 
@@ -228,6 +227,8 @@ public class HomeController extends BaseController {
                 fontAwesomeIconView.setSize("30.0px");
                 fontAwesomeIconView.setFill(Paint.valueOf("RED"));
                 newButton.setGraphic(fontAwesomeIconView);
+                newButton.setWrapText(true);
+                newButton.setTextAlignment(TextAlignment.CENTER);
 
                 this.verticalButtonsBar.getChildren().add(newButton);
             });
