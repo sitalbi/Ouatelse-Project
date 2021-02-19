@@ -55,3 +55,11 @@
 .text-field:focused, .password-field:focused {
     -fx-prompt-text-fill: transparent;
 }
+
+.jfx-date-picker .jfx-text-field {
+    -jfx-unfocus-color: white;
+}
+
+.jfx-combo-box {
+    -fx-prompt-text-fill: white;
+}
