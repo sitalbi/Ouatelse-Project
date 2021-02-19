@@ -1,7 +1,7 @@
 package fr.s4e2.ouatelse;
 
+import fr.s4e2.ouatelse.screens.HomeScreen;
 import fr.s4e2.ouatelse.utils.DatabaseManager;
-import fr.s4e2.ouatelse.utils.Utils;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -20,8 +20,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage = Utils.buildStage("home_admin.fxml");
-        primaryStage.setTitle("Ouatelse - Menu Test");
-        primaryStage.show();
+        new HomeScreen().open();
     }
 }
