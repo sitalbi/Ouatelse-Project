@@ -1,6 +1,39 @@
 package fr.s4e2.ouatelse.controllers;
 
+import com.google.common.hash.Hashing;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
+import fr.s4e2.ouatelse.Main;
+import fr.s4e2.ouatelse.objects.User;
+import fr.s4e2.ouatelse.screens.AuthStoreScreen;
+import javafx.scene.control.Label;
+import javafx.stage.Stage;
+
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+
 public class AuthUserController extends BaseController {
+
+    public JFXPasswordField passwordField;
+    public JFXTextField idField;
+    public Label errorMessageField;
+    private Dao<User, Long> userDao;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        super.initialize(location, resources);
+        try {
+            this.userDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), User.class);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        this.errorMessageField.setText("");
+    }
 
     public void onConnectionButtonClick() {
         if (idField.getText().trim().isEmpty() && passwordField.getText().trim().isEmpty()) {

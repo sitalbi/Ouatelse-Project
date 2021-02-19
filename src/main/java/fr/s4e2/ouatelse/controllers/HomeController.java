@@ -1,11 +1,10 @@
 package fr.s4e2.ouatelse.controllers;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import fr.s4e2.ouatelse.Main;
+import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.screens.ManagementRoleScreen;
 import fr.s4e2.ouatelse.screens.ManagementStoreScreen;
@@ -18,9 +17,9 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import lombok.Setter;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class HomeController extends BaseController {
@@ -30,6 +29,8 @@ public class HomeController extends BaseController {
     public VBox verticalButtonsBar;
     public Label roleField;
     private User currentUser;
+    @Setter
+    private Store currentStore;
     @FXML
     private Label homeAdminName;
 
@@ -41,23 +42,15 @@ public class HomeController extends BaseController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-
-        // TODO : Used for debugging, remove in production ###################################################
-        try {
-            this.userDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), User.class);
-            this.setCurrentUser(this.userDao.query(this.userDao.queryBuilder().prepare()).get(0));
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-        // ###################################################################################################
-
-        this.homeAdminName.setText(this.currentUser.getName() + " " + this.currentUser.getSurname());
-        this.homeAdminEmail.setText(this.currentUser.getEmail());
-        this.roleField.setText(this.currentUser.getRole().toString());
     }
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
+
+        this.homeAdminName.setText(this.currentUser.getName() + " " + this.currentUser.getSurname());
+        this.homeAdminEmail.setText(this.currentUser.getEmail());
+        this.roleField.setText(this.currentUser.getRole().toString());
+
         this.buildButtonsFromPermissions();
     }
 
