@@ -1,6 +1,6 @@
 package fr.s4e2.ouatelse;
 
-import fr.s4e2.ouatelse.screens.ManagementStoreScreen;
+import fr.s4e2.ouatelse.screens.HomeScreen;
 import fr.s4e2.ouatelse.utils.DatabaseManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -20,6 +20,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        new ManagementStoreScreen().open();
+        new HomeScreen().open();
     }
 }

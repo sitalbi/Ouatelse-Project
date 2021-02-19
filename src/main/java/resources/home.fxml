@@ -12,8 +12,8 @@
 <?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0"
-            minWidth="800.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1"
-            fx:controller="fr.s4e2.ouatelse.controllers.HomeController">
+            minWidth="800.0" prefHeight="600.0" prefWidth="1006.0" style="-fx-background-color: transparent;"
+            xmlns="http://javafx.com/javafx/15.0.1" fx:controller="fr.s4e2.ouatelse.controllers.HomeController">
     <top>
         <MenuBar fx:id="menuBar" stylesheets="@css/base.css" BorderPane.alignment="CENTER">
             <menus>
@@ -50,14 +50,21 @@
         </HBox>
     </bottom>
     <left>
-        <VBox fx:id="verticalButtonsBar" alignment="TOP_CENTER" prefHeight="353.0" prefWidth="175.0"
-              styleClass="left-container" BorderPane.alignment="CENTER">
-            <children>
-            </children>
-        </VBox>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" maxWidth="-Infinity" minWidth="-Infinity"
+                    nodeOrientation="RIGHT_TO_LEFT" prefHeight="552.0" prefWidth="300.0"
+                    style="-fx-background-color: transparent; -fx-padding: 0;" BorderPane.alignment="CENTER">
+            <content>
+                <VBox fx:id="verticalButtonsBar" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308"
+                      minHeight="-Infinity" prefHeight="552.0" prefWidth="250.0" styleClass="left-container">
+                    <children>
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
     </left>
     <right>
-        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0" BorderPane.alignment="CENTER">
+        <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="552.0" prefWidth="300.0"
+              BorderPane.alignment="CENTER">
             <children>
                 <Pane prefHeight="10000.0" prefWidth="175.0" styleClass="right-container"/>
                 <JFXButton onMouseClicked="#onDisconnectClick" prefWidth="1000.0"
