@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -25,9 +26,11 @@ import java.util.ResourceBundle;
 public class HomeController extends BaseController {
 
     private static final double DEFAULT_BUTTON_SIZE = 1000;
+    private static final double MINIMUM_BUTTON_HEIGHT = 74;
 
     public VBox verticalButtonsBar;
     public Label roleField;
+    public ScrollPane scrollPanel;
     private User currentUser;
     @Setter
     private Store currentStore;
@@ -50,6 +53,16 @@ public class HomeController extends BaseController {
         this.homeAdminName.setText(this.currentUser.getName() + " " + this.currentUser.getSurname());
         this.homeAdminEmail.setText(this.currentUser.getEmail());
         this.roleField.setText(this.currentUser.getRole().toString());
+
+        // Use the VBox to emulate a CSS flexbox
+        this.scrollPanel.heightProperty().addListener((observable, oldValue, newValue) -> {
+            if (MINIMUM_BUTTON_HEIGHT * this.verticalButtonsBar.getChildren().size() > this.scrollPanel.heightProperty().get()) {
+                this.verticalButtonsBar.setMinHeight(MINIMUM_BUTTON_HEIGHT * this.verticalButtonsBar.getChildren().size());
+            } else {
+                this.verticalButtonsBar.setMinHeight(this.scrollPanel.heightProperty().get());
+                this.verticalButtonsBar.getChildren().forEach(button -> ((JFXButton) button).prefHeightProperty().bind(this.verticalButtonsBar.heightProperty().divide(this.verticalButtonsBar.getChildren().size())));
+            }
+        });
 
         this.buildButtonsFromPermissions();
     }
@@ -144,7 +157,6 @@ public class HomeController extends BaseController {
 
                 JFXButton newButton = new JFXButton();
                 newButton.contentDisplayProperty().set(ContentDisplay.TOP);
-                newButton.setPrefHeight(DEFAULT_BUTTON_SIZE);
                 newButton.setPrefWidth(DEFAULT_BUTTON_SIZE);
                 newButton.setTextAlignment(TextAlignment.CENTER);
                 newButton.setTextFill(Paint.valueOf("WHITE"));
