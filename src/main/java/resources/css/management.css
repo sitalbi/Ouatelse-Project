@@ -45,3 +45,58 @@ jfx-tab-pane {
 .text-field, .password-field {
     -fx-text-fill: #ffbfbf;
 }
+
+/* TABLE STYLING */
+.user-table-pane {
+    -fx-background-color: #2f3b52;
+}
+
+
+.tree-table-view {
+    -fx-background-color: #2f3b52;
+    -fx-border-width: 0;
+}
+
+.column-header-background {
+    -fx-background-color: red;
+    -fx-border-width: 0;
+}
+
+.tree-table-view .column-header, .tree-table-view .filler {
+    -fx-border-width: 0;
+}
+
+.tree-table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.tree-table-view .column-header .label:hover {
+    -fx-underline: true;
+}
+
+.tree-table-row-cell {
+    -fx-border-color: #242e41;
+    -fx-background-color: white;
+}
+
+.tree-table-view:focused .tree-table-row-cell:selected .tree-table-cell {
+    -fx-text-fill: white;
+}
+
+.tree-table-row-cell:filled:hover {
+    -fx-background-color: #ffbfbf;
+    -fx-text-fill: #b30000;
+    -fx-cursor: hand;
+}
+
+.tree-table-row-cell:filled:selected {
+    -fx-background-color: red;
+    -fx-text-fill: white;
+}
+
+.tree-table-row-cell:filled:selected:hover {
+    -fx-background-color: red;
+    -fx-text-fill: white;
+}
