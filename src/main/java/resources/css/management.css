@@ -81,6 +81,10 @@ jfx-tab-pane {
     -fx-background-color: white;
 }
 
+.tree-table-view .table-column {
+    -fx-alignment: CENTER;
+}
+
 .tree-table-view:focused .tree-table-row-cell:selected .tree-table-cell {
     -fx-text-fill: white;
 }
