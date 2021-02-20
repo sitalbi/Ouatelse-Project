@@ -12,10 +12,11 @@
 <?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0"
-            minWidth="800.0" prefHeight="600.0" prefWidth="1006.0" style="-fx-background-color: transparent;"
+            minWidth="800.0" prefHeight="600.0" prefWidth="1006.0" style="-fx-background-color: #242e41;"
             xmlns="http://javafx.com/javafx/15.0.1" fx:controller="fr.s4e2.ouatelse.controllers.HomeController">
     <top>
-        <MenuBar fx:id="menuBar" stylesheets="@css/base.css" BorderPane.alignment="CENTER">
+        <MenuBar fx:id="menuBar" style="-fx-background-color: #242e41;" stylesheets="@css/base.css"
+                 BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="Fichier">
                     <items>
@@ -50,12 +51,14 @@
         </HBox>
     </bottom>
     <left>
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" maxWidth="-Infinity" minWidth="-Infinity"
-                    nodeOrientation="RIGHT_TO_LEFT" prefHeight="552.0" prefWidth="300.0"
-                    style="-fx-background-color: transparent; -fx-padding: 0;" BorderPane.alignment="CENTER">
+        <ScrollPane fx:id="scrollPanel" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxWidth="-Infinity"
+                    minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="552.0" prefWidth="300.0"
+                    style="-fx-padding: 0; -fx-background-color: #242e41;" styleClass="left-container"
+                    BorderPane.alignment="CENTER">
             <content>
-                <VBox fx:id="verticalButtonsBar" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308"
-                      minHeight="-Infinity" prefHeight="552.0" prefWidth="250.0" styleClass="left-container">
+                <VBox fx:id="verticalButtonsBar" alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity"
+                      prefHeight="552.0" prefWidth="250.0" style="-fx-background-color: #242e41;"
+                      styleClass="left-container">
                     <children>
                     </children>
                 </VBox>
