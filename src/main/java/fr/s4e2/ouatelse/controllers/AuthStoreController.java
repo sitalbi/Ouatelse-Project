@@ -3,7 +3,6 @@ package fr.s4e2.ouatelse.controllers;
 import com.google.common.hash.Hashing;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import fr.s4e2.ouatelse.Main;
@@ -11,6 +10,7 @@ import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.screens.HomeScreen;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import lombok.Setter;
 
@@ -21,7 +21,6 @@ import java.util.ResourceBundle;
 
 public class AuthStoreController extends BaseController {
 
-    public JFXButton connectionButton;
     public Label errorMessageField;
     public JFXPasswordField passwordField;
     public JFXTextField idField;
@@ -39,6 +38,12 @@ public class AuthStoreController extends BaseController {
         }
 
         this.errorMessageField.setText("");
+
+        // enter to connect
+        this.passwordField.setOnKeyReleased(event -> {
+            if (event.getCode() != KeyCode.ENTER) return;
+            this.onConnectionButtonClick();
+        });
     }
 
     public void onConnectionButtonClick() {

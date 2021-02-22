@@ -1,6 +1,5 @@
 package fr.s4e2.ouatelse.controllers;
 
-import com.j256.ormlite.dao.Dao;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -41,8 +40,6 @@ public class HomeController extends BaseController {
 
     @FXML
     private Label homeAdminEmail;
-    private Dao<User, Long> userDao;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -83,12 +80,6 @@ public class HomeController extends BaseController {
 
     private void onRoleManagementButtonClick() {
         new ManagementRoleScreen().open();
-    }
-
-    private void onParametersButtonClick() {
-        //todo : open parameters screen
-
-        System.out.println("Open parameters screen");
     }
 
     private void onStoresButtonClick() {

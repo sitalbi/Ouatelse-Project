@@ -10,8 +10,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.net.URL?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0"
-            minWidth="800.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1"
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="600.0"
+            prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="fr.s4e2.ouatelse.controllers.AuthStoreController">
     <top>
         <MenuBar fx:id="menuBar" stylesheets="@css/base.css" BorderPane.alignment="CENTER">
@@ -90,10 +90,10 @@
                         <Font size="16.0"/>
                     </font>
                 </JFXPasswordField>
-                <JFXButton fx:id="connectionButton" alignment="CENTER" onMouseClicked="#onConnectionButtonClick"
-                           prefHeight="39.0" prefWidth="150.0" style="-fx-background-color: red;" text="Connexion"
-                           textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="1"
-                           GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                <JFXButton alignment="CENTER" onMouseClicked="#onConnectionButtonClick" prefHeight="39.0"
+                           prefWidth="150.0" style="-fx-background-color: red;" text="Connexion" textAlignment="CENTER"
+                           textFill="WHITE" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                           GridPane.rowIndex="5" GridPane.valignment="CENTER">
                     <font>
                         <Font size="18.0"/>
                     </font>
