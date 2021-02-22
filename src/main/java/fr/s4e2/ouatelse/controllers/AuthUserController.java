@@ -9,6 +9,7 @@ import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.screens.AuthStoreScreen;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -33,6 +34,12 @@ public class AuthUserController extends BaseController {
         }
 
         this.errorMessageField.setText("");
+
+        // enter to connect
+        this.passwordField.setOnKeyReleased(event -> {
+            if (event.getCode() != KeyCode.ENTER) return;
+            this.onConnectionButtonClick();
+        });
     }
 
     public void onConnectionButtonClick() {
