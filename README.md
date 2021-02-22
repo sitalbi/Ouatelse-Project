@@ -23,14 +23,14 @@
 ## Spécifications
 
 1. Fonction du module de gestion des rôles (GR)\
-   1.1 Sélection d’un rôle\
+   ~~1.1 Sélection d’un rôle~~\
    ~~1.2 Ajouter/supprimer des droits d’accès à des fonctionnalités~~ (Penser à modifier les specs détaillées)\
-   1.3 Changement de rôle
+   ~~1.3 Changement de rôle~~
 2. Fonction du module de gestion des magasins (GM)\
-   2.1 Ajouter un magasin\
-   2.2 Modifier caractéristiques d’un magasin\
-   2.3 Supprimer un magasin\
-   2.4 Authentification dans un magasin
+   ~~2.1 Ajouter un magasin~~\
+   ~~2.2 Modifier caractéristiques d’un magasin~~\
+   ~~2.3 Supprimer un magasin~~\
+   ~~2.4 Authentification dans un magasin~~
 3. Fonction du module de gestion des produits (GP)\
    3.1 Ajouter un produit\
    3.2 Modifier les caractéristiques d’un produits\
@@ -57,10 +57,10 @@
    6.6 Accès aux statistiques de vente d’un magasin\
    6.7 Accès aux statistiques de vente au niveau national
 7. Fonction du module de gestion des employés\
-   7.1 Enregistrer un nouvel employé\
-   7.2 Modifier les caractéristiques d’un salarié\
-   7.3 Supprimer un salarié\
-   7.4 Transférer un employé\
+   ~~7.1 Enregistrer un nouvel employé~~\
+   ~~7.2 Modifier les caractéristiques d’un salarié~~\
+   ~~7.3 Supprimer un salarié~~\
+   ~~7.4 Transférer un employé~~\
    7.5 Gérer les plannings des salariés\
    7.6 Gérer les congés des salariés\
    7.7 Gérer la distribution des salaires
