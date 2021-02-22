@@ -391,7 +391,7 @@ public class ManagementUserController extends BaseController {
         user.setEmail(userEmailInput.getText().trim());
         user.setMobilePhoneNumber(userPhoneInput.getText().trim());
         user.setRole(userRoleDropdown.getValue());
-        user.setPassword(userPasswordInput.getText().trim());
+        if (!userPasswordInput.getText().trim().isEmpty()) user.setPassword(userPasswordInput.getText().trim());
         user.setWorkingStore(userStoreDropdown.getValue());
         user.setHiringDate(Utils.localDateToDate(userHiringDate.getValue()));
         user.setBirthDate(Utils.localDateToDate(userBirthDate.getValue()));
