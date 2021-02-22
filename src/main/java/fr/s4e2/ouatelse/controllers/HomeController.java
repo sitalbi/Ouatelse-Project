@@ -6,8 +6,10 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
+import fr.s4e2.ouatelse.screens.AuthUserScreen;
 import fr.s4e2.ouatelse.screens.ManagementRoleScreen;
 import fr.s4e2.ouatelse.screens.ManagementStoreScreen;
+import fr.s4e2.ouatelse.screens.ManagementUserScreen;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.ContentDisplay;
@@ -68,20 +70,18 @@ public class HomeController extends BaseController {
     }
 
     public void onDisconnectClick() {
-        //todo : handle disconnect
-
+        this.currentUser = null;
         Stage stage = (Stage) this.homeAdminName.getScene().getWindow();
         stage.close();
+
+        new AuthUserScreen().open();
     }
 
     private void onUserManagementButtonClick() {
-        //todo : open user management screen
-
-        System.out.println("Open user management screen");
+        new ManagementUserScreen().open();
     }
 
     private void onRoleManagementButtonClick() {
-        System.out.println("Open role management screen");
         new ManagementRoleScreen().open();
     }
 
@@ -92,7 +92,6 @@ public class HomeController extends BaseController {
     }
 
     private void onStoresButtonClick() {
-        System.out.println("Open stores screen");
         new ManagementStoreScreen().open();
     }
 
