@@ -7,14 +7,11 @@ import fr.s4e2.ouatelse.objects.Address;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.utils.Utils;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -60,32 +57,19 @@ public class ManagementStoreController extends BaseController {
             exception.printStackTrace();
         }
 
-        this.storesListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Store>() {
-            /**
-             * This method needs to be provided by an implementation of
-             * {@code ChangeListener}. It is called if the value of an
-             * {@link ObservableValue} changes.
-             * <p>
-             * In general is is considered bad practice to modify the observed value in
-             * this method.
-             *
-             * @param observable The {@code ObservableValue} which value changed
-             * @param oldValue   The old value
-             * @param newValue   The new value
-             */
-            @Override
-            public void changed(ObservableValue<? extends Store> observable, Store oldValue, Store newValue) {
-                newStoreNameField.setDisable(false);
+        // selected element in the list box
+        this.storesListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            newStoreNameField.setDisable(false);
 
-                if (newValue != null) {
-                    currentStore = newValue;
-                    loadStoreInformation(newValue);
-                } else {
-                    currentStore = null;
-                }
+            if (newValue != null) {
+                currentStore = newValue;
+                loadStoreInformation(newValue);
+            } else {
+                currentStore = null;
             }
         });
 
+        // escape to unselect item in the list box
         this.storesListView.setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
 
@@ -100,10 +84,8 @@ public class ManagementStoreController extends BaseController {
 
     /**
      * Creates and stores a new role with empty permissions
-     *
-     * @param mouseEvent The mouse click event
      */
-    public void onAddButtonClick(MouseEvent mouseEvent) throws SQLException {
+    public void onAddButtonClick() throws SQLException {
         // fields that must be filled in
         if (newStoreNameField.getText().trim().isEmpty() || newStoreAddressField.getText().trim().isEmpty() || newStoreCityField.getText().trim().isEmpty()
                 || newStoreZipcodeField.getText().trim().isEmpty()) {
@@ -112,9 +94,9 @@ public class ManagementStoreController extends BaseController {
             return;
         }
 
-        if (currentStore == null && (newStorePasswordField.getText().isEmpty() || newStoreConfirmPasswordField.getText().isEmpty())) {
+        if (!this.isEditing() && (newStorePasswordField.getText().isEmpty() || newStoreConfirmPasswordField.getText().isEmpty())) {
             this.errorMessage.setText(TEXT_FIELD_EMPTY_HINT);
-            this.newStoreNameField.getParent().requestFocus();
+            this.newStorePasswordField.getParent().requestFocus();
             return;
         }
 
@@ -134,9 +116,9 @@ public class ManagementStoreController extends BaseController {
         }
 
         // store exists already!
-        if (currentStore == null) {
-            for (Store store : this.storeDao) {
-                if (store.getId().equals(this.newStoreNameField.getText().trim())) {
+        if (!this.isEditing()) {
+            for (Store store : storeDao) {
+                if (store.getId().equals(newStoreNameField.getText().trim())) {
                     this.newStoreNameField.clear();
                     this.errorMessage.setText(STORE_ALREADY_EXISTS);
                     this.newStoreNameField.getParent().requestFocus();
@@ -149,7 +131,7 @@ public class ManagementStoreController extends BaseController {
         String managerInput = this.newStoreManagerField.getText().trim();
         User manager = null;
         if (!managerInput.isEmpty()) {
-            manager = this.userDao.query(this.userDao.queryBuilder()
+            manager = userDao.query(userDao.queryBuilder()
                     .where().eq("credentials", managerInput)
                     .or().eq("email", managerInput)
                     .prepare()
@@ -161,7 +143,7 @@ public class ManagementStoreController extends BaseController {
             }
         }
 
-        if (currentStore != null) {
+        if (this.isEditing()) {
             // edits store
             try {
                 this.currentStore.getAddress().setZipCode(zipCode);
@@ -209,9 +191,8 @@ public class ManagementStoreController extends BaseController {
     /**
      * Deletes a store
      *
-     * @param mouseEvent The mouse click event
      */
-    public void onDeleteButtonClick(MouseEvent mouseEvent) {
+    public void onDeleteButtonClick() {
         try {
             Store selectedStore = storesListView.getSelectionModel().getSelectedItem();
             this.storeDao.delete(selectedStore);
@@ -264,5 +245,9 @@ public class ManagementStoreController extends BaseController {
     private void loadStoresList() {
         this.storesListView.getItems().clear();
         this.storeDao.forEach(store -> this.storesListView.getItems().add(store));
+    }
+
+    private boolean isEditing() {
+        return this.currentStore != null;
     }
 }
