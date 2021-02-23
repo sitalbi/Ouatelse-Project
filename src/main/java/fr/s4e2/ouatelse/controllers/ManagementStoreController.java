@@ -1,8 +1,9 @@
 package fr.s4e2.ouatelse.controllers;
 
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
 import fr.s4e2.ouatelse.Main;
+import fr.s4e2.ouatelse.databaseInterface.DatabaseAddressInterface;
+import fr.s4e2.ouatelse.databaseInterface.DatabaseStoreInterface;
+import fr.s4e2.ouatelse.databaseInterface.DatabaseUserInterface;
 import fr.s4e2.ouatelse.objects.Address;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
@@ -34,9 +35,9 @@ public class ManagementStoreController extends BaseController {
     public PasswordField newStoreConfirmPasswordField;
     public Label errorMessage;
 
-    private Dao<Store, String> storeDao;
-    private Dao<Address, String> addressDao;
-    private Dao<User, String> userDao;
+    private final DatabaseStoreInterface databaseStoreInterface = Main.getDatabaseManager().getDatabaseStoreInterface();
+    private final DatabaseAddressInterface databaseAddressInterface = Main.getDatabaseManager().getDatabaseAddressInterface();
+    private final DatabaseUserInterface databaseUserInterface = Main.getDatabaseManager().getDatabaseUserInterface();
     private Store currentStore;
 
     /**
@@ -49,13 +50,6 @@ public class ManagementStoreController extends BaseController {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        try {
-            this.storeDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), Store.class);
-            this.addressDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), Address.class);
-            this.userDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), User.class);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
 
         // selected element in the list box
         this.storesListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -117,7 +111,7 @@ public class ManagementStoreController extends BaseController {
 
         // store exists already!
         if (!this.isEditing()) {
-            for (Store store : storeDao) {
+            for (Store store : this.databaseStoreInterface.getAll()) {
                 if (store.getId().equals(newStoreNameField.getText().trim())) {
                     this.newStoreNameField.clear();
                     this.errorMessage.setText(STORE_ALREADY_EXISTS);
@@ -131,7 +125,7 @@ public class ManagementStoreController extends BaseController {
         String managerInput = this.newStoreManagerField.getText().trim();
         User manager = null;
         if (!managerInput.isEmpty()) {
-            manager = userDao.query(userDao.queryBuilder()
+            manager = this.databaseUserInterface.executeQuery(this.databaseUserInterface.getQueryBuilder()
                     .where().eq("credentials", managerInput)
                     .or().eq("email", managerInput)
                     .prepare()
@@ -145,42 +139,30 @@ public class ManagementStoreController extends BaseController {
 
         if (this.isEditing()) {
             // edits store
-            try {
-                this.currentStore.getAddress().setZipCode(zipCode);
-                this.currentStore.getAddress().setCity(newStoreCityField.getText().trim());
-                this.currentStore.getAddress().setAddress(newStoreAddressField.getText().trim());
-                this.addressDao.update(currentStore.getAddress());
+            this.currentStore.getAddress().setZipCode(zipCode);
+            this.currentStore.getAddress().setCity(newStoreCityField.getText().trim());
+            this.currentStore.getAddress().setAddress(newStoreAddressField.getText().trim());
+            this.databaseAddressInterface.update(currentStore.getAddress());
 
-                if (!newStoreConfirmPasswordField.getText().isEmpty()) {
-                    this.currentStore.setPassword(newStoreConfirmPasswordField.getText());
-                }
-                this.currentStore.setManager(manager);
-                this.storeDao.update(currentStore);
-            } catch (SQLException exception) {
-                exception.printStackTrace();
+            if (!newStoreConfirmPasswordField.getText().isEmpty()) {
+                this.currentStore.setPassword(newStoreConfirmPasswordField.getText());
             }
+            this.currentStore.setManager(manager);
+            this.databaseStoreInterface.update(currentStore);
+
             this.storesListView.getSelectionModel().select(currentStore);
         } else {
             // creates address
-            Address newAddress = null;
-            try {
-                newAddress = new Address(zipCode, newStoreCityField.getText().trim(), newStoreAddressField.getText().trim());
-                this.addressDao.create(newAddress);
-            } catch (SQLException exception) {
-                exception.printStackTrace();
-            }
+            Address newAddress = new Address(zipCode, newStoreCityField.getText().trim(), newStoreAddressField.getText().trim());
+            this.databaseAddressInterface.create(newAddress);
 
             // creates store
-            Store newStore = null;
-            try {
-                newStore = new Store(newStoreNameField.getText().trim());
-                newStore.setPassword(newStoreConfirmPasswordField.getText());
-                newStore.setManager(manager);
-                newStore.setAddress(newAddress);
-                this.storeDao.create(newStore);
-            } catch (SQLException exception) {
-                exception.printStackTrace();
-            }
+            Store newStore = new Store(newStoreNameField.getText().trim());
+            newStore.setPassword(newStoreConfirmPasswordField.getText());
+            newStore.setManager(manager);
+            newStore.setAddress(newAddress);
+
+            this.databaseStoreInterface.create(newStore);
             this.storesListView.getSelectionModel().select(newStore);
         }
 
@@ -193,12 +175,8 @@ public class ManagementStoreController extends BaseController {
      *
      */
     public void onDeleteButtonClick() {
-        try {
-            Store selectedStore = storesListView.getSelectionModel().getSelectedItem();
-            this.storeDao.delete(selectedStore);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+        this.databaseStoreInterface.delete(storesListView.getSelectionModel().getSelectedItem());
+
         this.loadStoresList();
         this.clearStoreInformation();
     }
@@ -244,7 +222,7 @@ public class ManagementStoreController extends BaseController {
      */
     private void loadStoresList() {
         this.storesListView.getItems().clear();
-        this.storeDao.forEach(store -> this.storesListView.getItems().add(store));
+        this.databaseStoreInterface.getAll().forEach(store -> this.storesListView.getItems().add(store));
     }
 
     private boolean isEditing() {
