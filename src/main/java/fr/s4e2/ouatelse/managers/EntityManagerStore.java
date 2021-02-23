@@ -1,4 +1,4 @@
-package fr.s4e2.ouatelse.databaseInterface;
+package fr.s4e2.ouatelse.managers;
 
 import com.google.common.hash.Hashing;
 import com.j256.ormlite.dao.Dao;
@@ -13,19 +13,19 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * The type DatabaseStoreInterface type
+ * The type EntityManagerStore type
  */
-public class DatabaseStoreInterface {
+public class EntityManagerStore {
 
     private final ConnectionSource connectionSource;
     private Dao<Store, String> instance;
 
     /**
-     * Instantiates a new DatabaseStoreInterface
+     * Instantiates a new EntityManagerStore
      *
      * @param connectionSource the connection source
      */
-    public DatabaseStoreInterface(ConnectionSource connectionSource) {
+    public EntityManagerStore(ConnectionSource connectionSource) {
         this.connectionSource = connectionSource;
         try {
             this.instance = DaoManager.createDao(this.connectionSource, Store.class);

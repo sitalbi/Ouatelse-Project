@@ -1,5 +1,7 @@
 package fr.s4e2.ouatelse.utils;
 
+import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -16,7 +18,7 @@ class UtilsTest {
             - String contains not only a number = null
             - String contains multiple numbers = null
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void getNumber() {
         Integer result;
 
@@ -41,14 +43,11 @@ class UtilsTest {
             - date to convert is null
             - date to convert is valid
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void dateToLocalDate() {
-        Date date = new Date();
-        LocalDate localDate;
-
         assertThrows(NullPointerException.class, () -> Utils.dateToLocalDate(null));
 
-        localDate = Utils.dateToLocalDate(date);
+        LocalDate localDate = Utils.dateToLocalDate(new Date());
         assertEquals(localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), "23/02/2021");
     }
 
@@ -57,11 +56,10 @@ class UtilsTest {
             - local date to convert is not valid
             - local date to convert is valid
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void localDateToDate() {
         Date date = new Date();
-        LocalDate localDate;
-        localDate = Utils.dateToLocalDate(date);
+        LocalDate localDate = Utils.dateToLocalDate(date);
 
         assertThrows(NullPointerException.class, () -> Utils.localDateToDate(null));
 
