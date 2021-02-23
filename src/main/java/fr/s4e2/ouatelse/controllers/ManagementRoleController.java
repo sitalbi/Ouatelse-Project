@@ -1,6 +1,7 @@
 package fr.s4e2.ouatelse.controllers;
 
-import fr.s4e2.ouatelse.databaseInterface.databaseRoleInterface;
+import fr.s4e2.ouatelse.Main;
+import fr.s4e2.ouatelse.databaseInterface.DatabaseRoleInterface;
 import fr.s4e2.ouatelse.objects.Permission;
 import fr.s4e2.ouatelse.objects.Role;
 import javafx.beans.value.ChangeListener;
@@ -11,6 +12,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import lombok.Setter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,6 +29,8 @@ public class ManagementRoleController extends BaseController {
     public Button deletePermissionButton;
     @FXML
     private ListView<Role> rolesListView;
+    @Setter
+    private DatabaseRoleInterface databaseRoleInterface = Main.getDatabaseManager().getDatabaseRoleInterface();
     private Role currentRole = null;
 
     /**
@@ -153,7 +157,7 @@ public class ManagementRoleController extends BaseController {
             this.newRoleNameField.getParent().requestFocus();
             return;
         }
-        for (Role role : databaseRoleInterface.getInstance()) {
+        for (Role role : databaseRoleInterface.getAll()) {
             if (role.getName().equals(newRoleNameField.getText().trim())) {
                 this.newRoleNameField.clear();
                 this.newRoleNameField.setPromptText(ROLE_ALREADY_EXISTS);
@@ -162,7 +166,7 @@ public class ManagementRoleController extends BaseController {
             }
         }
 
-        Role newRole = databaseRoleInterface.createNewRole(newRoleNameField.getText().trim());
+        Role newRole = databaseRoleInterface.create(newRoleNameField.getText().trim());
 
         this.newRoleNameField.setText("");
         this.newRoleNameField.setPromptText("Veuillez saisir un nom");
@@ -216,7 +220,7 @@ public class ManagementRoleController extends BaseController {
      * @param mouseEvent The mouse click event
      */
     public void onDeleteButtonClick(MouseEvent mouseEvent) {
-        databaseRoleInterface.deleteRole(rolesListView.getSelectionModel().getSelectedItem());
+        databaseRoleInterface.delete(rolesListView.getSelectionModel().getSelectedItem());
 
         this.loadRoleList();
         this.clearPermissionLists();
@@ -227,7 +231,7 @@ public class ManagementRoleController extends BaseController {
      */
     private void loadRoleList() {
         this.rolesListView.getItems().clear();
-        databaseRoleInterface.getInstance().forEach(role -> rolesListView.getItems().add(role));
+        this.databaseRoleInterface.getAll().forEach(role -> rolesListView.getItems().add(role));
     }
 
     /**
@@ -260,6 +264,6 @@ public class ManagementRoleController extends BaseController {
      * @param role a chosen role
      */
     private void saveRole(Role role) {
-        databaseRoleInterface.updateRole(role);
+        databaseRoleInterface.update(role);
     }
 }
