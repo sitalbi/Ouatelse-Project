@@ -12,6 +12,7 @@ import fr.s4e2.ouatelse.screens.HomeScreen;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.net.URL;
@@ -25,7 +26,9 @@ public class AuthStoreController extends BaseController {
     public JFXPasswordField passwordField;
     public JFXTextField idField;
     @Setter
+    @Getter
     private User currentUser;
+    @Getter
     private Dao<Store, Long> storeDao;
 
     @Override
