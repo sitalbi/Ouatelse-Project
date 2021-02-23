@@ -1,8 +1,7 @@
 package fr.s4e2.ouatelse.controllers;
 
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
 import fr.s4e2.ouatelse.Main;
+import fr.s4e2.ouatelse.databaseInterface.DatabaseRoleInterface;
 import fr.s4e2.ouatelse.objects.Permission;
 import fr.s4e2.ouatelse.objects.Role;
 import javafx.beans.value.ChangeListener;
@@ -13,9 +12,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import lombok.Setter;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
@@ -30,7 +29,8 @@ public class ManagementRoleController extends BaseController {
     public Button deletePermissionButton;
     @FXML
     private ListView<Role> rolesListView;
-    private Dao<Role, Long> roleDao;
+    @Setter
+    private DatabaseRoleInterface databaseRoleInterface = Main.getDatabaseManager().getDatabaseRoleInterface();
     private Role currentRole = null;
 
     /**
@@ -44,12 +44,6 @@ public class ManagementRoleController extends BaseController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-
-        try {
-            this.roleDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), Role.class);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
 
         this.addPermissionButton.setDisable(true);
         this.deletePermissionButton.setDisable(true);
@@ -163,7 +157,7 @@ public class ManagementRoleController extends BaseController {
             this.newRoleNameField.getParent().requestFocus();
             return;
         }
-        for (Role role : roleDao) {
+        for (Role role : databaseRoleInterface.getAll()) {
             if (role.getName().equals(newRoleNameField.getText().trim())) {
                 this.newRoleNameField.clear();
                 this.newRoleNameField.setPromptText(ROLE_ALREADY_EXISTS);
@@ -172,13 +166,7 @@ public class ManagementRoleController extends BaseController {
             }
         }
 
-        Role newRole = null;
-        try {
-            newRole = new Role(newRoleNameField.getText().trim());
-            this.roleDao.create(newRole);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+        Role newRole = databaseRoleInterface.create(newRoleNameField.getText().trim());
 
         this.newRoleNameField.setText("");
         this.newRoleNameField.setPromptText("Veuillez saisir un nom");
@@ -232,12 +220,8 @@ public class ManagementRoleController extends BaseController {
      * @param mouseEvent The mouse click event
      */
     public void onDeleteButtonClick(MouseEvent mouseEvent) {
-        try {
-            Role selectedRole = rolesListView.getSelectionModel().getSelectedItem();
-            this.roleDao.delete(selectedRole);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+        databaseRoleInterface.delete(rolesListView.getSelectionModel().getSelectedItem());
+
         this.loadRoleList();
         this.clearPermissionLists();
     }
@@ -247,7 +231,7 @@ public class ManagementRoleController extends BaseController {
      */
     private void loadRoleList() {
         this.rolesListView.getItems().clear();
-        this.roleDao.forEach(role -> rolesListView.getItems().add(role));
+        this.databaseRoleInterface.getAll().forEach(role -> rolesListView.getItems().add(role));
     }
 
     /**
@@ -280,10 +264,6 @@ public class ManagementRoleController extends BaseController {
      * @param role a chosen role
      */
     private void saveRole(Role role) {
-        try {
-            this.roleDao.update(role);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+        databaseRoleInterface.update(role);
     }
 }
