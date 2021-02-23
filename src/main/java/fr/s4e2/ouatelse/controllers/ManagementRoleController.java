@@ -1,7 +1,7 @@
 package fr.s4e2.ouatelse.controllers;
 
 import fr.s4e2.ouatelse.Main;
-import fr.s4e2.ouatelse.databaseInterface.DatabaseRoleInterface;
+import fr.s4e2.ouatelse.managers.EntityManagerRole;
 import fr.s4e2.ouatelse.objects.Permission;
 import fr.s4e2.ouatelse.objects.Role;
 import javafx.beans.value.ChangeListener;
@@ -30,7 +30,7 @@ public class ManagementRoleController extends BaseController {
     @FXML
     private ListView<Role> rolesListView;
     @Setter
-    private DatabaseRoleInterface databaseRoleInterface = Main.getDatabaseManager().getDatabaseRoleInterface();
+    private EntityManagerRole entityManagerRole = Main.getDatabaseManager().getEntityManagerRole();
     private Role currentRole = null;
 
     /**
@@ -157,7 +157,7 @@ public class ManagementRoleController extends BaseController {
             this.newRoleNameField.getParent().requestFocus();
             return;
         }
-        for (Role role : databaseRoleInterface.getAll()) {
+        for (Role role : entityManagerRole.getAll()) {
             if (role.getName().equals(newRoleNameField.getText().trim())) {
                 this.newRoleNameField.clear();
                 this.newRoleNameField.setPromptText(ROLE_ALREADY_EXISTS);
@@ -166,7 +166,7 @@ public class ManagementRoleController extends BaseController {
             }
         }
 
-        Role newRole = databaseRoleInterface.create(newRoleNameField.getText().trim());
+        Role newRole = entityManagerRole.create(newRoleNameField.getText().trim());
 
         this.newRoleNameField.setText("");
         this.newRoleNameField.setPromptText("Veuillez saisir un nom");
@@ -220,7 +220,7 @@ public class ManagementRoleController extends BaseController {
      * @param mouseEvent The mouse click event
      */
     public void onDeleteButtonClick(MouseEvent mouseEvent) {
-        databaseRoleInterface.delete(rolesListView.getSelectionModel().getSelectedItem());
+        entityManagerRole.delete(rolesListView.getSelectionModel().getSelectedItem());
 
         this.loadRoleList();
         this.clearPermissionLists();
@@ -231,7 +231,7 @@ public class ManagementRoleController extends BaseController {
      */
     private void loadRoleList() {
         this.rolesListView.getItems().clear();
-        this.databaseRoleInterface.getAll().forEach(role -> rolesListView.getItems().add(role));
+        this.entityManagerRole.getAll().forEach(role -> rolesListView.getItems().add(role));
     }
 
     /**
@@ -264,6 +264,6 @@ public class ManagementRoleController extends BaseController {
      * @param role a chosen role
      */
     private void saveRole(Role role) {
-        databaseRoleInterface.update(role);
+        entityManagerRole.update(role);
     }
 }

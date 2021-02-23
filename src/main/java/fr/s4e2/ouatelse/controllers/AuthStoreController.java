@@ -3,7 +3,7 @@ package fr.s4e2.ouatelse.controllers;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import fr.s4e2.ouatelse.Main;
-import fr.s4e2.ouatelse.databaseInterface.DatabaseStoreInterface;
+import fr.s4e2.ouatelse.managers.EntityManagerStore;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.screens.HomeScreen;
@@ -25,7 +25,7 @@ public class AuthStoreController extends BaseController {
     @Getter
     private User currentUser;
     @Setter
-    private DatabaseStoreInterface databaseStoreInterface = Main.getDatabaseManager().getDatabaseStoreInterface();
+    private EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -46,7 +46,7 @@ public class AuthStoreController extends BaseController {
             return;
         }
 
-        Store store = this.databaseStoreInterface.getStoreIfExists(this.idField.getText().trim(), this.passwordField.getText().trim());
+        Store store = this.entityManagerStore.getStoreIfExists(idField.getText().trim(), passwordField.getText().trim());
 
         if (store == null) {
             this.errorMessageField.setText("Erreur : Le magasin n'existe pas / mot de passe faux");

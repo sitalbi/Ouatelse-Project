@@ -1,32 +1,31 @@
-package fr.s4e2.ouatelse.databaseInterface;
+package fr.s4e2.ouatelse.managers;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
-import fr.s4e2.ouatelse.objects.Role;
+import fr.s4e2.ouatelse.objects.Address;
 
 import java.sql.SQLException;
 import java.util.List;
 
 /**
- * The type DatabaseRoleInterface
+ * The type EntityManagerAddress
  */
-public class DatabaseRoleInterface {
-
+public class EntityManagerAddress {
     private final ConnectionSource connectionSource;
-    private Dao<Role, Long> instance;
+    private Dao<Address, Long> instance;
 
     /**
-     * Instantiates a new DatabaseRoleInterface
+     * Instantiates a new EntityManagerAddress
      *
      * @param connectionSource the connection source
      */
-    public DatabaseRoleInterface(ConnectionSource connectionSource) {
+    public EntityManagerAddress(ConnectionSource connectionSource) {
         this.connectionSource = connectionSource;
         try {
-            this.instance = DaoManager.createDao(this.connectionSource, Role.class);
+            this.instance = DaoManager.createDao(this.connectionSource, Address.class);
         } catch (SQLException exception) {
             exception.printStackTrace();
             System.exit(0);
@@ -34,67 +33,61 @@ public class DatabaseRoleInterface {
     }
 
     /**
-     * Inserts a role in the database
+     * Inserts a new address in the database
      *
-     * @param roleName the name of the role to be inserted
-     * @return the initialized role
+     * @param address the address to be inserted
      */
-    public Role create(String roleName) {
-        Role newRole = null;
-
+    public void create(Address address) {
         try {
-            newRole = new Role(roleName);
-            this.instance.create(newRole);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-
-        return newRole;
-    }
-
-    /**
-     * Deletes a role from the database
-     *
-     * @param role the role to be deleted
-     */
-    public void delete(Role role) {
-        try {
-            this.instance.delete(role);
+            this.instance.create(address);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
     }
 
     /**
-     * Updates a role in the database
+     * Deletes an address from the database
      *
-     * @param role the role to be updated
+     * @param address the address to be deleted
      */
-    public void update(Role role) {
+    public void delete(Address address) {
         try {
-            this.instance.update(role);
+            this.instance.delete(address);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
     }
 
     /**
-     * Gets all the roles in the database
+     * Updates an address from the database
      *
-     * @return the all the roles in the database
+     * @param address the address to be updated
      */
-    public Dao<Role, Long> getAll() {
+    public void update(Address address) {
+        try {
+            this.instance.update(address);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Gets all the addresses that are in the database
+     *
+     * @return all the addresses that are in the database
+     */
+    public Dao<Address, Long> getAll() {
         return this.instance;
     }
 
     /**
-     * Executes a prepared query
+     * Execute a prepared query
      *
      * @param query the prepared query
-     * @return the list of results
+     * @return the result list
      */
-    public List<Role> executeQuery(PreparedQuery<Role> query) {
-        List<Role> results = null;
+    public List<Address> executeQuery(PreparedQuery<Address> query) {
+        List<Address> results = null;
 
         try {
             results = this.instance.query(query);
@@ -106,12 +99,12 @@ public class DatabaseRoleInterface {
     }
 
     /**
-     * Gets all the roles
+     * Gets all the addresses
      *
-     * @return all the roles that are in the database
+     * @return all the addresses that are in the database
      */
-    public List<Role> getQueryForAll() {
-        List<Role> results = null;
+    public List<Address> getQueryForAll() {
+        List<Address> results = null;
 
         try {
             results = this.instance.queryForAll();
@@ -125,9 +118,9 @@ public class DatabaseRoleInterface {
     /**
      * Gets a query builder
      *
-     * @return the query builder for the roles
+     * @return the query builder for the addresses
      */
-    public QueryBuilder<Role, Long> getQueryBuilder() {
+    public QueryBuilder<Address, Long> getQueryBuilder() {
         return this.instance.queryBuilder();
     }
 }

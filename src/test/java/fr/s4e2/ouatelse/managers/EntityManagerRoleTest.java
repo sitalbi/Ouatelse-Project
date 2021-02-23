@@ -1,15 +1,14 @@
-package fr.s4e2.ouatelse.databaseInterface;
+package fr.s4e2.ouatelse.managers;
 
 import fr.s4e2.ouatelse.objects.Role;
-import fr.s4e2.ouatelse.utils.DatabaseManager;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DatabaseRoleInterfaceTest {
+class EntityManagerRoleTest {
 
-    private final DatabaseManager databaseManager = new DatabaseManager();
-    private final DatabaseRoleInterface databaseRoleInterface = databaseManager.getDatabaseRoleInterface();
+    private final DatabaseManager databaseManager = new DatabaseManager("sqlite-test.db");
+    private final EntityManagerRole entityManagerRole = databaseManager.getEntityManagerRole();
 
     /*
         Use cases:
@@ -18,9 +17,9 @@ class DatabaseRoleInterfaceTest {
      */
     @Test
     void createNewRole() {
-        assertDoesNotThrow(() -> this.databaseRoleInterface.create(null));
+        assertDoesNotThrow(() -> this.entityManagerRole.create(null));
 
-        Role newlyCreatedRole = this.databaseRoleInterface.create("New role");
+        Role newlyCreatedRole = this.entityManagerRole.create("New role");
 
         assertNotNull(newlyCreatedRole);
         assertFalse(newlyCreatedRole.getName().isEmpty());
