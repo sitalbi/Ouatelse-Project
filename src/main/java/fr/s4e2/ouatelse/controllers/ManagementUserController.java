@@ -1,10 +1,11 @@
 package fr.s4e2.ouatelse.controllers;
 
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import fr.s4e2.ouatelse.Main;
+import fr.s4e2.ouatelse.databaseInterface.DatabaseAddressInterface;
+import fr.s4e2.ouatelse.databaseInterface.DatabaseRoleInterface;
+import fr.s4e2.ouatelse.databaseInterface.DatabaseStoreInterface;
+import fr.s4e2.ouatelse.databaseInterface.DatabaseUserInterface;
 import fr.s4e2.ouatelse.objects.*;
 import fr.s4e2.ouatelse.objects.User.UserTree;
 import fr.s4e2.ouatelse.utils.Utils;
@@ -67,10 +68,10 @@ public class ManagementUserController extends BaseController {
     @FXML
     private JFXTreeTableView<UserTree> usersTreeTableView;
 
-    private Dao<User, Long> userDao;
-    private Dao<Address, Long> addressDao;
-    private Dao<Role, Long> roleDao;
-    private Dao<Store, Long> storeDao;
+    private DatabaseUserInterface databaseUserInterface;
+    private DatabaseAddressInterface databaseAddressInterface;
+    private DatabaseRoleInterface databaseRoleInterface;
+    private DatabaseStoreInterface databaseStoreInterface;
     private User currentUser;
 
     /**
@@ -85,17 +86,8 @@ public class ManagementUserController extends BaseController {
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
 
-        try {
-            this.userDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), User.class);
-            this.addressDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), Address.class);
-            this.roleDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), Role.class);
-            this.storeDao = DaoManager.createDao(Main.getDatabaseManager().getConnectionSource(), Store.class);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-
-        this.roleDao.forEach(role -> userRoleDropdown.getItems().add(role));
-        this.storeDao.forEach(store -> userStoreDropdown.getItems().add(store));
+        this.databaseRoleInterface.getAll().forEach(role -> userRoleDropdown.getItems().add(role));
+        this.databaseStoreInterface.getAll().forEach(store -> userStoreDropdown.getItems().add(store));
         Arrays.stream(Civility.values()).forEach(value -> userCivilityDropdown.getItems().add(value));
 
         this.loadUserTreeTable();
@@ -146,7 +138,7 @@ public class ManagementUserController extends BaseController {
         this.usersTreeTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 try {
-                    this.currentUser = userDao.query(userDao.queryBuilder()
+                    this.currentUser = this.databaseUserInterface.executeQuery(this.databaseUserInterface.getQueryBuilder()
                             .where().eq("credentials", newSelection.getValue().getId().getValue())
                             .prepare()
                     ).stream().findFirst().orElse(null);
@@ -185,8 +177,8 @@ public class ManagementUserController extends BaseController {
 
         // user already exists!
         if (!this.isEditing()) {
-            User user = userDao.query(
-                    userDao.queryBuilder()
+            User user = this.databaseUserInterface.executeQuery(
+                    this.databaseUserInterface.getQueryBuilder()
                             .where().eq("credentials", userIdInput.getText().trim())
                             .or().eq("email", userEmailInput.getText().trim())
                             .prepare()
@@ -215,17 +207,13 @@ public class ManagementUserController extends BaseController {
 
         if (this.isEditing()) {
             // edits user
-            try {
-                this.currentUser.getAddress().setZipCode(zipCode);
-                this.currentUser.getAddress().setCity(userCityInput.getText().trim());
-                this.currentUser.getAddress().setAddress(userAddressInput.getText().trim());
-                this.addressDao.update(currentUser.getAddress());
+            this.currentUser.getAddress().setZipCode(zipCode);
+            this.currentUser.getAddress().setCity(userCityInput.getText().trim());
+            this.currentUser.getAddress().setAddress(userAddressInput.getText().trim());
+            this.databaseAddressInterface.update(currentUser.getAddress());
 
-                this.updateUser(currentUser);
-                this.userDao.update(currentUser);
-            } catch (SQLException exception) {
-                exception.printStackTrace();
-            }
+            this.updateUser(currentUser);
+            this.databaseUserInterface.update(currentUser);
 
             // updates user in the table
             this.addUserToTreeTable(currentUser);
@@ -235,21 +223,13 @@ public class ManagementUserController extends BaseController {
         } else {
             // creates address
             Address newAddress = new Address(zipCode, userCityInput.getText().trim(), userAddressInput.getText().trim());
-            try {
-                this.addressDao.create(newAddress);
-            } catch (SQLException exception) {
-                exception.printStackTrace();
-            }
+            this.databaseAddressInterface.create(newAddress);
 
             // creation of a new user
             User newUser = new User();
-            try {
-                newUser.setAddress(newAddress);
-                this.updateUser(newUser);
-                this.userDao.create(newUser);
-            } catch (SQLException exception) {
-                exception.printStackTrace();
-            }
+            newUser.setAddress(newAddress);
+            this.updateUser(newUser);
+            this.databaseUserInterface.create(newUser);
 
             // adds created user to the table
             this.addUserToTreeTable(newUser);
@@ -259,13 +239,11 @@ public class ManagementUserController extends BaseController {
 
     /**
      * Handles the delete button click event
-     *
-     * @throws SQLException if the user wasn't successfully deleted
      */
-    public void onDeleteButtonClick() throws SQLException {
+    public void onDeleteButtonClick() {
         if (currentUser == null) return;
 
-        userDao.delete(currentUser);
+        this.databaseUserInterface.delete(currentUser);
         this.usersTreeTableView.getRoot().getChildren().remove(usersTreeTableView.getSelectionModel().getSelectedItem());
         this.usersTreeTableView.getSelectionModel().clearSelection();
         this.clearInformation();
@@ -359,18 +337,14 @@ public class ManagementUserController extends BaseController {
         status.setContextMenu(null);
 
         ObservableList<UserTree> users = FXCollections.observableArrayList();
-        try {
-            this.userDao.queryForAll().forEach(user -> users.add(new UserTree(
-                    user.getCredentials(),
-                    user.getSurname(),
-                    user.getName(),
-                    user.getRole(),
-                    user.getWorkingStore(),
-                    user.getStatus()
-            )));
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+        this.databaseUserInterface.getQueryForAll().forEach(user -> users.add(new UserTree(
+                user.getCredentials(),
+                user.getSurname(),
+                user.getName(),
+                user.getRole(),
+                user.getWorkingStore(),
+                user.getStatus()
+        )));
 
         TreeItem<UserTree> root = new RecursiveTreeItem<>(users, RecursiveTreeObject::getChildren);
         //noinspection unchecked
