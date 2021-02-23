@@ -1,6 +1,7 @@
 package fr.s4e2.ouatelse.utils;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,18 +40,30 @@ class UtilsTest {
 
     /*
         Use cases :
-            - date to convert is null
+            - date to convert is not valid
             - date to convert is valid
      */
     @org.junit.jupiter.api.Test
     void dateToLocalDate() {
         Date date = new Date();
+        LocalDate localDate;
 
-        LocalDate localDate = Utils.dateToLocalDate(date);
-
+        localDate = Utils.dateToLocalDate(date);
+        assertEquals(localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), "23/02/2021");
     }
 
+    /*
+        Use cases :
+            - local date to convert is not valid
+            - local date to convert is valid
+     */
     @org.junit.jupiter.api.Test
     void localDateToDate() {
+        Date date = new Date();
+        LocalDate localDate;
+        localDate = Utils.dateToLocalDate(date);
+
+        date = Utils.localDateToDate(localDate);
+        assertEquals(date.toString(), "Tue Feb 23 00:00:00 CET 2021");
     }
 }
