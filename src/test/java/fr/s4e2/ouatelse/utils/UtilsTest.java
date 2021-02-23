@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UtilsTest {
 
-
     /*
         Use cases :
             - String is null = null
