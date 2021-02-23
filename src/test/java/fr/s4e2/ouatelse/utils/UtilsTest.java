@@ -4,8 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UtilsTest {
 
@@ -40,13 +39,15 @@ class UtilsTest {
 
     /*
         Use cases :
-            - date to convert is not valid
+            - date to convert is null
             - date to convert is valid
      */
     @org.junit.jupiter.api.Test
     void dateToLocalDate() {
         Date date = new Date();
         LocalDate localDate;
+
+        assertThrows(NullPointerException.class, () -> Utils.dateToLocalDate(null));
 
         localDate = Utils.dateToLocalDate(date);
         assertEquals(localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), "23/02/2021");
@@ -62,6 +63,8 @@ class UtilsTest {
         Date date = new Date();
         LocalDate localDate;
         localDate = Utils.dateToLocalDate(date);
+
+        assertThrows(NullPointerException.class, () -> Utils.localDateToDate(null));
 
         date = Utils.localDateToDate(localDate);
         assertEquals(date.toString(), "Tue Feb 23 00:00:00 CET 2021");
