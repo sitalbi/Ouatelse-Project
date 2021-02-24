@@ -6,6 +6,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
+import fr.s4e2.ouatelse.objects.Address;
 import fr.s4e2.ouatelse.objects.Store;
 
 import java.nio.charset.StandardCharsets;
@@ -148,5 +149,20 @@ public class EntityManagerStore {
         }
 
         return store;
+    }
+
+    /**
+     * Check if an address exists in the database
+     *
+     * @param store the store to check
+     * @return true if it exists, false if not
+     */
+    public boolean exists(Store store) {
+        try {
+            return this.instance.queryForId(store.getId()) != null;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return false;
+        }
     }
 }
