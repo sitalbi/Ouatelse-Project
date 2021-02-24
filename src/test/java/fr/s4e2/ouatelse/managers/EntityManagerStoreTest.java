@@ -3,7 +3,7 @@ package fr.s4e2.ouatelse.managers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class EntityManagerRoleTest {
+class EntityManagerStoreTest {
 
     @BeforeEach
     void setUp() {
@@ -35,5 +35,9 @@ class EntityManagerRoleTest {
 
     @Test
     void getQueryBuilder() {
+    }
+
+    @Test
+    void getStoreIfExists() {
     }
 }

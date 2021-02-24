@@ -6,6 +6,7 @@ import com.j256.ormlite.table.TableUtils;
 import fr.s4e2.ouatelse.objects.*;
 import lombok.Getter;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -53,4 +54,19 @@ public class DatabaseManager {
         this.entityManagerStore = new EntityManagerStore(connectionSource);
         this.entityManagerUser = new EntityManagerUser(connectionSource);
     }
+
+    public static void deleteDatabase(String databaseName) {
+        if (databaseName == null || databaseName.trim().isEmpty()) return;
+        File databaseFile = new File(databaseName);
+        if (databaseFile.exists()) {
+            if (databaseFile.delete()) {
+                System.out.format("[INFO] %s deleted.", databaseName);
+            } else {
+                System.err.format("[ERROR] Couldn't delete %s.", databaseName);
+            }
+        } else {
+            System.out.format("[INFO] %s does not exists.", databaseName);
+        }
+    }
+
 }
