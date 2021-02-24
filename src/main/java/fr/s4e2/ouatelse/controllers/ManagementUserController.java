@@ -1,5 +1,6 @@
 package fr.s4e2.ouatelse.controllers;
 
+import com.j256.ormlite.dao.CloseableIterator;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import fr.s4e2.ouatelse.managers.EntityManagerAddress;
@@ -86,7 +87,10 @@ public class ManagementUserController extends BaseController {
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
 
-        this.entityManagerRole.getAll().forEach(role -> userRoleDropdown.getItems().add(role));
+        for (CloseableIterator<Role> it = entityManagerRole.getAll(); it.hasNext(); ) {
+            Role role = it.next();
+            userRoleDropdown.getItems().add(role);
+        }
         this.entityManagerStore.getAll().forEach(store -> userStoreDropdown.getItems().add(store));
         Arrays.stream(Civility.values()).forEach(value -> userCivilityDropdown.getItems().add(value));
 

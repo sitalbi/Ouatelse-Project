@@ -132,6 +132,8 @@ public class EntityManagerAddress {
      * @return true if it exists, else false
      */
     public boolean exists(Address address) {
+        if (address == null) return false;
+
         try {
             return this.instance.queryForId(address.getId()) != null;
         } catch (SQLException exception) {

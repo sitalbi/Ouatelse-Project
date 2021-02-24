@@ -105,6 +105,7 @@ class EntityManagerAddressTest {
 
         // Address exists in the database and is aftewards deleted
         Address existingAddress = new Address(33000, "Bordeaux", ADDRESS_BEFORE_MODIFICATION);
+        this.entityManagerAddress.create(existingAddress);
         existingAddress.setAddress(ADDRESS_AFTER_MODIFICATION);
 
         this.entityManagerAddress.update(existingAddress);
@@ -193,5 +194,26 @@ class EntityManagerAddressTest {
     @Test
     void getQueryBuilder() {
         assertNotNull(this.entityManagerAddress.getQueryBuilder());
+    }
+
+    /*
+        Use cases :
+            - Address exists in the database
+            - Address does not exists in the database
+            - Address is null
+     */
+    @Test
+    void exists() {
+        // Address exists
+        Address existingAddress = new Address(33000, "Bordeaux", "Some address");
+        this.entityManagerAddress.create(existingAddress);
+        assertTrue(this.entityManagerAddress.exists(existingAddress));
+
+        // Address doesn't exist
+        Address nonExistingAddress = new Address(24200, "Sarlat", "Some other address");
+        assertFalse(this.entityManagerAddress.exists(nonExistingAddress));
+
+        // Address is null
+        assertFalse(this.entityManagerAddress.exists(null));
     }
 }
