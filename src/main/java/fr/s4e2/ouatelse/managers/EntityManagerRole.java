@@ -1,5 +1,6 @@
 package fr.s4e2.ouatelse.managers;
 
+import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -83,8 +84,8 @@ public class EntityManagerRole {
      *
      * @return the all the roles in the database
      */
-    public Dao<Role, Long> getAll() {
-        return this.instance;
+    public CloseableIterator<Role> getAll() {
+        return this.instance.iterator();
     }
 
     /**
@@ -129,5 +130,22 @@ public class EntityManagerRole {
      */
     public QueryBuilder<Role, Long> getQueryBuilder() {
         return this.instance.queryBuilder();
+    }
+
+    /**
+     * Check if an role exists in the database
+     *
+     * @param role the role to be checked
+     * @return true if it exists, else false
+     */
+    public boolean exists(Role role) {
+        if (role == null) return false;
+
+        try {
+            return this.instance.queryForId(role.getId()) != null;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return false;
+        }
     }
 }

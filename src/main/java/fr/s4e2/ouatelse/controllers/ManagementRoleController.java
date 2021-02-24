@@ -1,5 +1,6 @@
 package fr.s4e2.ouatelse.controllers;
 
+import com.j256.ormlite.dao.CloseableIterator;
 import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.managers.EntityManagerRole;
 import fr.s4e2.ouatelse.objects.Permission;
@@ -157,7 +158,8 @@ public class ManagementRoleController extends BaseController {
             this.newRoleNameField.getParent().requestFocus();
             return;
         }
-        for (Role role : entityManagerRole.getAll()) {
+        for (CloseableIterator<Role> it = entityManagerRole.getAll(); it.hasNext(); ) {
+            Role role = it.next();
             if (role.getName().equals(newRoleNameField.getText().trim())) {
                 this.newRoleNameField.clear();
                 this.newRoleNameField.setPromptText(ROLE_ALREADY_EXISTS);
@@ -231,7 +233,10 @@ public class ManagementRoleController extends BaseController {
      */
     private void loadRoleList() {
         this.rolesListView.getItems().clear();
-        this.entityManagerRole.getAll().forEach(role -> rolesListView.getItems().add(role));
+        for (CloseableIterator<Role> it = entityManagerRole.getAll(); it.hasNext(); ) {
+            Role role = it.next();
+            rolesListView.getItems().add(role);
+        }
     }
 
     /**
