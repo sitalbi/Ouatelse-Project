@@ -47,8 +47,8 @@ class UtilsTest {
     void dateToLocalDate() {
         assertThrows(NullPointerException.class, () -> Utils.dateToLocalDate(null));
 
-        LocalDate localDate = Utils.dateToLocalDate(new Date());
-        assertEquals(localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), "23/02/2021");
+        LocalDate localDate = Utils.dateToLocalDate(new Date(15));
+        assertEquals(localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), "01/01/1970");
     }
 
     /*
@@ -58,12 +58,12 @@ class UtilsTest {
      */
     @Test
     void localDateToDate() {
-        Date date = new Date();
+        Date date = new Date(15);
         LocalDate localDate = Utils.dateToLocalDate(date);
 
         assertThrows(NullPointerException.class, () -> Utils.localDateToDate(null));
 
         date = Utils.localDateToDate(localDate);
-        assertEquals(date.toString(), "Tue Feb 23 00:00:00 CET 2021");
+        assertEquals(date.toString(), "Thu Jan 01 00:00:00 CET 1970");
     }
 }
