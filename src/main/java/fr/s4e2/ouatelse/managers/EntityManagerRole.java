@@ -133,7 +133,7 @@ public class EntityManagerRole {
     }
 
     /**
-     * Check if an role exists in the database
+     * Check if a role exists in the database
      *
      * @param role the role to be checked
      * @return true if it exists, else false
