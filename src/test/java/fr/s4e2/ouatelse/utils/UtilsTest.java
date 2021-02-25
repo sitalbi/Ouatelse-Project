@@ -45,6 +45,7 @@ class UtilsTest {
      */
     @Test
     void dateToLocalDate() {
+        //noinspection ConstantConditions
         assertThrows(NullPointerException.class, () -> Utils.dateToLocalDate(null));
 
         LocalDate localDate = Utils.dateToLocalDate(new Date(15));
@@ -61,6 +62,7 @@ class UtilsTest {
         Date date = new Date(15);
         LocalDate localDate = Utils.dateToLocalDate(date);
 
+        //noinspection ConstantConditions
         assertThrows(NullPointerException.class, () -> Utils.localDateToDate(null));
 
         date = Utils.localDateToDate(localDate);
