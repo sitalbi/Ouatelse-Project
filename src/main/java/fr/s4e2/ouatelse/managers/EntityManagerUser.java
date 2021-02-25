@@ -140,7 +140,7 @@ public class EntityManagerUser {
 
         try {
             //noinspection UnstableApiUsage
-            user = this.instance.query(this.instance.queryBuilder().where().eq("id", credentials)
+            user = this.instance.query(this.instance.queryBuilder().where().eq("credentials", credentials)
                     .and().eq("password", Hashing.sha256().hashString(password, StandardCharsets.UTF_8)
                             .toString()).prepare()).stream().findFirst().orElse(null);
 

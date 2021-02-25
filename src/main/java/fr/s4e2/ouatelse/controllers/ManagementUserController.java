@@ -3,6 +3,7 @@ package fr.s4e2.ouatelse.controllers;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.managers.EntityManagerAddress;
 import fr.s4e2.ouatelse.managers.EntityManagerRole;
 import fr.s4e2.ouatelse.managers.EntityManagerStore;
@@ -69,10 +70,10 @@ public class ManagementUserController extends BaseController {
     @FXML
     private JFXTreeTableView<UserTree> usersTreeTableView;
 
-    private EntityManagerUser entityManagerUser;
-    private EntityManagerAddress entityManagerAddress;
-    private EntityManagerRole entityManagerRole;
-    private EntityManagerStore entityManagerStore;
+    private final EntityManagerUser entityManagerUser = Main.getDatabaseManager().getEntityManagerUser();
+    private final EntityManagerAddress entityManagerAddress = Main.getDatabaseManager().getEntityManagerAddress();
+    private final EntityManagerRole entityManagerRole = Main.getDatabaseManager().getEntityManagerRole();
+    private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
     private User currentUser;
 
     /**
