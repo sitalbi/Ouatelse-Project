@@ -1,8 +1,8 @@
 package fr.s4e2.ouatelse.managers;
 
-import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import fr.s4e2.ouatelse.objects.Store;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,17 +21,21 @@ class EntityManagerStoreTest {
 
     @BeforeEach
     void setUp() {
+        DatabaseManager.deleteDatabase(DATABASE_NAME);
+        this.databaseManager = new DatabaseManager(DATABASE_NAME);
+        this.entityManagerStore = databaseManager.getEntityManagerStore();
+    }
+
+    @AfterEach
+    void tearDown() {
         if (this.databaseManager != null) {
             try {
                 this.databaseManager.close();
-                DatabaseManager.deleteDatabase(DATABASE_NAME);
             } catch (IOException exception) {
                 exception.printStackTrace();
                 fail();
             }
         }
-        this.databaseManager = new DatabaseManager(DATABASE_NAME);
-        this.entityManagerStore = databaseManager.getEntityManagerStore();
     }
 
     /*
@@ -134,7 +138,7 @@ class EntityManagerStoreTest {
         List<Store> stores
                 = new ArrayList<>();
 
-        Store firstStore = new Store( "Store1");
+        Store firstStore = new Store("Store1");
         firstStore.setPassword("test");
         Store secondStore = new Store("Store2");
         secondStore.setPassword("test");
@@ -144,8 +148,8 @@ class EntityManagerStoreTest {
 
         storesIterator = this.entityManagerStore.getAll();
         assertTrue(storesIterator.iterator().hasNext());
-        for (CloseableIterator<Store> it = storesIterator.iterator(); it.hasNext(); ) {
-            stores.add(it.next());
+        for (Store store : storesIterator) {
+            stores.add(store);
         }
 
         assertEquals(stores.size(), 2);

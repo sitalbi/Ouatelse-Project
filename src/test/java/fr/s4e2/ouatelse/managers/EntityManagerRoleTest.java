@@ -2,6 +2,7 @@ package fr.s4e2.ouatelse.managers;
 
 import com.j256.ormlite.dao.CloseableIterator;
 import fr.s4e2.ouatelse.objects.Role;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +21,19 @@ class EntityManagerRoleTest {
 
     @BeforeEach
     void setUp() {
+        DatabaseManager.deleteDatabase(DATABASE_NAME);
+        this.databaseManager = new DatabaseManager(DATABASE_NAME);
+        this.entityManagerRole = databaseManager.getEntityManagerRole();
+
+        CloseableIterator<Role> iterator = this.entityManagerRole.getAll();
+        iterator.forEachRemaining(role -> this.entityManagerRole.delete(role));
+    }
+
+    @AfterEach
+    void tearDown() {
+        CloseableIterator<Role> iterator = this.entityManagerRole.getAll();
+        iterator.forEachRemaining(role -> this.entityManagerRole.delete(role));
+
         if (this.databaseManager != null) {
             try {
                 this.databaseManager.close();
@@ -28,10 +42,6 @@ class EntityManagerRoleTest {
                 fail();
             }
         }
-
-        DatabaseManager.deleteDatabase(DATABASE_NAME);
-        this.databaseManager = new DatabaseManager(DATABASE_NAME);
-        this.entityManagerRole = databaseManager.getEntityManagerRole();
     }
 
     /*
@@ -67,7 +77,7 @@ class EntityManagerRoleTest {
         assertFalse(this.entityManagerRole.exists(notExistingRole));
 
 
-        // Role exists in the database and is aftewards deleted
+        // Role exists in the database and is afterwards deleted
         Role existingRole = this.entityManagerRole.create("Some other role");
         assertTrue(this.entityManagerRole.exists(existingRole));
         assertDoesNotThrow(() -> this.entityManagerRole.delete(existingRole));
@@ -168,8 +178,8 @@ class EntityManagerRoleTest {
 
 
         // There are roles in the database
-        this.entityManagerRole.create("Some role");
-        this.entityManagerRole.create("Some other role");
+        Role firstRole = this.entityManagerRole.create("Some role");
+        Role secondRole = this.entityManagerRole.create("Some other role");
 
         roleList = this.entityManagerRole.getQueryForAll();
         assertFalse(roleList.isEmpty());
