@@ -2,6 +2,7 @@ package fr.s4e2.ouatelse.managers;
 
 import com.j256.ormlite.dao.CloseableIterator;
 import fr.s4e2.ouatelse.objects.Address;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,8 +19,23 @@ class EntityManagerAddressTest {
     private DatabaseManager databaseManager;
     private EntityManagerAddress entityManagerAddress;
 
+    private void clearTable() {
+        this.entityManagerAddress.getAll().forEachRemaining(address -> this.entityManagerAddress.delete(address));
+    }
+
     @BeforeEach
     void setUp() {
+        DatabaseManager.deleteDatabase(DATABASE_NAME);
+        this.databaseManager = new DatabaseManager(DATABASE_NAME);
+        this.entityManagerAddress = databaseManager.getEntityManagerAddress();
+
+        clearTable();
+    }
+
+    @AfterEach
+    void tearDown() {
+        clearTable();
+
         if (this.databaseManager != null) {
             try {
                 this.databaseManager.close();
@@ -28,10 +44,6 @@ class EntityManagerAddressTest {
                 fail();
             }
         }
-
-        DatabaseManager.deleteDatabase(DATABASE_NAME);
-        this.databaseManager = new DatabaseManager(DATABASE_NAME);
-        this.entityManagerAddress = databaseManager.getEntityManagerAddress();
     }
 
     /*

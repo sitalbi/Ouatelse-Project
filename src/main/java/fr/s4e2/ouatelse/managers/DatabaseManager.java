@@ -60,13 +60,12 @@ public class DatabaseManager {
         File databaseFile = new File(databaseName);
         if (databaseFile.exists()) {
             if (databaseFile.delete()) {
-                System.out.format("[INFO] %s deleted.", databaseName);
+                System.out.format("[P_INFO] %s deleted\n", databaseName);
             } else {
-                System.err.format("[ERROR] Couldn't delete %s.", databaseName);
+                System.err.format("[P_ERROR] Couldn't delete %s\n", databaseName);
             }
         } else {
-            System.out.format("[INFO] %s does not exists.", databaseName);
+            System.out.format("[P_INFO] %s does not exists\n", databaseName);
         }
     }
-
 }
