@@ -13,8 +13,8 @@ import lombok.Setter;
 @DatabaseTable(tableName = "product")
 public class Product {
 
-    @DatabaseField(generatedId = true)
-    private long id;
+    @DatabaseField(unique = true, canBeNull = false)
+    private long reference;
 
     @DatabaseField(canBeNull = false)
     private String barCode;
@@ -29,13 +29,13 @@ public class Product {
     private double purchasePrice;
 
     @DatabaseField(canBeNull = false)
-    private int reference;
-
-    @DatabaseField(canBeNull = false)
     private String brand;
 
-    @DatabaseField(canBeNull = false, dataType = DataType.ENUM_INTEGER)
+    @DatabaseField(canBeNull = false, dataType = DataType.ENUM_STRING)
     private ProductState state;
+
+    @DatabaseField(canBeNull = false)
+    private long quantity = 0;
 
     @DatabaseField(canBeNull = false)
     private String category;
