@@ -57,6 +57,10 @@ jfx-tab-pane {
     -fx-border-width: 0;
 }
 
+.tree-table-view .label {
+    -fx-text-fill: white;
+}
+
 .column-header-background {
     -fx-background-color: red;
     -fx-border-width: 0;
