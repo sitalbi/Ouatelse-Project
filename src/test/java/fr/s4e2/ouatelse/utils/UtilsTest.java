@@ -14,6 +14,8 @@ class UtilsTest {
         Use cases :
             - String is null = null
             - String contains a number = number
+            - String contains the max int value = max int value
+            - String contains a number larger than an int = null
             - String does not contain a number = null
             - String contains not only a number = null
             - String contains multiple numbers = null
@@ -27,6 +29,12 @@ class UtilsTest {
 
         result = Utils.getNumber("1337");
         assertEquals(result, 1337);
+
+        result = Utils.getNumber("2147483647");
+        assertEquals(result, 2147483647);
+
+        result = Utils.getNumber("2147483648");
+        assertNull(result);
 
         result = Utils.getNumber("This String does not contain any number");
         assertNull(result);
