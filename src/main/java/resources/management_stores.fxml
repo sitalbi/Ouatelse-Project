@@ -72,7 +72,7 @@
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
                             </content>
                             <graphic>
-                                <FontAwesomeIconView fill="WHITE" glyphName="GLOBE"/>
+                                <FontAwesomeIconView fill="WHITE" glyphName="BOOKMARK"/>
                             </graphic>
                         </Tab>
                         <Tab closable="false" text="Rapport">
