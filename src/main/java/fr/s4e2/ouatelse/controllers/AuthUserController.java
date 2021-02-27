@@ -3,7 +3,7 @@ package fr.s4e2.ouatelse.controllers;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import fr.s4e2.ouatelse.Main;
-import fr.s4e2.ouatelse.databaseInterface.DatabaseUserInterface;
+import fr.s4e2.ouatelse.managers.EntityManagerUser;
 import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.screens.AuthStoreScreen;
 import javafx.scene.control.Label;
@@ -18,7 +18,7 @@ public class AuthUserController extends BaseController {
     public JFXPasswordField passwordField;
     public JFXTextField idField;
     public Label errorMessageField;
-    private final DatabaseUserInterface databaseUserInterface = Main.getDatabaseManager().getDatabaseUserInterface();
+    private final EntityManagerUser entityManagerUser = Main.getDatabaseManager().getEntityManagerUser();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -39,7 +39,7 @@ public class AuthUserController extends BaseController {
             return;
         }
 
-        User user = this.databaseUserInterface.getUserIfExists(this.idField.getText().trim(), this.passwordField.getText().trim());
+        User user = this.entityManagerUser.getUserIfExists(this.idField.getText().trim(), this.passwordField.getText().trim());
 
         if (user == null) {
             this.errorMessageField.setText("Utilisateur inexistant / mauvais mot de passe");

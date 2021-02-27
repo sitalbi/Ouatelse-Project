@@ -1,11 +1,13 @@
 package fr.s4e2.ouatelse.controllers;
 
+import com.j256.ormlite.dao.CloseableIterator;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import fr.s4e2.ouatelse.databaseInterface.DatabaseAddressInterface;
-import fr.s4e2.ouatelse.databaseInterface.DatabaseRoleInterface;
-import fr.s4e2.ouatelse.databaseInterface.DatabaseStoreInterface;
-import fr.s4e2.ouatelse.databaseInterface.DatabaseUserInterface;
+import fr.s4e2.ouatelse.Main;
+import fr.s4e2.ouatelse.managers.EntityManagerAddress;
+import fr.s4e2.ouatelse.managers.EntityManagerRole;
+import fr.s4e2.ouatelse.managers.EntityManagerStore;
+import fr.s4e2.ouatelse.managers.EntityManagerUser;
 import fr.s4e2.ouatelse.objects.*;
 import fr.s4e2.ouatelse.objects.User.UserTree;
 import fr.s4e2.ouatelse.utils.Utils;
@@ -68,10 +70,10 @@ public class ManagementUserController extends BaseController {
     @FXML
     private JFXTreeTableView<UserTree> usersTreeTableView;
 
-    private DatabaseUserInterface databaseUserInterface;
-    private DatabaseAddressInterface databaseAddressInterface;
-    private DatabaseRoleInterface databaseRoleInterface;
-    private DatabaseStoreInterface databaseStoreInterface;
+    private final EntityManagerUser entityManagerUser = Main.getDatabaseManager().getEntityManagerUser();
+    private final EntityManagerAddress entityManagerAddress = Main.getDatabaseManager().getEntityManagerAddress();
+    private final EntityManagerRole entityManagerRole = Main.getDatabaseManager().getEntityManagerRole();
+    private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
     private User currentUser;
 
     /**
@@ -86,8 +88,11 @@ public class ManagementUserController extends BaseController {
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
 
-        this.databaseRoleInterface.getAll().forEach(role -> userRoleDropdown.getItems().add(role));
-        this.databaseStoreInterface.getAll().forEach(store -> userStoreDropdown.getItems().add(store));
+        for (CloseableIterator<Role> it = entityManagerRole.getAll(); it.hasNext(); ) {
+            Role role = it.next();
+            userRoleDropdown.getItems().add(role);
+        }
+        this.entityManagerStore.getAll().forEach(store -> userStoreDropdown.getItems().add(store));
         Arrays.stream(Civility.values()).forEach(value -> userCivilityDropdown.getItems().add(value));
 
         this.loadUserTreeTable();
@@ -138,7 +143,7 @@ public class ManagementUserController extends BaseController {
         this.usersTreeTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 try {
-                    this.currentUser = this.databaseUserInterface.executeQuery(this.databaseUserInterface.getQueryBuilder()
+                    this.currentUser = this.entityManagerUser.executeQuery(this.entityManagerUser.getQueryBuilder()
                             .where().eq("credentials", newSelection.getValue().getId().getValue())
                             .prepare()
                     ).stream().findFirst().orElse(null);
@@ -177,8 +182,8 @@ public class ManagementUserController extends BaseController {
 
         // user already exists!
         if (!this.isEditing()) {
-            User user = this.databaseUserInterface.executeQuery(
-                    this.databaseUserInterface.getQueryBuilder()
+            User user = this.entityManagerUser.executeQuery(
+                    this.entityManagerUser.getQueryBuilder()
                             .where().eq("credentials", userIdInput.getText().trim())
                             .or().eq("email", userEmailInput.getText().trim())
                             .prepare()
@@ -210,10 +215,10 @@ public class ManagementUserController extends BaseController {
             this.currentUser.getAddress().setZipCode(zipCode);
             this.currentUser.getAddress().setCity(userCityInput.getText().trim());
             this.currentUser.getAddress().setAddress(userAddressInput.getText().trim());
-            this.databaseAddressInterface.update(currentUser.getAddress());
+            this.entityManagerAddress.update(currentUser.getAddress());
 
             this.updateUser(currentUser);
-            this.databaseUserInterface.update(currentUser);
+            this.entityManagerUser.update(currentUser);
 
             // updates user in the table
             this.addUserToTreeTable(currentUser);
@@ -223,13 +228,13 @@ public class ManagementUserController extends BaseController {
         } else {
             // creates address
             Address newAddress = new Address(zipCode, userCityInput.getText().trim(), userAddressInput.getText().trim());
-            this.databaseAddressInterface.create(newAddress);
+            this.entityManagerAddress.create(newAddress);
 
             // creation of a new user
             User newUser = new User();
             newUser.setAddress(newAddress);
             this.updateUser(newUser);
-            this.databaseUserInterface.create(newUser);
+            this.entityManagerUser.create(newUser);
 
             // adds created user to the table
             this.addUserToTreeTable(newUser);
@@ -243,7 +248,7 @@ public class ManagementUserController extends BaseController {
     public void onDeleteButtonClick() {
         if (currentUser == null) return;
 
-        this.databaseUserInterface.delete(currentUser);
+        this.entityManagerUser.delete(currentUser);
         this.usersTreeTableView.getRoot().getChildren().remove(usersTreeTableView.getSelectionModel().getSelectedItem());
         this.usersTreeTableView.getSelectionModel().clearSelection();
         this.clearInformation();
@@ -337,7 +342,7 @@ public class ManagementUserController extends BaseController {
         status.setContextMenu(null);
 
         ObservableList<UserTree> users = FXCollections.observableArrayList();
-        this.databaseUserInterface.getQueryForAll().forEach(user -> users.add(new UserTree(
+        this.entityManagerUser.getQueryForAll().forEach(user -> users.add(new UserTree(
                 user.getCredentials(),
                 user.getSurname(),
                 user.getName(),

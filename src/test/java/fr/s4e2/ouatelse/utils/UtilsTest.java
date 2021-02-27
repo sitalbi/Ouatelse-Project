@@ -1,5 +1,7 @@
 package fr.s4e2.ouatelse.utils;
 
+import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -12,11 +14,13 @@ class UtilsTest {
         Use cases :
             - String is null = null
             - String contains a number = number
+            - String contains the max int value = max int value
+            - String contains a number larger than an int = null
             - String does not contain a number = null
             - String contains not only a number = null
             - String contains multiple numbers = null
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void getNumber() {
         Integer result;
 
@@ -25,6 +29,12 @@ class UtilsTest {
 
         result = Utils.getNumber("1337");
         assertEquals(result, 1337);
+
+        result = Utils.getNumber("2147483647");
+        assertEquals(result, 2147483647);
+
+        result = Utils.getNumber("2147483648");
+        assertNull(result);
 
         result = Utils.getNumber("This String does not contain any number");
         assertNull(result);
@@ -41,15 +51,13 @@ class UtilsTest {
             - date to convert is null
             - date to convert is valid
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void dateToLocalDate() {
-        Date date = new Date();
-        LocalDate localDate;
-
+        //noinspection ConstantConditions
         assertThrows(NullPointerException.class, () -> Utils.dateToLocalDate(null));
 
-        localDate = Utils.dateToLocalDate(date);
-        assertEquals(localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), "23/02/2021");
+        LocalDate localDate = Utils.dateToLocalDate(new Date(15));
+        assertEquals(localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), "01/01/1970");
     }
 
     /*
@@ -57,15 +65,15 @@ class UtilsTest {
             - local date to convert is not valid
             - local date to convert is valid
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void localDateToDate() {
-        Date date = new Date();
-        LocalDate localDate;
-        localDate = Utils.dateToLocalDate(date);
+        Date date = new Date(15);
+        LocalDate localDate = Utils.dateToLocalDate(date);
 
+        //noinspection ConstantConditions
         assertThrows(NullPointerException.class, () -> Utils.localDateToDate(null));
 
         date = Utils.localDateToDate(localDate);
-        assertEquals(date.toString(), "Tue Feb 23 00:00:00 CET 2021");
+        assertEquals(date.toString(), "Thu Jan 01 00:00:00 CET 1970");
     }
 }

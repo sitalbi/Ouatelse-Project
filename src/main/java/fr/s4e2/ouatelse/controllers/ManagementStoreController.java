@@ -1,9 +1,9 @@
 package fr.s4e2.ouatelse.controllers;
 
 import fr.s4e2.ouatelse.Main;
-import fr.s4e2.ouatelse.databaseInterface.DatabaseAddressInterface;
-import fr.s4e2.ouatelse.databaseInterface.DatabaseStoreInterface;
-import fr.s4e2.ouatelse.databaseInterface.DatabaseUserInterface;
+import fr.s4e2.ouatelse.managers.EntityManagerAddress;
+import fr.s4e2.ouatelse.managers.EntityManagerStore;
+import fr.s4e2.ouatelse.managers.EntityManagerUser;
 import fr.s4e2.ouatelse.objects.Address;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
@@ -35,9 +35,9 @@ public class ManagementStoreController extends BaseController {
     public PasswordField newStoreConfirmPasswordField;
     public Label errorMessage;
 
-    private final DatabaseStoreInterface databaseStoreInterface = Main.getDatabaseManager().getDatabaseStoreInterface();
-    private final DatabaseAddressInterface databaseAddressInterface = Main.getDatabaseManager().getDatabaseAddressInterface();
-    private final DatabaseUserInterface databaseUserInterface = Main.getDatabaseManager().getDatabaseUserInterface();
+    private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
+    private final EntityManagerAddress entityManagerAddress = Main.getDatabaseManager().getEntityManagerAddress();
+    private final EntityManagerUser entityManagerUser = Main.getDatabaseManager().getEntityManagerUser();
     private Store currentStore;
 
     /**
@@ -111,7 +111,7 @@ public class ManagementStoreController extends BaseController {
 
         // store exists already!
         if (!this.isEditing()) {
-            for (Store store : this.databaseStoreInterface.getAll()) {
+            for (Store store : this.entityManagerStore.getAll()) {
                 if (store.getId().equals(newStoreNameField.getText().trim())) {
                     this.newStoreNameField.clear();
                     this.errorMessage.setText(STORE_ALREADY_EXISTS);
@@ -125,7 +125,7 @@ public class ManagementStoreController extends BaseController {
         String managerInput = this.newStoreManagerField.getText().trim();
         User manager = null;
         if (!managerInput.isEmpty()) {
-            manager = this.databaseUserInterface.executeQuery(this.databaseUserInterface.getQueryBuilder()
+            manager = this.entityManagerUser.executeQuery(this.entityManagerUser.getQueryBuilder()
                     .where().eq("credentials", managerInput)
                     .or().eq("email", managerInput)
                     .prepare()
@@ -142,19 +142,19 @@ public class ManagementStoreController extends BaseController {
             this.currentStore.getAddress().setZipCode(zipCode);
             this.currentStore.getAddress().setCity(newStoreCityField.getText().trim());
             this.currentStore.getAddress().setAddress(newStoreAddressField.getText().trim());
-            this.databaseAddressInterface.update(currentStore.getAddress());
+            this.entityManagerAddress.update(currentStore.getAddress());
 
             if (!newStoreConfirmPasswordField.getText().isEmpty()) {
                 this.currentStore.setPassword(newStoreConfirmPasswordField.getText());
             }
             this.currentStore.setManager(manager);
-            this.databaseStoreInterface.update(currentStore);
+            this.entityManagerStore.update(currentStore);
 
             this.storesListView.getSelectionModel().select(currentStore);
         } else {
             // creates address
             Address newAddress = new Address(zipCode, newStoreCityField.getText().trim(), newStoreAddressField.getText().trim());
-            this.databaseAddressInterface.create(newAddress);
+            this.entityManagerAddress.create(newAddress);
 
             // creates store
             Store newStore = new Store(newStoreNameField.getText().trim());
@@ -162,7 +162,7 @@ public class ManagementStoreController extends BaseController {
             newStore.setManager(manager);
             newStore.setAddress(newAddress);
 
-            this.databaseStoreInterface.create(newStore);
+            this.entityManagerStore.create(newStore);
             this.storesListView.getSelectionModel().select(newStore);
         }
 
@@ -175,7 +175,7 @@ public class ManagementStoreController extends BaseController {
      *
      */
     public void onDeleteButtonClick() {
-        this.databaseStoreInterface.delete(storesListView.getSelectionModel().getSelectedItem());
+        this.entityManagerStore.delete(storesListView.getSelectionModel().getSelectedItem());
 
         this.loadStoresList();
         this.clearStoreInformation();
@@ -222,7 +222,7 @@ public class ManagementStoreController extends BaseController {
      */
     private void loadStoresList() {
         this.storesListView.getItems().clear();
-        this.databaseStoreInterface.getAll().forEach(store -> this.storesListView.getItems().add(store));
+        this.entityManagerStore.getAll().forEach(store -> this.storesListView.getItems().add(store));
     }
 
     private boolean isEditing() {
