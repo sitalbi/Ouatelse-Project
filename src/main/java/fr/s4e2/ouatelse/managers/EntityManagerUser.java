@@ -1,6 +1,7 @@
-package fr.s4e2.ouatelse.databaseInterface;
+package fr.s4e2.ouatelse.managers;
 
 import com.google.common.hash.Hashing;
+import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -13,19 +14,19 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * The type DatabaseUserInterface
+ * The type EntityManagerUser
  */
-public class DatabaseUserInterface {
+public class EntityManagerUser {
 
     private final ConnectionSource connectionSource;
     private Dao<User, Long> instance;
 
     /**
-     * Instantiates a new DatabaseUserInterface
+     * Instantiates a new EntityManagerUser
      *
      * @param connectionSource the connection source
      */
-    public DatabaseUserInterface(ConnectionSource connectionSource) {
+    public EntityManagerUser(ConnectionSource connectionSource) {
         this.connectionSource = connectionSource;
         try {
             this.instance = DaoManager.createDao(this.connectionSource, User.class);
@@ -77,10 +78,10 @@ public class DatabaseUserInterface {
     /**
      * Gets all the users in the database
      *
-     * @return all the users in the database
+     * @return na iterator over all the users in the database
      */
-    public Dao<User, Long> getAll() {
-        return this.instance;
+    public CloseableIterator<User> getAll() {
+        return this.instance.iterator();
     }
 
     /**
@@ -139,7 +140,7 @@ public class DatabaseUserInterface {
 
         try {
             //noinspection UnstableApiUsage
-            user = this.instance.query(this.instance.queryBuilder().where().eq("id", credentials)
+            user = this.instance.query(this.instance.queryBuilder().where().eq("credentials", credentials)
                     .and().eq("password", Hashing.sha256().hashString(password, StandardCharsets.UTF_8)
                             .toString()).prepare()).stream().findFirst().orElse(null);
 
@@ -147,5 +148,22 @@ public class DatabaseUserInterface {
             exception.printStackTrace();
         }
         return user;
+    }
+
+    /**
+     * Check if an user exists in the database
+     *
+     * @param user the user to be checked
+     * @return true if it exists, else false
+     */
+    public boolean exists(User user) {
+        if (user == null) return false;
+
+        try {
+            return this.instance.queryForId(user.getId()) != null;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return false;
+        }
     }
 }

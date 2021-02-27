@@ -1,5 +1,6 @@
-package fr.s4e2.ouatelse.databaseInterface;
+package fr.s4e2.ouatelse.managers;
 
+import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -11,19 +12,19 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * The type DatabaseRoleInterface
+ * The type EntityManagerRole
  */
-public class DatabaseRoleInterface {
+public class EntityManagerRole {
 
     private final ConnectionSource connectionSource;
     private Dao<Role, Long> instance;
 
     /**
-     * Instantiates a new DatabaseRoleInterface
+     * Instantiates a new EntityManagerRole
      *
      * @param connectionSource the connection source
      */
-    public DatabaseRoleInterface(ConnectionSource connectionSource) {
+    public EntityManagerRole(ConnectionSource connectionSource) {
         this.connectionSource = connectionSource;
         try {
             this.instance = DaoManager.createDao(this.connectionSource, Role.class);
@@ -83,8 +84,8 @@ public class DatabaseRoleInterface {
      *
      * @return the all the roles in the database
      */
-    public Dao<Role, Long> getAll() {
-        return this.instance;
+    public CloseableIterator<Role> getAll() {
+        return this.instance.iterator();
     }
 
     /**
@@ -129,5 +130,22 @@ public class DatabaseRoleInterface {
      */
     public QueryBuilder<Role, Long> getQueryBuilder() {
         return this.instance.queryBuilder();
+    }
+
+    /**
+     * Check if a role exists in the database
+     *
+     * @param role the role to be checked
+     * @return true if it exists, else false
+     */
+    public boolean exists(Role role) {
+        if (role == null) return false;
+
+        try {
+            return this.instance.queryForId(role.getId()) != null;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return false;
+        }
     }
 }

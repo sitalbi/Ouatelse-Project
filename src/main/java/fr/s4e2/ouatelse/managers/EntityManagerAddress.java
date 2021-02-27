@@ -1,5 +1,6 @@
-package fr.s4e2.ouatelse.databaseInterface;
+package fr.s4e2.ouatelse.managers;
 
+import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -11,18 +12,18 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * The type DatabaseAddressInterface
+ * The type EntityManagerAddress
  */
-public class DatabaseAddressInterface {
+public class EntityManagerAddress {
     private final ConnectionSource connectionSource;
     private Dao<Address, Long> instance;
 
     /**
-     * Instantiates a new DatabaseAddressInterface
+     * Instantiates a new EntityManagerAddress
      *
      * @param connectionSource the connection source
      */
-    public DatabaseAddressInterface(ConnectionSource connectionSource) {
+    public EntityManagerAddress(ConnectionSource connectionSource) {
         this.connectionSource = connectionSource;
         try {
             this.instance = DaoManager.createDao(this.connectionSource, Address.class);
@@ -76,8 +77,8 @@ public class DatabaseAddressInterface {
      *
      * @return all the addresses that are in the database
      */
-    public Dao<Address, Long> getAll() {
-        return this.instance;
+    public CloseableIterator<Address> getAll() {
+        return this.instance.iterator();
     }
 
     /**
@@ -122,5 +123,22 @@ public class DatabaseAddressInterface {
      */
     public QueryBuilder<Address, Long> getQueryBuilder() {
         return this.instance.queryBuilder();
+    }
+
+    /**
+     * Check if an address exists in the database
+     *
+     * @param address the address to be checked
+     * @return true if it exists, else false
+     */
+    public boolean exists(Address address) {
+        if (address == null) return false;
+
+        try {
+            return this.instance.queryForId(address.getId()) != null;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return false;
+        }
     }
 }
