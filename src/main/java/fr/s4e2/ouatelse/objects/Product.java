@@ -35,14 +35,8 @@ public class Product {
     private ProductState state;
 
     @DatabaseField(canBeNull = false)
-    private long quantity = 0;
-
-    @DatabaseField(canBeNull = false)
     private String category;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Vendor soldBy;
-
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private Store store;
 }
