@@ -37,9 +37,15 @@ public class BaseController implements Initializable {
         stage.close();
     }
 
+    /**
+     * TODO
+     */
     public void onAbout() {
     }
 
+    /**
+     * TODO
+     */
     public void onPreferences() {
     }
 }

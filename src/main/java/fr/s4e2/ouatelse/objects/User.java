@@ -81,12 +81,12 @@ public class User extends Person {
         /**
          * Constructor
          *
-         * @param id the ID
-         * @param lastName the Last Name
+         * @param id        the ID
+         * @param lastName  the Last Name
          * @param firstName the First Name
-         * @param role the Role
+         * @param role      the Role
          * @param storeName the Name of the Store
-         * @param status the Status
+         * @param status    the Status
          */
         public UserTree(String id, String lastName, String firstName, Role role, Store storeName, PersonState status) {
             this.id = new SimpleStringProperty(id);
