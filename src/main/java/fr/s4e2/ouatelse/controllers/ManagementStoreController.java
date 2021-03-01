@@ -174,7 +174,6 @@ public class ManagementStoreController extends BaseController {
 
     /**
      * Deletes a store
-     *
      */
     public void onDeleteButtonClick() {
         this.entityManagerStore.delete(storesListView.getSelectionModel().getSelectedItem());
