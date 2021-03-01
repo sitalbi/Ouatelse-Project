@@ -17,6 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * User Authentification Controller
+ */
 public class AuthUserController extends BaseController {
 
     public JFXPasswordField passwordField;
@@ -24,6 +27,12 @@ public class AuthUserController extends BaseController {
     public Label errorMessageField;
     private Dao<User, Long> userDao;
 
+    /**
+     * Called to initialize a controller after its root element has been completely processed
+     *
+     * @param location  The Location used to resolve relative paths for the root object, or null if the location is not known
+     * @param resources The Resources used to localize the root object, or null if the resources are not found
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
@@ -42,6 +51,9 @@ public class AuthUserController extends BaseController {
         });
     }
 
+    /**
+     * Manages what happens when you click on the login button
+     */
     public void onConnectionButtonClick() {
         if (idField.getText().trim().isEmpty() && passwordField.getText().trim().isEmpty()) {
             this.errorMessageField.setText("Veuillez remplir tout les champs");

@@ -24,6 +24,9 @@ import lombok.Setter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Home Controller
+ */
 public class HomeController extends BaseController {
 
     private static final double DEFAULT_BUTTON_SIZE = 1000;
@@ -41,6 +44,12 @@ public class HomeController extends BaseController {
     @FXML
     private Label homeAdminEmail;
 
+    /**
+     * Called to initialize a controller after its root element has been completely processed
+     *
+     * @param location  The location used to resolve relative paths for the root object, or null if the location is not known
+     * @param resources The resources used to localize the root object, or null if the resources are not found
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
@@ -66,6 +75,9 @@ public class HomeController extends BaseController {
         this.buildButtonsFromPermissions();
     }
 
+    /**
+     * Disconnects the current User
+     */
     public void onDisconnectClick() {
         this.currentUser = null;
         Stage stage = (Stage) this.homeAdminName.getScene().getWindow();
@@ -140,6 +152,9 @@ public class HomeController extends BaseController {
         System.out.println("Open parameters screen");
     }
 
+    /**
+     * Allows you to create buttons based on the permissions granted to a User
+     */
     public void buildButtonsFromPermissions() {
         if (this.currentUser != null) {
             this.currentUser.getRole().getPermissions().forEach(permission -> {
