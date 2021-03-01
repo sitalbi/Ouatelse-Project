@@ -23,6 +23,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
+/**
+ * User Management Controller
+ */
 public class ManagementUserController extends BaseController {
 
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
@@ -74,12 +77,10 @@ public class ManagementUserController extends BaseController {
     private User currentUser;
 
     /**
-     * Called to initialize a controller after its root element has been
-     * completely processed.
+     * Called to initialize a controller after its root element has been completely processed
      *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  <tt>null</tt> if the location is not known.
-     * @param resources The resources used to localize the root object, or <tt>null</tt> if
+     * @param location  The Location used to resolve relative paths for the root object, or null if the location is not known
+     * @param resources The Resources used to localize the root object, or null if the resources are not found
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -104,12 +105,22 @@ public class ManagementUserController extends BaseController {
         this.userHiringDate.setConverter(new StringConverter<LocalDate>() {
             private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+            /**
+             * Converts a LocalDate into a String
+             * @param localDate the LocalDate
+             * @return a String
+             */
             @Override
             public String toString(LocalDate localDate) {
                 if (localDate == null) return "";
                 return dateTimeFormatter.format(localDate);
             }
 
+            /**
+             * Converts a String into a LocalDate
+             * @param dateString the String
+             * @return a LocalDate
+             */
             @Override
             public LocalDate fromString(String dateString) {
                 if (dateString == null || dateString.trim().isEmpty()) return null;
@@ -119,12 +130,22 @@ public class ManagementUserController extends BaseController {
         this.userBirthDate.setConverter(new StringConverter<LocalDate>() {
             private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+            /**
+             * Converts a LocalDate into a String
+             * @param localDate the LocalDate
+             * @return a String
+             */
             @Override
             public String toString(LocalDate localDate) {
                 if (localDate == null) return "";
                 return dateTimeFormatter.format(localDate);
             }
 
+            /**
+             * Converts a String into a LocalDate
+             * @param dateString the String
+             * @return a LocalDate
+             */
             @Override
             public LocalDate fromString(String dateString) {
                 if (dateString == null || dateString.trim().isEmpty()) return null;
@@ -164,7 +185,7 @@ public class ManagementUserController extends BaseController {
     /**
      * Handles the confirm button event
      *
-     * @throws SQLException if the user couldn't be created
+     * @throws SQLException if the User couldn't be created
      */
     public void onConfirmButtonClick() throws SQLException {
         // necessary fields
@@ -260,7 +281,7 @@ public class ManagementUserController extends BaseController {
     /**
      * Handles the delete button click event
      *
-     * @throws SQLException if the user wasn't successfully deleted
+     * @throws SQLException if the User wasn't successfully deleted
      */
     public void onDeleteButtonClick() throws SQLException {
         if (currentUser == null) return;
@@ -272,7 +293,7 @@ public class ManagementUserController extends BaseController {
     }
 
     /**
-     * Loads selected user's information in the inputs
+     * Loads selected User's information in the inputs
      */
     private void loadUserInformation() {
         this.clearInformation();
@@ -333,7 +354,7 @@ public class ManagementUserController extends BaseController {
     }
 
     /**
-     * Loads the user tree table on the right hand side
+     * Loads the User tree table on the right hand side
      */
     private void loadUserTreeTable() {
         JFXTreeTableColumn<UserTree, String> id = new JFXTreeTableColumn<>("Identifiant");
@@ -380,7 +401,7 @@ public class ManagementUserController extends BaseController {
     }
 
     /**
-     * Updates the user object with all of the inputted values (after checks)
+     * Updates the User object with all of the inputted values (after checks)
      *
      * @param user the User to update
      */
@@ -400,7 +421,7 @@ public class ManagementUserController extends BaseController {
     }
 
     /**
-     * Adds a user to the tree table with a user instance
+     * Adds a User to the tree table with a user instance
      *
      * @param user a User to add in the tree table
      */
@@ -416,9 +437,9 @@ public class ManagementUserController extends BaseController {
     }
 
     /**
-     * Returns if a user is selected/being edited
+     * Returns if a User is selected/being edited
      *
-     * @return if a user is being edited
+     * @return if a User is being edited
      */
     private boolean isEditing() {
         return this.currentUser != null;
