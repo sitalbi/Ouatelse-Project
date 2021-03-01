@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * The controller of the authentification of the store
+ * Store Authentification Controller
  */
 public class AuthStoreController extends BaseController {
 
@@ -31,10 +31,10 @@ public class AuthStoreController extends BaseController {
     private EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
 
     /**
-     * Initializes the controller
+     * Called to initialize a controller after its root element has been completely processed
      *
-     * @param location {@inheritDoc}
-     * @param resources {@inheritDoc}
+     * @param location  The Location used to resolve relative paths for the root object, or null if the location is not known
+     * @param resources The Resources used to localize the root object, or null if the resources are not found
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -50,7 +50,7 @@ public class AuthStoreController extends BaseController {
     }
 
     /**
-     * Handles the connection to a store
+     * Manages what happens when you click on the login button
      */
     public void onConnectionButtonClick() {
         if (idField.getText().trim().isEmpty() || passwordField.getText().trim().isEmpty()) {

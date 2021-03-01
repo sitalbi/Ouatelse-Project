@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
- *
+ * Store Management Controller
  */
 public class ManagementStoreController extends BaseController {
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
@@ -44,11 +44,10 @@ public class ManagementStoreController extends BaseController {
     private Store currentStore;
 
     /**
-     * Called to initialize a controller after its root element has been
-     * completely processed.
+     * Called to initialize a controller after its root element has been completely processed
      *
-     * @param location {@inheritDoc}
-     * @param resources {@inheritDoc}
+     * @param location  The Location used to resolve relative paths for the root object, or null if the location is not known
+     * @param resources The Resources used to localize the root object, or null if the resources are not found
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -173,7 +172,7 @@ public class ManagementStoreController extends BaseController {
     }
 
     /**
-     * Deletes a store
+     * Deletes a Store
      */
     public void onDeleteButtonClick() {
         this.entityManagerStore.delete(storesListView.getSelectionModel().getSelectedItem());
@@ -183,9 +182,9 @@ public class ManagementStoreController extends BaseController {
     }
 
     /**
-     * Load the selected store's informations into the editable fields
+     * Load the selected Store's informations into the editable fields
      *
-     * @param store The store to view / edit the informations from
+     * @param store The Store to view/edit the informations from
      */
     private void loadStoreInformation(Store store) {
         this.clearStoreInformation();
@@ -205,7 +204,7 @@ public class ManagementStoreController extends BaseController {
     }
 
     /**
-     * Clears the editable fields from a store's informations
+     * Clears the editable fields from a Store's informations
      */
     private void clearStoreInformation() {
         this.newStoreNameField.setText("");
@@ -219,13 +218,18 @@ public class ManagementStoreController extends BaseController {
     }
 
     /**
-     * Loads the stores into the ListView storesListView
+     * Loads the Stores into the ListView storesListView
      */
     private void loadStoresList() {
         this.storesListView.getItems().clear();
         this.entityManagerStore.getAll().forEach(store -> this.storesListView.getItems().add(store));
     }
 
+    /**
+     * Checks if the current Store is being edited
+     *
+     * @return True or False
+     */
     private boolean isEditing() {
         return this.currentStore != null;
     }
