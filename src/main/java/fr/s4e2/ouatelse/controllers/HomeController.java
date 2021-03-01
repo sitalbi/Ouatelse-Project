@@ -5,10 +5,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
-import fr.s4e2.ouatelse.screens.AuthUserScreen;
-import fr.s4e2.ouatelse.screens.ManagementRoleScreen;
-import fr.s4e2.ouatelse.screens.ManagementStoreScreen;
-import fr.s4e2.ouatelse.screens.ManagementUserScreen;
+import fr.s4e2.ouatelse.screens.*;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.ContentDisplay;
@@ -135,9 +132,7 @@ public class HomeController extends BaseController {
     }
 
     private void onProductsButtonClick() {
-        //todo : open parameters screen
-
-        System.out.println("Open parameters screen");
+        new ManagementProductScreen().open();
     }
 
     public void buildButtonsFromPermissions() {

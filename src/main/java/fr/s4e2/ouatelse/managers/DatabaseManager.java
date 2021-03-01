@@ -19,6 +19,7 @@ public class DatabaseManager {
     private EntityManagerRole entityManagerRole;
     private EntityManagerStore entityManagerStore;
     private EntityManagerUser entityManagerUser;
+    private EntityManagerProduct entityManagerProduct;
 
     public DatabaseManager(String databaseName) {
         try {
@@ -55,6 +56,7 @@ public class DatabaseManager {
         this.entityManagerRole = new EntityManagerRole(connectionSource);
         this.entityManagerStore = new EntityManagerStore(connectionSource);
         this.entityManagerUser = new EntityManagerUser(connectionSource);
+        this.entityManagerProduct = new EntityManagerProduct(connectionSource);
     }
 
     public static void deleteDatabase(String databaseName) {

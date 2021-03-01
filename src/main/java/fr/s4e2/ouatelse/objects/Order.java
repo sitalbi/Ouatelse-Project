@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Map;
+import java.util.HashMap;
 
 @Getter
 @Setter
@@ -16,7 +16,7 @@ import java.util.Map;
 public class Order {
 
     @DatabaseField(dataType = DataType.SERIALIZABLE)
-    private Map<Product, Integer> products;
+    private HashMap<Product, Integer> products;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Store store;
