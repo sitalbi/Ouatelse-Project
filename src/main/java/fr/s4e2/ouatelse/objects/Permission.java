@@ -4,6 +4,9 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import org.apache.commons.lang3.text.WordUtils;
 
+/**
+ * The Permission enumeration lists all possible permissions that can be granted to a user
+ */
 public enum Permission {
     @DatabaseField(dataType = DataType.ENUM_STRING)
     ROLE_MANAGEMENT,
@@ -19,6 +22,11 @@ public enum Permission {
     CLIENTS_MANAGEMENT,
     PLANNING_MANAGEMENT;
 
+    /**
+     * Allows to capitalize the first letter of the first name and last name and replace "_" by blanks
+     *
+     * @return the converted name
+     */
     @Override
     public String toString() {
         return WordUtils.capitalizeFully(name().replace("_", " "));
