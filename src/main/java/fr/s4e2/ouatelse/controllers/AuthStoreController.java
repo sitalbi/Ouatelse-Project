@@ -56,7 +56,7 @@ public class AuthStoreController extends BaseController {
     }
 
     /**
-     * M anages what happens when you click on the login button
+     * Manages what happens when you click on the login button
      */
     public void onConnectionButtonClick() {
         if (idField.getText().trim().isEmpty() || passwordField.getText().trim().isEmpty()) {
