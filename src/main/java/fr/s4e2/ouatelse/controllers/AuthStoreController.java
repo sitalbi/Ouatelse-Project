@@ -46,7 +46,7 @@ public class AuthStoreController extends BaseController {
             return;
         }
 
-        Store store = this.entityManagerStore.getStoreIfExists(idField.getText().trim(), passwordField.getText().trim());
+        Store store = this.entityManagerStore.authGetStoreIfExists(idField.getText().trim(), passwordField.getText().trim());
 
         if (store == null) {
             this.errorMessageField.setText("Erreur : Le magasin n'existe pas / mot de passe faux");
