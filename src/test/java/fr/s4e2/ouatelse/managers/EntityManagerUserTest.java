@@ -172,7 +172,7 @@ class EntityManagerUserTest {
             iteratedUsers.add(it.next());
         }
 
-        assertEquals(iteratedUsers.size(), 2);
+        assertEquals(2, iteratedUsers.size());
         assertFalse(usersIterator.hasNext());
     }
 
@@ -209,7 +209,7 @@ class EntityManagerUserTest {
 
         userList = this.entityManagerUser.getQueryForAll();
         assertFalse(userList.isEmpty());
-        assertEquals(userList.size(), 2);
+        assertEquals(2, userList.size());
     }
 
     /*
