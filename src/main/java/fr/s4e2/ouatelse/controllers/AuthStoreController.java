@@ -19,6 +19,9 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * The controller of the authentification of the store
+ */
 public class AuthStoreController extends BaseController {
 
     public Label errorMessageField;
@@ -28,6 +31,12 @@ public class AuthStoreController extends BaseController {
     private User currentUser;
     private Dao<Store, Long> storeDao;
 
+    /**
+     * Initializes the controller
+     *
+     * @param location {@inheritDoc}
+     * @param resources {@inheritDoc}
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
@@ -46,6 +55,9 @@ public class AuthStoreController extends BaseController {
         });
     }
 
+    /**
+     * Handles the connection to a store
+     */
     public void onConnectionButtonClick() {
         if (idField.getText().trim().isEmpty() || passwordField.getText().trim().isEmpty()) {
             this.errorMessageField.setText("Veuillez remplir tout les champs");

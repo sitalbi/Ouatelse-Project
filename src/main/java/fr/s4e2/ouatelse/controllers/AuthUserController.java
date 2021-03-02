@@ -17,6 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * The controller of the authentification of the user
+ */
 public class AuthUserController extends BaseController {
 
     public JFXPasswordField passwordField;
@@ -24,6 +27,11 @@ public class AuthUserController extends BaseController {
     public Label errorMessageField;
     private Dao<User, Long> userDao;
 
+    /**
+     * Initializes the controller
+     * @param location {@inheritDoc}
+     * @param resources {@inheritDoc}
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
@@ -42,6 +50,9 @@ public class AuthUserController extends BaseController {
         });
     }
 
+    /**
+     * Handles the connection of a user on his account
+     */
     public void onConnectionButtonClick() {
         if (idField.getText().trim().isEmpty() && passwordField.getText().trim().isEmpty()) {
             this.errorMessageField.setText("Veuillez remplir tout les champs");
