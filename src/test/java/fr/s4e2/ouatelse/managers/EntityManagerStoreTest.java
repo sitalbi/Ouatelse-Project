@@ -24,10 +24,16 @@ class EntityManagerStoreTest {
         DatabaseManager.deleteDatabase(DATABASE_NAME);
         this.databaseManager = new DatabaseManager(DATABASE_NAME);
         this.entityManagerStore = databaseManager.getEntityManagerStore();
+
+        CloseableIterator<Store> iterator = this.entityManagerStore.getAll();
+        iterator.forEachRemaining(store -> this.entityManagerStore.delete(store));
     }
 
     @AfterEach
     void tearDown() {
+        CloseableIterator<Store> iterator = this.entityManagerStore.getAll();
+        iterator.forEachRemaining(store -> this.entityManagerStore.delete(store));
+
         if (this.databaseManager != null) {
             try {
                 this.databaseManager.close();
@@ -61,7 +67,7 @@ class EntityManagerStoreTest {
             - the store we want to delete doesn't exist
      */
     @Test
-    void delete()  {
+    void delete() {
         // The store does not exist before delete
         Store storeDoesNotExist = new Store("theStoreDoesNotExist");
         assertFalse(this.entityManagerStore.exists(storeDoesNotExist));
@@ -153,7 +159,7 @@ class EntityManagerStoreTest {
             stores.add(store);
         }
 
-        assertEquals(stores.size(), 2);
+        assertEquals(2, stores.size());
     }
 
     /*
@@ -184,7 +190,7 @@ class EntityManagerStoreTest {
 
 
         // There are stores in the database
-        Store firstStore = new Store( "Store1");
+        Store firstStore = new Store("Store1");
         firstStore.setPassword("test");
         Store secondStore = new Store("Store2");
         secondStore.setPassword("test");
@@ -194,7 +200,7 @@ class EntityManagerStoreTest {
 
         storeList = this.entityManagerStore.getQueryForAll();
         assertFalse(storeList.isEmpty());
-        assertEquals(storeList.size(), 2);
+        assertEquals(2, storeList.size());
     }
 
     /*
@@ -213,7 +219,7 @@ class EntityManagerStoreTest {
     @Test
     void getStoreIfExists() {
         // The store is not in the database
-        Store storeDoesNotExist = new Store( "storeDoesNotExist");
+        Store storeDoesNotExist = new Store("storeDoesNotExist");
         storeDoesNotExist.setPassword("test");
 
         assertFalse(this.entityManagerStore.exists(storeDoesNotExist));
@@ -223,15 +229,15 @@ class EntityManagerStoreTest {
 
 
         // The store is in the database
-        Store storeExists = new Store( "Store");
+        Store storeExists = new Store("Store");
         storeExists.setPassword("test");
 
         this.entityManagerStore.create(storeExists);
         assertTrue(this.entityManagerStore.exists(storeExists));
 
         getStore = this.entityManagerStore.authGetStoreIfExists("Store", "test");
-        assertNotEquals(getStore, null);
-        assertEquals(storeExists.getId(),getStore.getId());
-        assertEquals(storeExists.getPassword(),getStore.getPassword());
+        assertNotEquals(null, getStore);
+        assertEquals(storeExists.getId(), getStore.getId());
+        assertEquals(storeExists.getPassword(), getStore.getPassword());
     }
 }
