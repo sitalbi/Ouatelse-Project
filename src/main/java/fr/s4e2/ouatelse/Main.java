@@ -1,8 +1,9 @@
 package fr.s4e2.ouatelse;
 
 import fr.s4e2.ouatelse.screens.AuthUserScreen;
-import fr.s4e2.ouatelse.utils.DatabaseManager;
+
 import javafx.application.Application;
+import fr.s4e2.ouatelse.utils.DatabaseManager;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
