@@ -37,8 +37,7 @@ public class ManagementRoleController extends BaseController {
     private Role currentRole = null;
 
     /**
-     * Called to initialize a controller after its root element has been
-     * completely processed.
+     * Called to initialize a controller after its root element has been completely processed
      *
      * @param location {@inheritDoc}
      * @param resources {@inheritDoc}
@@ -64,11 +63,8 @@ public class ManagementRoleController extends BaseController {
         this.rolesListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Role>() {
             /**
              * This method needs to be provided by an implementation of
-             * {@code ChangeListener}. It is called if the value of an
-             * {@link ObservableValue} changes.
-             * <p>
-             * In general is is considered bad practice to modify the observed value in
-             * this method.
+             * {@code ChangeListener}. It is called if the value of an {@link ObservableValue} changes.
+             * In general is is considered bad practice to modify the observed value in this method.
              *
              * @param observable The {@code ObservableValue} which value changed
              * @param oldValue   The old value
@@ -124,11 +120,8 @@ public class ManagementRoleController extends BaseController {
         ChangeListener<Permission> changeListener = new ChangeListener<Permission>() {
             /**
              * This method needs to be provided by an implementation of
-             * {@code ChangeListener}. It is called if the value of an
-             * {@link ObservableValue} changes.
-             * <p>
-             * In general is is considered bad practice to modify the observed value in
-             * this method.
+             * {@code ChangeListener}. It is called if the value of an {@link ObservableValue} changes.
+             * In general is is considered bad practice to modify the observed value in this method.
              *
              * @param observable The {@code ObservableValue} which value changed
              * @param oldValue   The old value
@@ -229,7 +222,7 @@ public class ManagementRoleController extends BaseController {
     }
 
     /**
-     * Deletes a role
+     * Deletes a Role
      *
      * @param mouseEvent The mouse click event
      */
@@ -253,10 +246,10 @@ public class ManagementRoleController extends BaseController {
     }
 
     /**
-     * Loads the permissions the role has in the ListView permissionsRoleHas and the permissions the role hasn't in
+     * Loads the permissions the Role has in the ListView permissionsRoleHas and the permissions the Role hasn't in
      * the ListView permissionsRoleHasnt
      *
-     * @param role The selected role
+     * @param role The selected Role
      */
     private void loadPermissionLists(Role role) {
         this.clearPermissionLists();
@@ -277,9 +270,9 @@ public class ManagementRoleController extends BaseController {
     }
 
     /**
-     * Saves changes on the role entity
+     * Saves changes on the Role entity
      *
-     * @param role a chosen role
+     * @param role a chosen Role
      */
     private void saveRole(Role role) {
         try {

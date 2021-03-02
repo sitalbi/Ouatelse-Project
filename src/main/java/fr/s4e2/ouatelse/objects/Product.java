@@ -7,6 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The Product table contains an identifier, a barcode, a name, a selling price, a purchase price,
+ * a reference, a brand, a product status, a category, a vendor and a store
+ */
 @Getter
 @Setter
 @NoArgsConstructor
