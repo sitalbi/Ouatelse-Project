@@ -29,14 +29,17 @@ public class ManagementProductController extends BaseController {
 
     private final EntityManagerProduct entityManagerProduct = Main.getDatabaseManager().getEntityManagerProduct();
     private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
+    public JFXTreeTableView stockPricesTreeView; // todo : create a Tree
     // top
-    public JFXTreeTableView<Product.ProductTree> productsTreeView;
-    public JFXTreeTableView stockOrderTreeView;
-
+    @FXML
+    private JFXTreeTableView<Product.ProductTree> productsTreeView;
+    @FXML
+    private JFXTreeTableView stockOrderTreeView; // todo : create a Tree
     // Error labels
-    public Label stockErrorLabel;
-    public Label descriptionErrorLabel;
-    public Label informationErrorLabel;
+    @FXML
+    private Label stockErrorLabel;
+    @FXML
+    private Label descriptionErrorLabel;
 
     // Information Tab
     @FXML
@@ -66,7 +69,8 @@ public class ManagementProductController extends BaseController {
 
     @FXML
     private Button confirmPriceStockButton;
-    public JFXTreeTableView stockPricesTreeView; // todo : create another Tree
+    @FXML
+    private Label informationErrorLabel;
     private Product currentProduct;
 
     @Override

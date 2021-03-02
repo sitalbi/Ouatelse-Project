@@ -7,6 +7,7 @@ import fr.s4e2.ouatelse.managers.EntityManagerStore;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.screens.HomeScreen;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -18,9 +19,12 @@ import java.util.ResourceBundle;
 
 public class AuthStoreController extends BaseController {
 
-    public Label errorMessageField;
-    public JFXPasswordField passwordField;
-    public JFXTextField idField;
+    @FXML
+    private Label errorMessageField;
+    @FXML
+    private JFXPasswordField passwordField;
+    @FXML
+    private JFXTextField idField;
     @Setter
     @Getter
     private User currentUser;
