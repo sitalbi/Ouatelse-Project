@@ -24,6 +24,9 @@ import lombok.Setter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The controller of the the home menu
+ */
 public class HomeController extends BaseController {
 
     private static final double DEFAULT_BUTTON_SIZE = 1000;
@@ -41,11 +44,24 @@ public class HomeController extends BaseController {
     @FXML
     private Label homeAdminEmail;
 
+    /**
+     * Initializes the controller
+     *
+     * @param location  The location used to resolve relative paths for the root object,
+     *                  or null if the location is not known.
+     * @param resources The resources used to localize the root object,
+     *                  or null if the location is not known.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
     }
 
+    /**
+     * Sets user's datas on the application
+     *
+     * @param user the user of the application
+     */
     public void setCurrentUser(User user) {
         this.currentUser = user;
 
@@ -66,6 +82,9 @@ public class HomeController extends BaseController {
         this.buildButtonsFromPermissions();
     }
 
+    /**
+     * Handles the disconnection button
+     */
     public void onDisconnectClick() {
         this.currentUser = null;
         Stage stage = (Stage) this.homeAdminName.getScene().getWindow();
@@ -74,72 +93,111 @@ public class HomeController extends BaseController {
         new AuthUserScreen().open();
     }
 
+    /**
+     * Opens an user management screen
+     */
     private void onUserManagementButtonClick() {
         new ManagementUserScreen().open();
     }
 
+    /**
+     * Opens a role management screen
+     */
     private void onRoleManagementButtonClick() {
         new ManagementRoleScreen().open();
     }
 
+    /**
+     * Opens a store management screen
+     */
     private void onStoresButtonClick() {
         new ManagementStoreScreen().open();
     }
 
+    /**
+     * Opens a monitoring screen
+     */
     private void onMonitoringButtonClick() {
         //todo : open monitoring screen
 
         System.out.println("Open monitoring screen");
     }
 
+    /**
+     * Opens an employee management screen
+     */
     private void onEmployeeManagementButtonClick() {
         //todo : open employee management screen
 
         System.out.println("Open employee management screen");
     }
 
+    /**
+     * Opens a planning screen
+     */
     private void onPlanningButtonClick() {
         //todo : open planning screen
 
         System.out.println("Open planning screen");
     }
 
+    /**
+     * Opens a salary management screen
+     */
     private void onSalaryManagementButtonClick() {
         //todo : open salaray management screen
 
         System.out.println("open salaray management screen");
     }
 
+    /**
+     * Opens a statistics screen
+     */
     private void onStatisticsButtonClick() {
         //todo : open statistics screen
 
         System.out.println("Open statistics screen");
     }
 
+    /**
+     * Opens a stocks management screen
+     */
     private void onStocksButtonClick() {
         //todo : open stocks screen
 
         System.out.println("Open stocks screen");
     }
 
+    /**
+     * Opens a sales screen
+     */
     private void onSalesButtonClick() {
         //todo : open sales screen
 
         System.out.println("Open sales screen");
     }
 
+    /**
+     * Opens a clients management screen
+     */
     private void onClientsButtonClick() {
         //todo : open monitoring screen
 
         System.out.println("Open monitoring screen");
     }
 
+    /**
+     * Opens a products management screen
+     */
     private void onProductsButtonClick() {
         //todo : open parameters screen
 
         System.out.println("Open parameters screen");
     }
 
+    /**
+     * Builds buttons for user's permissions
+     */
     public void buildButtonsFromPermissions() {
         if (this.currentUser != null) {
             this.currentUser.getRole().getPermissions().forEach(permission -> {

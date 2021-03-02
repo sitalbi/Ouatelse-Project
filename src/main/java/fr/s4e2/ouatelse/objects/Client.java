@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The Client table extends Person and contains a home phone number, a work phone number, a fax and a detail field
+ */
 @Getter
 @Setter
 @NoArgsConstructor

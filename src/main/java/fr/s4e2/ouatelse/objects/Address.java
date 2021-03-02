@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The Address table contains an identifier, a postal code, a city and an address
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,6 +27,13 @@ public class Address {
     @DatabaseField(canBeNull = false)
     private String address;
 
+    /**
+     * Constructor
+     *
+     * @param zipCode the Zip Code
+     * @param city    the City
+     * @param address the Address
+     */
     public Address(int zipCode, String city, String address) {
         this.zipCode = zipCode;
         this.city = city;
