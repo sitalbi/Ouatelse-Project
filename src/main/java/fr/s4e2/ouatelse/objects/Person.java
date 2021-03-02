@@ -8,6 +8,9 @@ import lombok.Setter;
 
 import java.util.Date;
 
+/**
+ * The Person table contains an ID, last name, first name, phone number, email, date of birth, title, status and address
+ */
 @Getter
 @Setter
 @NoArgsConstructor

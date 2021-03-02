@@ -16,6 +16,9 @@ import lombok.Setter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The controller of the authentification of the store
+ */
 public class AuthStoreController extends BaseController {
 
     public Label errorMessageField;
@@ -27,6 +30,14 @@ public class AuthStoreController extends BaseController {
     @Setter
     private EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
 
+    /**
+     * Initializes the controller
+     *
+     * @param location  The location used to resolve relative paths for the root object,
+     *                  or null if the location is not known.
+     * @param resources The resources used to localize the root object,
+     *                  or null if the location is not known.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
@@ -40,6 +51,9 @@ public class AuthStoreController extends BaseController {
         });
     }
 
+    /**
+     * Handles the connection to a store
+     */
     public void onConnectionButtonClick() {
         if (idField.getText().trim().isEmpty() || passwordField.getText().trim().isEmpty()) {
             this.errorMessageField.setText("Veuillez remplir tout les champs");

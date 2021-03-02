@@ -10,6 +10,9 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Manages the Database connection and the creation of tables
+ */
 @Getter
 public class DatabaseManager {
 
@@ -20,6 +23,9 @@ public class DatabaseManager {
     private EntityManagerStore entityManagerStore;
     private EntityManagerUser entityManagerUser;
 
+    /**
+     * Constructs the DatabaseManager
+     */
     public DatabaseManager(String databaseName) {
         try {
             this.connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + databaseName);
@@ -31,10 +37,20 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Closes the connection source
+     *
+     * @throws IOException Signals that an I/O exception of some sort has occurred. This class is the general class of exceptions produced by failed or interrupted I/O operations.
+     */
     public void close() throws IOException {
         connectionSource.close();
     }
 
+    /**
+     * Sets up all the necessary tables
+     *
+     * @throws SQLException occurs when there is a connection that can't be made
+     */
     public void setupTables() throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, Address.class);
         TableUtils.createTableIfNotExists(connectionSource, Availability.class);
