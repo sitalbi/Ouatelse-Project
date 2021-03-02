@@ -23,13 +23,20 @@ public class ManagementRoleController extends BaseController {
 
     private static final String TEXT_FIELD_HINT = "Veuillez saisir un nom";
     private static final String ROLE_ALREADY_EXISTS = "Ce rôle existe déjà!";
-    public ListView<Permission> permissionsRoleHas;
-    public ListView<Permission> permissionsRoleHasnt;
-    public TextField newRoleNameField;
-    public Button addPermissionButton;
-    public Button deletePermissionButton;
+
+    @FXML
+    private ListView<Permission> permissionsRoleHas;
+    @FXML
+    private ListView<Permission> permissionsRoleHasnt;
+    @FXML
+    private TextField newRoleNameField;
+    @FXML
+    private Button addPermissionButton;
+    @FXML
+    private Button deletePermissionButton;
     @FXML
     private ListView<Role> rolesListView;
+
     @Setter
     private EntityManagerRole entityManagerRole = Main.getDatabaseManager().getEntityManagerRole();
     private Role currentRole = null;
