@@ -9,6 +9,7 @@ import fr.s4e2.ouatelse.objects.Address;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.utils.Utils;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
@@ -26,15 +27,24 @@ public class ManagementStoreController extends BaseController {
     private static final String MANAGER_NOT_FOUND = "Responsable du magasin pas trouvé!";
     private static final String PASSWORD_NOT_MATCHING = "Mot de passe non concordants!";
 
-    public ListView<Store> storesListView;
-    public TextField newStoreNameField;
-    public TextField newStoreManagerField;
-    public TextField newStoreAddressField;
-    public TextField newStoreCityField;
-    public TextField newStoreZipcodeField;
-    public PasswordField newStorePasswordField;
-    public PasswordField newStoreConfirmPasswordField;
-    public Label errorMessage;
+    @FXML
+    private ListView<Store> storesListView;
+    @FXML
+    private TextField newStoreNameField;
+    @FXML
+    private TextField newStoreManagerField;
+    @FXML
+    private TextField newStoreAddressField;
+    @FXML
+    private TextField newStoreCityField;
+    @FXML
+    private TextField newStoreZipcodeField;
+    @FXML
+    private PasswordField newStorePasswordField;
+    @FXML
+    private PasswordField newStoreConfirmPasswordField;
+    @FXML
+    private Label errorMessage;
 
     private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
     private final EntityManagerAddress entityManagerAddress = Main.getDatabaseManager().getEntityManagerAddress();

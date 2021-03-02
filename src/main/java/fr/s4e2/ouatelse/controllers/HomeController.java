@@ -26,15 +26,18 @@ public class HomeController extends BaseController {
     private static final double DEFAULT_BUTTON_SIZE = 1000;
     private static final double MINIMUM_BUTTON_HEIGHT = 74;
 
-    public VBox verticalButtonsBar;
-    public Label roleField;
-    public ScrollPane scrollPanel;
     private User currentUser;
     @Setter
     private Store currentStore;
+
+    @FXML
+    private VBox verticalButtonsBar;
+    @FXML
+    private Label roleField;
+    @FXML
+    private ScrollPane scrollPanel;
     @FXML
     private Label homeAdminName;
-
     @FXML
     private Label homeAdminEmail;
 
