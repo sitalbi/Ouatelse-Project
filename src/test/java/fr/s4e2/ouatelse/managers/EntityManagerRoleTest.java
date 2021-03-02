@@ -146,7 +146,7 @@ class EntityManagerRoleTest {
             iteratedRoles.add(it.next());
         }
 
-        assertEquals(iteratedRoles.size(), 2);
+        assertEquals(2, iteratedRoles.size());
         assertFalse(rolesIterator.hasNext());
     }
 
@@ -183,7 +183,7 @@ class EntityManagerRoleTest {
 
         roleList = this.entityManagerRole.getQueryForAll();
         assertFalse(roleList.isEmpty());
-        assertEquals(roleList.size(), 2);
+        assertEquals(2, roleList.size());
     }
 
     /*

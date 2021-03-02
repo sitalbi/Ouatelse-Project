@@ -4,7 +4,9 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.managers.EntityManagerProduct;
+import fr.s4e2.ouatelse.managers.EntityManagerStore;
 import fr.s4e2.ouatelse.objects.Product;
+import fr.s4e2.ouatelse.objects.ProductState;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.Vendor;
 import javafx.collections.FXCollections;
@@ -12,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 
 import java.net.URL;
@@ -21,12 +24,20 @@ import java.util.ResourceBundle;
 public class ManagementProductController extends BaseController {
 
     // Error messages
-    private final String PRODUCT_ALREADY_EXISTS = "Ce produit existe déjà!";
-    private final String NOT_ALL_FIELDS_FILLED = "Informations sur le produit inexistantes ou manquantes, création de celui-ci impossible";
+    private static final String PRODUCT_ALREADY_EXISTS = "Ce produit existe déjà!";
+    private static final String NOT_ALL_FIELDS_FILLED = "Informations sur le produit inexistantes ou manquantes, création de celui-ci impossible";
+
     private final EntityManagerProduct entityManagerProduct = Main.getDatabaseManager().getEntityManagerProduct();
+    private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
     // top
-    public JFXTreeTableView<Product.ProductTree> productsTreeView; // todo : create ProductTree
+    public JFXTreeTableView<Product.ProductTree> productsTreeView;
     public JFXTreeTableView stockOrderTreeView;
+
+    // Error labels
+    public Label stockErrorLabel;
+    public Label descriptionErrorLabel;
+    public Label informationErrorLabel;
+
     // Information Tab
     @FXML
     private JFXTextField informationNameInput;
@@ -35,8 +46,6 @@ public class ManagementProductController extends BaseController {
     @FXML
     private JFXTextField informationBarcodeInput;
     @FXML
-    private JFXTextField informationCommentInput;
-    @FXML
     private JFXCheckBox informationStockCheckBox;
     @FXML
     private Button confirmInformationButton;
@@ -44,13 +53,9 @@ public class ManagementProductController extends BaseController {
     private Button deleteProductButton;
     // Description Tab
     @FXML
-    private JFXTextField descriptionTypeInput;
-    @FXML
     private JFXTextField descriptionCategoryInput;
     @FXML
     private JFXTextField descriptionBrandInput;
-    @FXML
-    private JFXTextField descriptionModelInput;
     @FXML
     private ComboBox<Vendor> descriptionVendorComboBox;
     @FXML
@@ -68,20 +73,46 @@ public class ManagementProductController extends BaseController {
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
         this.loadProductTreeTable();
+
+        this.entityManagerStore.getAll().forEachRemaining(store -> this.stockStoreComboBox.getItems().add(store));
+
+        this.productsTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                try {
+                    this.currentProduct = this.entityManagerProduct.executeQuery(this.entityManagerProduct.getQueryBuilder()
+                            .where().eq("reference", newValue.getValue().getReference().getValue())
+                            .prepare()
+                    ).stream().findFirst().orElse(null);
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+
+                this.loadProductInformation();
+            } else {
+                this.currentProduct = null;
+            }
+        });
     }
 
     // First tab ################################
     public void onConfirmInformationButton() throws SQLException {
-        // TODO : Add an error message
+        this.informationErrorLabel.setText("");
+
+        // Check if all fields are filled
         if (informationNameInput.getText().trim().isEmpty()
                 || informationReferenceInput.getText().trim().isEmpty()
                 || informationBarcodeInput.getText().trim().isEmpty()
-                || informationCommentInput.getText().trim().isEmpty()
-        ) return;
+                || descriptionBrandInput.getText().trim().isEmpty()
+                || descriptionVendorComboBox.getValue() == null
+                || descriptionCategoryInput.getText().isEmpty()
+        ) {
+            this.informationErrorLabel.setText(NOT_ALL_FIELDS_FILLED);
+            return;
+        }
 
         // TODO : Check types
 
-        // user already exists!
+        // If product already exists
         if (!this.isEditing()) {
             Product product = this.entityManagerProduct.executeQuery(
                     this.entityManagerProduct.getQueryBuilder()
@@ -89,7 +120,7 @@ public class ManagementProductController extends BaseController {
                             .prepare()
             ).stream().findFirst().orElse(null);
             if (product != null) {
-                // TODO : this.errorMessage.setText(PRODUCT_ALREADY_EXISTS);
+                this.informationErrorLabel.setText(PRODUCT_ALREADY_EXISTS);
                 this.informationReferenceInput.getParent().requestFocus();
                 return;
             }
@@ -111,27 +142,45 @@ public class ManagementProductController extends BaseController {
         } else {
             // Creation of a new product
             Product newProduct = new Product();
+
             newProduct.setName(informationNameInput.getText().trim());
             newProduct.setReference(Long.parseLong(informationReferenceInput.getText().trim()));
             newProduct.setBarCode(informationBarcodeInput.getText().trim());
+            newProduct.setState(this.informationStockCheckBox.isSelected() ? ProductState.OUT_OF_STOCK : ProductState.IN_STOCK);
+
+            newProduct.setBrand(this.descriptionBrandInput.getText().trim());
+            newProduct.setCategory(this.descriptionCategoryInput.getText().trim());
+
+            newProduct.setSoldBy(this.descriptionVendorComboBox.getValue());
+
+            newProduct.setSellingPrice(0);
+            newProduct.setPurchasePrice(0);
 
             // Adds created product to the table
             this.addProductToTreeTable(newProduct);
         }
-        this.clearInformation();
+        this.clearInformations();
     }
 
     public void onDeleteProductButton() {
+        if (this.currentProduct == null) return;
+
+        this.entityManagerProduct.delete(this.currentProduct);
+        this.productsTreeView.getRoot().getChildren().remove(productsTreeView.getSelectionModel().getSelectedItem());
+        this.productsTreeView.getSelectionModel().clearSelection();
+        this.clearInformations();
     }
     // ##########################################
 
     // Second tab ###############################
     public void onConfirmDescriptionButton() {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
     // ##########################################
 
     // Third tab ################################
     public void onConfirmPriceStockButton() {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
     // ##########################################
 
@@ -184,6 +233,24 @@ public class ManagementProductController extends BaseController {
         this.productsTreeView.setShowRoot(false);
     }
 
+    private void loadProductInformation() {
+        this.clearInformations();
+
+        if (this.currentProduct == null) return;
+
+        this.informationNameInput.setText(this.currentProduct.getName());
+        this.informationReferenceInput.setText(Long.toString(this.currentProduct.getReference()));
+        this.informationBarcodeInput.setText(this.currentProduct.getBarCode());
+        this.informationStockCheckBox.setSelected(this.currentProduct.getState() == ProductState.OUT_OF_STOCK);
+
+        this.descriptionCategoryInput.setText(this.currentProduct.getCategory());
+        this.descriptionBrandInput.setText(this.currentProduct.getBrand());
+        this.descriptionVendorComboBox.getItems().stream()
+                .filter(vendor -> vendor.getName().equals(this.currentProduct.getSoldBy().getName()))
+                .findFirst()
+                .ifPresent(vendor -> descriptionVendorComboBox.getSelectionModel().select(vendor));
+    }
+
     private void addProductToTreeTable(Product product) {
         this.productsTreeView.getRoot().getChildren().add(new TreeItem<>(new Product.ProductTree(
                 product.getReference(),
@@ -197,9 +264,21 @@ public class ManagementProductController extends BaseController {
         )));
     }
 
-    // TODO : this
-    private void clearInformation() {
+    // TODO : Finish the last table's fields
+    private void clearInformations() {
+        // First tab fields
+        this.informationNameInput.setText("");
+        this.informationReferenceInput.setText("");
+        this.informationBarcodeInput.setText("");
+        this.informationStockCheckBox.setSelected(false);
 
+        // Second tabs fields
+        this.descriptionCategoryInput.setText("");
+        this.descriptionBrandInput.setText("");
+        this.descriptionVendorComboBox.getSelectionModel().select(-1);
+
+        // Third tab fields
+        this.stockStoreComboBox.getSelectionModel().select(-1);
     }
 
     private boolean isEditing() {
