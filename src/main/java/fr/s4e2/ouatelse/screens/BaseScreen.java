@@ -21,11 +21,11 @@ import java.util.Objects;
 @Setter
 public abstract class BaseScreen {
 
-    public static Image OUATELSE_ICON = new Image(Objects.requireNonNull(Main.class.getClassLoader().getResource("images/ouatelse_icon.png")).toExternalForm());
+    public static final Image OUATELSE_ICON = new Image(Objects.requireNonNull(Main.class.getClassLoader().getResource("images/ouatelse_icon.png")).toExternalForm());
 
     private Stage stage;
 
-    public BaseScreen(String fxml, String title) {
+    protected BaseScreen(String fxml, String title) {
         this.stage = new Stage();
 
         FXMLLoader loader = new FXMLLoader(Main.class.getClassLoader().getResource(fxml));
@@ -44,7 +44,7 @@ public abstract class BaseScreen {
         }
     }
 
-    public BaseScreen(String fxml, String title, User user, Store store) {
+    protected BaseScreen(String fxml, String title, User user, Store store) {
         this.stage = new Stage();
 
         FXMLLoader loader = new FXMLLoader();
@@ -69,7 +69,7 @@ public abstract class BaseScreen {
         }
     }
 
-    public BaseScreen(String fxml, String title, User user) {
+    protected BaseScreen(String fxml, String title, User user) {
         this.stage = new Stage();
 
         FXMLLoader loader = new FXMLLoader();
