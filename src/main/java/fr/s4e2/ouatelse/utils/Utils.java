@@ -6,6 +6,8 @@ import java.util.Date;
 
 public class Utils {
 
+    private Utils() {}
+
     public static Integer getNumber(String s) {
         try {
             return Integer.parseInt(s);

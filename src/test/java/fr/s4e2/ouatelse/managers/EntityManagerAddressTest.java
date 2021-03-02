@@ -157,7 +157,7 @@ class EntityManagerAddressTest {
             iteratedAddresses.add(it.next());
         }
 
-        assertEquals(iteratedAddresses.size(), 2);
+        assertEquals(2, iteratedAddresses.size());
         assertFalse(addressesIterator.hasNext());
     }
 
@@ -197,7 +197,7 @@ class EntityManagerAddressTest {
 
         addressList = this.entityManagerAddress.getQueryForAll();
         assertFalse(addressList.isEmpty());
-        assertEquals(addressList.size(), 2);
+        assertEquals(2, addressList.size());
     }
 
     /*

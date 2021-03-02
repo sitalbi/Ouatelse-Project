@@ -25,8 +25,10 @@ public class BaseController implements Initializable {
     }
 
     public void onAbout() {
+        throw new UnsupportedOperationException();
     }
 
     public void onPreferences() {
+        throw new UnsupportedOperationException();
     }
 }
