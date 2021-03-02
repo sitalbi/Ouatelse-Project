@@ -1,7 +1,9 @@
 package fr.s4e2.ouatelse.managers;
 
 import com.j256.ormlite.dao.CloseableIterator;
-import fr.s4e2.ouatelse.objects.*;
+import fr.s4e2.ouatelse.objects.Product;
+import fr.s4e2.ouatelse.objects.ProductState;
+import fr.s4e2.ouatelse.objects.Store;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +26,7 @@ class EntityManagerProductTest {
         Product compliantProduct = new Product();
         // Generate a random of type long for the reference of the product (unique attribute)
         Random r = new Random();
-        long ref = (long)(r.nextDouble()*1000);
+        long ref = (long) (r.nextDouble() * 1000);
 
         compliantProduct.setName("Some name");
         compliantProduct.setBarCode("Barcode");
@@ -44,10 +46,16 @@ class EntityManagerProductTest {
         DatabaseManager.deleteDatabase(DATABASE_NAME);
         this.databaseManager = new DatabaseManager(DATABASE_NAME);
         this.entityManagerProduct = databaseManager.getEntityManagerProduct();
+
+        CloseableIterator<Product> iterator = this.entityManagerProduct.getAll();
+        iterator.forEachRemaining(product -> this.entityManagerProduct.delete(product));
     }
 
     @AfterEach
     void tearDown() {
+        CloseableIterator<Product> iterator = this.entityManagerProduct.getAll();
+        iterator.forEachRemaining(product -> this.entityManagerProduct.delete(product));
+
         if (this.databaseManager != null) {
             try {
                 this.databaseManager.close();
@@ -164,7 +172,7 @@ class EntityManagerProductTest {
             iteratedProducts.add((it.next()));
         }
 
-        assertEquals(iteratedProducts.size(), 2);
+        assertEquals(2, iteratedProducts.size());
         assertFalse(productIterator.hasNext());
     }
 
@@ -201,14 +209,16 @@ class EntityManagerProductTest {
 
         productsLists = this.entityManagerProduct.getQueryForAll();
         assertFalse(productsLists.isEmpty());
-        assertEquals(productsLists.size(), 2);
+        assertEquals(2, productsLists.size());
     }
 
     /*
         Simple wrapper, nothing should have to be tested
     */
     @Test
-    void getQueryBuilder() { assertNotNull(this.entityManagerProduct.getQueryBuilder()); }
+    void getQueryBuilder() {
+        assertNotNull(this.entityManagerProduct.getQueryBuilder());
+    }
 
     /*
         Use cases :
