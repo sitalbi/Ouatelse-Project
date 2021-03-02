@@ -48,6 +48,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/AuthStoreController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/BaseController.java">
           <value>
             <set />
@@ -69,6 +74,21 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/MainController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/ManagementProductController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/ManagementRoleController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/ManagementStoreController.java">
           <value>
             <set />
           </value>
@@ -274,6 +294,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/test/java/fr/s4e2/ouatelse/managers/EntityManagerAddressTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/fr/s4e2/ouatelse/managers/EntityManagerProductTest.java">
           <value>
             <set />
           </value>
