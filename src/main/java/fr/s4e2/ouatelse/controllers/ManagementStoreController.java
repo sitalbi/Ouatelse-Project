@@ -1,5 +1,6 @@
 package fr.s4e2.ouatelse.controllers;
 
+import com.j256.ormlite.dao.CloseableIterator;
 import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.managers.EntityManagerAddress;
 import fr.s4e2.ouatelse.managers.EntityManagerStore;
@@ -111,7 +112,8 @@ public class ManagementStoreController extends BaseController {
 
         // store exists already!
         if (!this.isEditing()) {
-            for (Store store : this.entityManagerStore.getAll()) {
+            for (CloseableIterator<Store> it = this.entityManagerStore.getAll(); it.hasNext(); ) {
+                Store store = it.next();
                 if (store.getId().equals(newStoreNameField.getText().trim())) {
                     this.newStoreNameField.clear();
                     this.errorMessage.setText(STORE_ALREADY_EXISTS);
@@ -222,7 +224,7 @@ public class ManagementStoreController extends BaseController {
      */
     private void loadStoresList() {
         this.storesListView.getItems().clear();
-        this.entityManagerStore.getAll().forEach(store -> this.storesListView.getItems().add(store));
+        this.entityManagerStore.getAll().forEachRemaining(store -> this.storesListView.getItems().add(store));
     }
 
     private boolean isEditing() {
