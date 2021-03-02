@@ -46,8 +46,11 @@ public class HomeController extends BaseController {
 
     /**
      * Initializes the controller
-     * @param location {@inheritDoc}
-     * @param resources {@inheritDoc}
+     *
+     * @param location  The location used to resolve relative paths for the root object,
+     *                  or null if the location is not known.
+     * @param resources The resources used to localize the root object,
+     *                  or null if the location is not known.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -56,6 +59,7 @@ public class HomeController extends BaseController {
 
     /**
      * Sets user's datas on the application
+     *
      * @param user the user of the application
      */
     public void setCurrentUser(User user) {
@@ -92,7 +96,9 @@ public class HomeController extends BaseController {
     /**
      * Opens an user management screen
      */
-    private void onUserManagementButtonClick() { new ManagementUserScreen().open(); }
+    private void onUserManagementButtonClick() {
+        new ManagementUserScreen().open();
+    }
 
     /**
      * Opens a role management screen
