@@ -1,6 +1,6 @@
 package fr.s4e2.ouatelse.managers;
 
-import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.CloseableIterator;
 import fr.s4e2.ouatelse.objects.Store;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -129,8 +129,8 @@ class EntityManagerStoreTest {
     @Test
     void getAll() {
         // There are no stores in the database
-        Dao<Store, String> storesIterator = this.entityManagerStore.getAll();
-        boolean areThereResults = storesIterator.iterator().hasNext();
+        CloseableIterator<Store> storesIterator = this.entityManagerStore.getAll();
+        boolean areThereResults = storesIterator.hasNext();
         assertFalse(areThereResults);
 
 
@@ -147,8 +147,9 @@ class EntityManagerStoreTest {
         this.entityManagerStore.create(secondStore);
 
         storesIterator = this.entityManagerStore.getAll();
-        assertTrue(storesIterator.iterator().hasNext());
-        for (Store store : storesIterator) {
+        assertTrue(storesIterator.hasNext());
+        while (storesIterator.hasNext()) {
+            Store store = storesIterator.next();
             stores.add(store);
         }
 
@@ -217,7 +218,7 @@ class EntityManagerStoreTest {
 
         assertFalse(this.entityManagerStore.exists(storeDoesNotExist));
 
-        Store getStore = this.entityManagerStore.getStoreIfExists("storeDoesNotExist", "test");
+        Store getStore = this.entityManagerStore.authGetStoreIfExists("storeDoesNotExist", "test");
         assertNull(getStore);
 
 
@@ -228,7 +229,7 @@ class EntityManagerStoreTest {
         this.entityManagerStore.create(storeExists);
         assertTrue(this.entityManagerStore.exists(storeExists));
 
-        getStore = this.entityManagerStore.getStoreIfExists("Store", "test");
+        getStore = this.entityManagerStore.authGetStoreIfExists("Store", "test");
         assertNotEquals(getStore, null);
         assertEquals(storeExists.getId(),getStore.getId());
         assertEquals(storeExists.getPassword(),getStore.getPassword());
