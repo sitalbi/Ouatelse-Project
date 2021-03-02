@@ -19,6 +19,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
+/**
+ * The controller of the role management
+ */
 public class ManagementRoleController extends BaseController {
 
     private static final String TEXT_FIELD_HINT = "Veuillez saisir un nom";
@@ -38,9 +41,8 @@ public class ManagementRoleController extends BaseController {
      * Called to initialize a controller after its root element has been
      * completely processed.
      *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  <tt>null</tt> if the location is not known.
-     * @param resources The resources used to localize the root object, or <tt>null</tt> if
+     * @param location {@inheritDoc}
+     * @param resources {@inheritDoc}
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
