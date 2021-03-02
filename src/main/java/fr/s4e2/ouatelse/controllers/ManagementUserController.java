@@ -92,7 +92,7 @@ public class ManagementUserController extends BaseController {
             Role role = it.next();
             userRoleDropdown.getItems().add(role);
         }
-        this.entityManagerStore.getAll().forEach(store -> userStoreDropdown.getItems().add(store));
+        this.entityManagerStore.getAll().forEachRemaining(store -> userStoreDropdown.getItems().add(store));
         Arrays.stream(Civility.values()).forEach(value -> userCivilityDropdown.getItems().add(value));
 
         this.loadUserTreeTable();
