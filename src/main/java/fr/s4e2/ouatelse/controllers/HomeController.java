@@ -18,9 +18,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import lombok.Setter;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class HomeController extends BaseController {
 
     private static final double DEFAULT_BUTTON_SIZE = 1000;
@@ -40,11 +37,6 @@ public class HomeController extends BaseController {
     private Label homeAdminName;
     @FXML
     private Label homeAdminEmail;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        super.initialize(location, resources);
-    }
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
@@ -134,6 +126,10 @@ public class HomeController extends BaseController {
         System.out.println("Open monitoring screen");
     }
 
+    private void onVendorButtonClick() {
+        new ManagementVendorScreen().open();
+    }
+
     private void onProductsButtonClick() {
         new ManagementProductScreen().open();
     }
@@ -214,6 +210,11 @@ public class HomeController extends BaseController {
                         newButton.setText("Gestion des plannings");
                         newButton.setOnMouseClicked(event -> onPlanningButtonClick());
                         fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.CALENDAR);
+                        break;
+                    case VENDORS_MANAGEMENT:
+                        newButton.setText("Gestion des fournisseurs");
+                        newButton.setOnMouseClicked(event -> onVendorButtonClick());
+                        fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.CUBE);
                         break;
                 }
 
