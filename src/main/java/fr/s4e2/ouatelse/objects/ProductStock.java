@@ -2,6 +2,8 @@ package fr.s4e2.ouatelse.objects;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.beans.property.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,4 +22,38 @@ public class ProductStock {
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Store store;
+
+    @Getter
+    public static class ProductStockTreeTop extends RecursiveTreeObject<ProductStockTreeTop> {
+        private final LongProperty reference;
+        private final IntegerProperty stockQuantity;
+        private final StringProperty order;
+        private final StringProperty shippingDate;
+
+        public ProductStockTreeTop(Long reference, Integer stockQuantity, String order, String shippingDate) {
+            this.reference = new SimpleLongProperty(reference);
+            this.stockQuantity = new SimpleIntegerProperty(stockQuantity);
+            this.order = new SimpleStringProperty(order);
+            this.shippingDate = new SimpleStringProperty(shippingDate);
+        }
+    }
+
+    @Getter
+    public static class ProductStockTreeBottom extends RecursiveTreeObject<ProductStockTreeBottom> {
+        private final DoubleProperty buyingPrice;
+        private final DoubleProperty margin;
+        private final DoubleProperty priceWithoutTaxes;
+        private final DoubleProperty taxes;
+        private final DoubleProperty priceWithTaxes;
+
+        public ProductStockTreeBottom(Double buyingPrice, Double margin, Double taxes, Double sellingPrice) {
+            this.buyingPrice = new SimpleDoubleProperty(buyingPrice);
+            this.margin = new SimpleDoubleProperty(margin);
+            this.taxes = new SimpleDoubleProperty(taxes);
+            this.priceWithTaxes = new SimpleDoubleProperty(sellingPrice);
+            this.priceWithoutTaxes = new SimpleDoubleProperty();
+
+            this.priceWithoutTaxes.bind(this.priceWithTaxes.subtract(this.priceWithTaxes.multiply(this.taxes)));
+        }
+    }
 }

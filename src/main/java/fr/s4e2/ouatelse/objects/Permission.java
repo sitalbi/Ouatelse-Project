@@ -17,7 +17,8 @@ public enum Permission {
     STOCKS_MANAGEMENT,
     SALES_MANAGEMENT,
     CLIENTS_MANAGEMENT,
-    PLANNING_MANAGEMENT;
+    PLANNING_MANAGEMENT,
+    VENDORS_MANAGEMENT;
 
     @Override
     public String toString() {
