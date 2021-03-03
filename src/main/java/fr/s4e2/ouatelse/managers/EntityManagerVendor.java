@@ -1,0 +1,169 @@
+package fr.s4e2.ouatelse.managers;
+
+import com.google.common.hash.Hashing;
+import com.j256.ormlite.dao.CloseableIterator;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.support.ConnectionSource;
+import fr.s4e2.ouatelse.objects.Vendor;
+
+import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
+import java.util.List;
+
+/**
+ * The type EntityManagerVendor
+ */
+public class EntityManagerVendor {
+
+    private final ConnectionSource connectionSource;
+    private Dao<Vendor, Long> instance;
+
+    /**
+     * Instantiates a new EntityManagerVendor
+     *
+     * @param connectionSource the connection source
+     */
+    public EntityManagerVendor(ConnectionSource connectionSource) {
+        this.connectionSource = connectionSource;
+        try {
+            this.instance = DaoManager.createDao(this.connectionSource, Vendor.class);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+    /**
+     * Inserts a vendor in the database
+     *
+     * @param vendor the vendor to be inserted
+     */
+    public void create(Vendor vendor) {
+        try {
+            this.instance.create(vendor);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Deletes a vendor from the database
+     *
+     * @param vendor the vendor to be deleted
+     */
+    public void delete(Vendor vendor) {
+        try {
+            this.instance.delete(vendor);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Updates a vendor in the database
+     *
+     * @param vendor the vendor to be updated
+     */
+    public void update(Vendor vendor) {
+        try {
+            this.instance.update(vendor);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Gets all the vendors in the database
+     *
+     * @return na iterator over all the vendors in the database
+     */
+    public CloseableIterator<Vendor> getAll() {
+        return this.instance.iterator();
+    }
+
+    /**
+     * Execute a prepared query
+     *
+     * @param query the prepared query
+     * @return the list of results
+     */
+    public List<Vendor> executeQuery(PreparedQuery<Vendor> query) {
+        List<Vendor> results = null;
+
+        try {
+            results = this.instance.query(query);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        return results;
+    }
+
+    /**
+     * Gets all the vendors
+     *
+     * @return all the vendors that are in the database
+     */
+    public List<Vendor> getQueryForAll() {
+        List<Vendor> results = null;
+
+        try {
+            results = this.instance.queryForAll();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        return results;
+    }
+
+    /**
+     * Gets a query builder
+     *
+     * @return the query builder for the vendors
+     */
+    public QueryBuilder<Vendor, Long> getQueryBuilder() {
+        return this.instance.queryBuilder();
+    }
+
+    /**
+     * Gets a corresponding vendor if exists, else null
+     *
+     * @param credentials the credentials of the vendor
+     * @param password    the password of the vendor in plain text
+     * @return the vendor if exists, else null
+     */
+    public Vendor getVendorIfExists(String credentials, String password) {
+        Vendor vendor = null;
+
+        try {
+            //noinspection UnstableApiUsage
+            vendor = this.instance.query(this.instance.queryBuilder().where().eq("credentials", credentials)
+                    .and().eq("password", Hashing.sha256().hashString(password, StandardCharsets.UTF_8)
+                            .toString()).prepare()).stream().findFirst().orElse(null);
+
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return vendor;
+    }
+
+    /**
+     * Check if an vendor exists in the database
+     *
+     * @param vendor the vendor to be checked
+     * @return true if it exists, else false
+     */
+    public boolean exists(Vendor vendor) {
+        if (vendor == null) return false;
+
+        try {
+            return this.instance.queryForId(vendor.getId()) != null;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return false;
+        }
+    }
+}

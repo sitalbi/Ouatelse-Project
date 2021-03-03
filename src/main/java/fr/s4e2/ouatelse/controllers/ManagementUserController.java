@@ -133,8 +133,7 @@ public class ManagementUserController extends BaseController {
         this.usersTreeTableView.setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
 
-            TreeItem<UserTree> userTree = usersTreeTableView.getSelectionModel().getSelectedItem();
-            if (userTree == null) return;
+            if (usersTreeTableView.getSelectionModel().getSelectedItem() == null) return;
             this.usersTreeTableView.getSelectionModel().clearSelection();
             this.clearInformation();
         });

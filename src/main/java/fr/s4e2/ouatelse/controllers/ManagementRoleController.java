@@ -13,7 +13,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import lombok.Setter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -37,8 +36,7 @@ public class ManagementRoleController extends BaseController {
     @FXML
     private ListView<Role> rolesListView;
 
-    @Setter
-    private EntityManagerRole entityManagerRole = Main.getDatabaseManager().getEntityManagerRole();
+    private final EntityManagerRole entityManagerRole = Main.getDatabaseManager().getEntityManagerRole();
     private Role currentRole = null;
 
     /**
