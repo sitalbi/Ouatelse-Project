@@ -93,6 +93,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/ManagementUserController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/ManagementVendorController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/RolesEditorController.java">
           <value>
             <set />
@@ -129,6 +139,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/managers/DatabaseManager.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/managers/EntityManagerVendor.java">
           <value>
             <set />
           </value>
@@ -193,6 +208,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/objects/Vendor.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/resources/mainWindow.fxml">
           <value>
             <set />
@@ -234,6 +254,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/screens/HomeScreenAdaptative.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/screens/ManagementVendorScreen.java">
           <value>
             <set />
           </value>

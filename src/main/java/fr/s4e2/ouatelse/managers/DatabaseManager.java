@@ -22,6 +22,7 @@ public class DatabaseManager {
     private EntityManagerStore entityManagerStore;
     private EntityManagerUser entityManagerUser;
     private EntityManagerProduct entityManagerProduct;
+    private EntityManagerVendor entityManagerVendor;
 
     public DatabaseManager(String databaseName) {
         try {
@@ -71,5 +72,6 @@ public class DatabaseManager {
         this.entityManagerStore = new EntityManagerStore(connectionSource);
         this.entityManagerUser = new EntityManagerUser(connectionSource);
         this.entityManagerProduct = new EntityManagerProduct(connectionSource);
+        this.entityManagerVendor = new EntityManagerVendor(connectionSource);
     }
 }
