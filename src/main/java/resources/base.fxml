@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="fr.s4e2.ouatelse.controllers.BaseController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0"
+            minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/base.css"
+            xmlns="http://javafx.com/javafx/15.0.1" fx:controller="fr.s4e2.ouatelse.controllers.BaseController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
             <menus>
@@ -27,17 +27,18 @@
       </MenuBar>
    </top>
    <bottom>
-       <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0">
+       <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" styleClass="footer">
            <children>
-               <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Copyright © Ouatelse. All rights reserved." HBox.hgrow="ALWAYS">
+               <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0"
+                      text="Copyright © Ouatelse. All rights reserved." HBox.hgrow="ALWAYS">
                    <font>
-                       <Font size="11.0" fx:id="x3" />
+                       <Font size="11.0" fx:id="x3"/>
                    </font>
                    <textFill>
-                       <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
+                       <Color red="0.625" green="0.625" blue="0.625" fx:id="x4"/>
                    </textFill>
                </Label>
-               <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
+               <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS"/>
                <Label font="$x3" maxWidth="-1.0" text="Version ${project.version}" textFill="$x4" HBox.hgrow="NEVER" />
            </children>
            <padding>
