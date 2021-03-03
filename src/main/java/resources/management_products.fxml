@@ -117,7 +117,7 @@
                                                         <Insets />
                                                     </GridPane.margin>
                                                 </JFXCheckBox>
-                                                <Button fx:id="confirmInformationButton" mnemonicParsing="false"
+                                                <Button mnemonicParsing="false"
                                                         onMouseClicked="#onConfirmInformationButton" prefWidth="120.0"
                                                         style="-fx-background-color: red;" text="Valider"
                                                         textAlignment="CENTER" textFill="WHITE" wrapText="true"
@@ -136,7 +136,7 @@
                                                         <FontAwesomeIconView fill="WHITE" glyphName="CHECK"/>
                                                     </graphic>
                                                 </Button>
-                                                <Button fx:id="deleteProductButton" mnemonicParsing="false"
+                                                <Button mnemonicParsing="false"
                                                         onMouseClicked="#onDeleteProductButton" prefWidth="120.0"
                                                         style="-fx-background-color: red;" text="Supprimer"
                                                         textAlignment="CENTER" textFill="WHITE" wrapText="true"
@@ -221,7 +221,7 @@
                                                         <Cursor fx:constant="HAND" />
                                                     </cursor>
                                                 </JFXComboBox>
-                                                <Button fx:id="confirmDescriptionButton" mnemonicParsing="false"
+                                                <Button mnemonicParsing="false"
                                                         onMouseClicked="#onConfirmDescriptionButton" prefWidth="120.0"
                                                         style="-fx-background-color: red;" text="Valider"
                                                         textAlignment="CENTER" textFill="WHITE" wrapText="true"

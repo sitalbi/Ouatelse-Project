@@ -31,7 +31,8 @@ class EntityManagerProductTest {
         compliantProduct.setName("Some name");
         compliantProduct.setBarCode("Barcode");
         compliantProduct.setReference(ref);
-        compliantProduct.setSellingPrice(25);
+        compliantProduct.setMargin(25);
+        compliantProduct.setTaxes(25);
         compliantProduct.setPurchasePrice(15);
         compliantProduct.setBrand("Some brand");
         compliantProduct.setState(ProductState.IN_STOCK);
@@ -65,7 +66,6 @@ class EntityManagerProductTest {
             }
         }
     }
-
 
     /*
         Use cases :
