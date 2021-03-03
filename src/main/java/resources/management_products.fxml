@@ -348,20 +348,44 @@
                     <children>
                         <VBox alignment="CENTER">
                             <children>
-                                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="313.0" text="Gestion des Produits" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="313.0"
+                                       text="Gestion des Produits" textAlignment="CENTER" textFill="WHITE"
+                                       wrapText="true">
                                     <font>
-                                        <Font size="32.0" />
+                                        <Font size="32.0"/>
                                     </font>
                                     <VBox.margin>
-                                        <Insets bottom="15.0" />
+                                        <Insets/>
                                     </VBox.margin>
                                 </Label>
-                                <JFXTreeTableView fx:id="productsTreeView" prefHeight="175.0" prefWidth="10000.0">
+                                <HBox alignment="CENTER">
                                     <VBox.margin>
-                                        <Insets left="50.0" right="50.0" />
+                                        <Insets bottom="10.0" left="50.0" right="50.0" top="10.0"/>
+                                    </VBox.margin>
+                                    <children>
+                                        <JFXTextField alignment="CENTER" focusColor="RED" promptText="Rechercher"
+                                                      unFocusColor="WHITE" HBox.hgrow="ALWAYS"/>
+                                        <JFXButton text=" ">
+                                            <graphic>
+                                                <FontAwesomeIconView fill="RED" glyphName="SEARCH" size="14.0"
+                                                                     textAlignment="CENTER">
+                                                    <cursor>
+                                                        <Cursor fx:constant="DEFAULT"/>
+                                                    </cursor>
+                                                </FontAwesomeIconView>
+                                            </graphic>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND"/>
+                                            </cursor>
+                                        </JFXButton>
+                                    </children>
+                                </HBox>
+                                <JFXTreeTableView fx:id="productsTreeView" prefWidth="10000.0">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="50.0" right="50.0"/>
                                     </VBox.margin>
                                     <columnResizePolicy>
-                                        <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                        <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                                     </columnResizePolicy>
                                 </JFXTreeTableView>
                             </children>
