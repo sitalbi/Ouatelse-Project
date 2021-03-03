@@ -8,9 +8,11 @@ import lombok.Getter;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Getter
 public class DatabaseManager {
@@ -24,13 +26,16 @@ public class DatabaseManager {
     private EntityManagerProduct entityManagerProduct;
     private EntityManagerVendor entityManagerVendor;
 
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+
     public DatabaseManager(String databaseName) {
         try {
             this.connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + databaseName);
             this.setupTables();
             this.setupDao();
+            this.fillDatabase();
         } catch (SQLException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            this.logger.log(Level.SEVERE, "Could not setup the database", e);
             System.exit(0);
         }
     }
@@ -39,11 +44,8 @@ public class DatabaseManager {
         if (databaseName == null || databaseName.trim().isEmpty()) return;
         try {
             Files.delete(Paths.get(databaseName));
-            System.out.format("[P_INFO] %s deleted%n", databaseName);
-        } catch (NoSuchFileException e) {
-            System.out.format("[P_INFO] %s does not exist%n", databaseName);
-        } catch (IOException e) {
-            System.err.format("[P_ERROR] Couldn't delete %s%n", databaseName);
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -73,5 +75,143 @@ public class DatabaseManager {
         this.entityManagerUser = new EntityManagerUser(connectionSource);
         this.entityManagerProduct = new EntityManagerProduct(connectionSource);
         this.entityManagerVendor = new EntityManagerVendor(connectionSource);
+    }
+
+    public void fillDatabase() throws SQLException {
+        this.setupRoles();
+        this.setupTestUser();
+        this.setupTestStore();
+    }
+
+    private void setupTestUser() throws SQLException {
+        if (this.connectionSource == null
+                || this.entityManagerUser == null
+                || this.entityManagerRole == null
+        ) return;
+
+        if (this.entityManagerUser.getUserIfExists("test", "test") == null) {
+            User user = new User();
+            user.setSurname("test");
+            user.setName("test");
+            user.setMobilePhoneNumber("00 00 00 00 00");
+            user.setEmail("test@test.com");
+            user.setBirthDate(new Date());
+            user.setCivility(Civility.M);
+            user.setStatus(PersonState.EMPLOYED);
+            user.setCredentials("test");
+            user.setPassword("test");
+            user.setRole(this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().where().eq("name", "Admin").prepare()).stream().findFirst().orElse(null));
+            user.setHiringDate(new Date());
+            user.setHoursPerWeek(35);
+
+            this.entityManagerUser.create(user);
+        }
+    }
+
+    private void setupTestStore() {
+        if (this.connectionSource == null || this.entityManagerStore == null) return;
+
+        if (this.entityManagerStore.authGetStoreIfExists("test", "test") == null) {
+            Store store = new Store();
+            store.setId("test");
+            store.setPassword("test");
+
+            this.entityManagerStore.create(store);
+        }
+    }
+
+    private void setupRoles() throws SQLException {
+        final String DIRECTOR_ROLE_NAME = "Director";
+        final String ADMIN_ROLE_NAME = "Admin";
+        final String BUYINGS_AND_STOCKS_MANAGER_ROLE_NAME = "Responsables des achats et stocks";
+        final String SALES_MANAGER_ROLE_NAME = "Responsable des ventes";
+        final String HUMAN_RESOURCES_MANAGER_ROLE_NAME = "Responsable des Ressources Humaines";
+
+        if (this.connectionSource == null
+                || this.entityManagerRole == null
+        ) return;
+
+        List<Role> temporaryResultsList = this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().where().eq("name", DIRECTOR_ROLE_NAME).prepare());
+        if (temporaryResultsList.isEmpty()) {
+            Role director = this.entityManagerRole.create(DIRECTOR_ROLE_NAME);
+            ArrayList<Permission> directorPermission = new ArrayList<>(Arrays.asList(
+                    Permission.CLIENTS_MANAGEMENT,
+                    Permission.USER_MANAGEMENT,
+                    Permission.EMPLOYEES_MANAGEMENT,
+                    Permission.ROLE_MANAGEMENT,
+                    Permission.STORE_MANAGEMENT,
+                    Permission.USER_MANAGEMENT,
+                    Permission.MONITORING,
+                    Permission.EMPLOYEES_MANAGEMENT,
+                    Permission.SALARY_MANAGEMENT,
+                    Permission.STATISTICS,
+                    Permission.PRODUCTS_MANAGEMENT,
+                    Permission.STOCKS_MANAGEMENT,
+                    Permission.SALES_MANAGEMENT,
+                    Permission.CLIENTS_MANAGEMENT,
+                    Permission.PLANNING_MANAGEMENT,
+                    Permission.VENDORS_MANAGEMENT
+            ));
+            director.setPermissions(directorPermission);
+            this.entityManagerRole.update(director);
+        }
+
+        temporaryResultsList = this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().where().eq("name", ADMIN_ROLE_NAME).prepare());
+        if (temporaryResultsList.isEmpty()) {
+            Role admin = this.entityManagerRole.create(ADMIN_ROLE_NAME);
+            ArrayList<Permission> adminPermission = new ArrayList<>(Arrays.asList(
+                    Permission.CLIENTS_MANAGEMENT,
+                    Permission.USER_MANAGEMENT,
+                    Permission.EMPLOYEES_MANAGEMENT,
+                    Permission.ROLE_MANAGEMENT,
+                    Permission.STORE_MANAGEMENT,
+                    Permission.USER_MANAGEMENT,
+                    Permission.EMPLOYEES_MANAGEMENT,
+                    Permission.SALARY_MANAGEMENT,
+                    Permission.PRODUCTS_MANAGEMENT,
+                    Permission.STOCKS_MANAGEMENT,
+                    Permission.SALES_MANAGEMENT,
+                    Permission.CLIENTS_MANAGEMENT,
+                    Permission.PLANNING_MANAGEMENT,
+                    Permission.VENDORS_MANAGEMENT
+            ));
+            admin.setPermissions(adminPermission);
+            this.entityManagerRole.update(admin);
+        }
+
+        temporaryResultsList = this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().where().eq("name", BUYINGS_AND_STOCKS_MANAGER_ROLE_NAME).prepare());
+        if (temporaryResultsList.isEmpty()) {
+            Role buyingsAndStocksManager = this.entityManagerRole.create(BUYINGS_AND_STOCKS_MANAGER_ROLE_NAME);
+            ArrayList<Permission> buyingsAndStocksManagerPermission = new ArrayList<>(Arrays.asList(
+                    Permission.PRODUCTS_MANAGEMENT,
+                    Permission.STOCKS_MANAGEMENT
+            ));
+            buyingsAndStocksManager.setPermissions(buyingsAndStocksManagerPermission);
+            this.entityManagerRole.update(buyingsAndStocksManager);
+        }
+
+        temporaryResultsList = this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().where().eq("name", SALES_MANAGER_ROLE_NAME).prepare());
+        if (temporaryResultsList.isEmpty()) {
+            Role salesManager = this.entityManagerRole.create(SALES_MANAGER_ROLE_NAME);
+            ArrayList<Permission> salesManagerPermission = new ArrayList<>(Collections.singletonList(
+                    Permission.SALES_MANAGEMENT
+            ));
+            salesManager.setPermissions(salesManagerPermission);
+            this.entityManagerRole.update(salesManager);
+        }
+
+        temporaryResultsList = this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().where().eq("name", HUMAN_RESOURCES_MANAGER_ROLE_NAME).prepare());
+        if (temporaryResultsList.isEmpty()) {
+            Role humanResourcesManager = this.entityManagerRole.create(HUMAN_RESOURCES_MANAGER_ROLE_NAME);
+            ArrayList<Permission> humanResourcesManagerPermission = new ArrayList<>(Arrays.asList(
+                    Permission.CLIENTS_MANAGEMENT,
+                    Permission.USER_MANAGEMENT,
+                    Permission.EMPLOYEES_MANAGEMENT,
+                    Permission.CLIENTS_MANAGEMENT,
+                    Permission.PLANNING_MANAGEMENT
+            ));
+            humanResourcesManager.setPermissions(humanResourcesManagerPermission);
+            this.entityManagerRole.update(humanResourcesManager);
+        }
     }
 }

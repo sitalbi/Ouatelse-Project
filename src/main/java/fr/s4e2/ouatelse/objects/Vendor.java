@@ -38,6 +38,11 @@ public class Vendor {
     @ForeignCollectionField(eager = true)
     private ForeignCollection<Product> products;
 
+    @Override
+    public String toString() {
+        return this.getName();
+    }
+
     @Getter
     public static class VendorTree extends RecursiveTreeObject<Vendor.VendorTree> {
         private final StringProperty name;
