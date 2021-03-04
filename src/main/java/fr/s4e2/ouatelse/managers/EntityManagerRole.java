@@ -6,18 +6,24 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
+import fr.s4e2.ouatelse.exceptions.DatabaseInitialisationException;
 import fr.s4e2.ouatelse.objects.Role;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The type EntityManagerRole
  */
 public class EntityManagerRole {
 
+    private static final String ROLE_MANAGER_NOT_INITIALIZED = "EntityManagerRole could not be initialized";
+
     private final ConnectionSource connectionSource;
-    private Dao<Role, Long> instance;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private final Dao<Role, Long> instance;
 
     /**
      * Instantiates a new EntityManagerRole
@@ -29,8 +35,8 @@ public class EntityManagerRole {
         try {
             this.instance = DaoManager.createDao(this.connectionSource, Role.class);
         } catch (SQLException exception) {
-            exception.printStackTrace();
-            System.exit(0);
+            this.logger.log(Level.SEVERE, ROLE_MANAGER_NOT_INITIALIZED);
+            throw new DatabaseInitialisationException(ROLE_MANAGER_NOT_INITIALIZED);
         }
     }
 
