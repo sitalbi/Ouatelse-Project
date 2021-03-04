@@ -4,6 +4,5 @@ public class ManagementUserScreen extends BaseScreen {
 
     public ManagementUserScreen() {
         super("management_users.fxml", "Ouatelse - Menu Gestion des Utilisateurs");
-        this.addStyleSheet("css/management.css");
     }
 }
