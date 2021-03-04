@@ -126,9 +126,7 @@ public class DatabaseManager {
         final String SALES_MANAGER_ROLE_NAME = "Responsable des ventes";
         final String HUMAN_RESOURCES_MANAGER_ROLE_NAME = "Responsable des Ressources Humaines";
 
-        if (this.connectionSource == null
-                || this.entityManagerRole == null
-        ) return;
+        if (this.connectionSource == null || this.entityManagerRole == null) return;
 
         List<Role> temporaryResultsList = this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().where().eq("name", DIRECTOR_ROLE_NAME).prepare());
         if (temporaryResultsList.isEmpty()) {
