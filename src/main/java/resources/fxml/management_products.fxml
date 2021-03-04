@@ -44,8 +44,8 @@
         </HBox>
     </bottom>
     <stylesheets>
-        <URL value="@css/base.css"/>
-        <URL value="@css/management.css"/>
+        <URL value="@../css/base.css"/>
+        <URL value="@../css/management.css"/>
     </stylesheets>
     <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="content" BorderPane.alignment="CENTER">
