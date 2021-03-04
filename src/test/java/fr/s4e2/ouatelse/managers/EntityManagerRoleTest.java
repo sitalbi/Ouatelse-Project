@@ -66,7 +66,7 @@ class EntityManagerRoleTest {
         Use cases :
             - Role does not exist in the database, so its ID shouldn't change
             - Role exists in the database, so its ID should change
-        In both cases, no exception should be thrown as they should be catched by the code
+        In both cases, no exception should be thrown as they should be caught by the code
      */
     @Test
     void delete() {
