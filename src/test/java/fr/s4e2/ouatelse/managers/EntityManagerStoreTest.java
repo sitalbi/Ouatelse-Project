@@ -93,7 +93,7 @@ class EntityManagerStoreTest {
         Use cases :
             - Store does not exist in the database, so it shouldn't change
             - Store exists in the database, so its attributes should change
-        In both cases, no exception should be thrown as they should be catched by the code
+        In both cases, no exception should be thrown as they should be caught by the code
     */
     @Test
     void update() {
