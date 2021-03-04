@@ -7,19 +7,24 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
+import fr.s4e2.ouatelse.exceptions.DatabaseInitialisationException;
 import fr.s4e2.ouatelse.objects.User;
 
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The type EntityManagerUser
  */
 public class EntityManagerUser {
+    private static final String USER_MANAGER_NOT_INITIALIZED = "EntityManagerUser could not be initialized";
 
     private final ConnectionSource connectionSource;
-    private Dao<User, Long> instance;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private final Dao<User, Long> instance;
 
     /**
      * Instantiates a new EntityManagerUser
@@ -31,8 +36,8 @@ public class EntityManagerUser {
         try {
             this.instance = DaoManager.createDao(this.connectionSource, User.class);
         } catch (SQLException exception) {
-            exception.printStackTrace();
-            System.exit(0);
+            this.logger.log(Level.SEVERE, USER_MANAGER_NOT_INITIALIZED);
+            throw new DatabaseInitialisationException(USER_MANAGER_NOT_INITIALIZED);
         }
     }
 

@@ -178,8 +178,8 @@ class EntityManagerRoleTest {
 
 
         // There are roles in the database
-        Role firstRole = this.entityManagerRole.create("Some role");
-        Role secondRole = this.entityManagerRole.create("Some other role");
+        this.entityManagerRole.create("Some role");
+        this.entityManagerRole.create("Some other role");
 
         roleList = this.entityManagerRole.getQueryForAll();
         assertFalse(roleList.isEmpty());

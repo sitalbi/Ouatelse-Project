@@ -6,6 +6,7 @@ import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.managers.EntityManagerUser;
 import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.screens.AuthStoreScreen;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -14,10 +15,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AuthUserController extends BaseController {
-
-    public JFXPasswordField passwordField;
-    public JFXTextField idField;
-    public Label errorMessageField;
+    @FXML
+    private JFXPasswordField passwordField;
+    @FXML
+    private JFXTextField idField;
+    @FXML
+    private Label errorMessageField;
     private final EntityManagerUser entityManagerUser = Main.getDatabaseManager().getEntityManagerUser();
 
     @Override

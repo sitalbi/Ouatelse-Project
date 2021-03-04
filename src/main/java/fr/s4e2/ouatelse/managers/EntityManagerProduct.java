@@ -6,14 +6,20 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
+import fr.s4e2.ouatelse.exceptions.DatabaseInitialisationException;
 import fr.s4e2.ouatelse.objects.Product;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class EntityManagerProduct {
+    private static final String PRODUCT_MANAGER_NOT_INITIALIZED = "EntityManagerProduct could not be initialized";
+
     private final ConnectionSource connectionSource;
-    private Dao<Product, Long> instance;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private final Dao<Product, Long> instance;
 
     /**
      * Instantiates a new EntityManagerProduct
@@ -25,8 +31,8 @@ public class EntityManagerProduct {
         try {
             this.instance = DaoManager.createDao(this.connectionSource, Product.class);
         } catch (SQLException exception) {
-            exception.printStackTrace();
-            System.exit(0);
+            this.logger.log(Level.SEVERE, PRODUCT_MANAGER_NOT_INITIALIZED);
+            throw new DatabaseInitialisationException(PRODUCT_MANAGER_NOT_INITIALIZED);
         }
     }
 
