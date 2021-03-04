@@ -6,7 +6,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0"
-            minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/base.css"
+            minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/base.css"
             xmlns="http://javafx.com/javafx/15.0.1" fx:controller="fr.s4e2.ouatelse.controllers.BaseController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">

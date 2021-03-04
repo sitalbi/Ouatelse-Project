@@ -262,7 +262,7 @@
         </BorderPane>
     </center>
     <stylesheets>
-        <URL value="@css/base.css"/>
-        <URL value="@css/management.css"/>
+        <URL value="@../css/base.css"/>
+        <URL value="@../css/management.css"/>
     </stylesheets>
 </BorderPane>
