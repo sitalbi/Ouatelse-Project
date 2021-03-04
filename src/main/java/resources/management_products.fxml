@@ -136,11 +136,10 @@
                                                         <FontAwesomeIconView fill="WHITE" glyphName="CHECK"/>
                                                     </graphic>
                                                 </Button>
-                                                <Button mnemonicParsing="false"
-                                                        onMouseClicked="#onDeleteProductButton" prefWidth="120.0"
-                                                        style="-fx-background-color: red;" text="Supprimer"
-                                                        textAlignment="CENTER" textFill="WHITE" wrapText="true"
-                                                        GridPane.rowIndex="4">
+                                                <Button mnemonicParsing="false" onMouseClicked="#onDeleteProductButton"
+                                                        prefWidth="120.0" style="-fx-background-color: red;"
+                                                        text="Supprimer" textAlignment="CENTER" textFill="WHITE"
+                                                        wrapText="true" GridPane.rowIndex="4">
                                                     <font>
                                                         <Font size="14.0"/>
                                                     </font>
@@ -363,8 +362,8 @@
                                         <Insets bottom="10.0" left="50.0" right="50.0" top="10.0"/>
                                     </VBox.margin>
                                     <children>
-                                        <JFXTextField alignment="CENTER" focusColor="RED" promptText="Rechercher"
-                                                      unFocusColor="WHITE" HBox.hgrow="ALWAYS"/>
+                                        <JFXTextField fx:id="productSearchBar" alignment="CENTER" focusColor="RED"
+                                                      promptText="Rechercher" unFocusColor="WHITE" HBox.hgrow="ALWAYS"/>
                                         <JFXButton text=" ">
                                             <graphic>
                                                 <FontAwesomeIconView fill="RED" glyphName="SEARCH" size="14.0"
