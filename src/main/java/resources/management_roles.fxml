@@ -14,165 +14,147 @@
             fx:controller="fr.s4e2.ouatelse.controllers.ManagementRoleController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
-            <menus>
-                <Menu mnemonicParsing="false" text="Fichier">
-                    <items>
-                        <MenuItem id="menuBarFilePreferences" mnemonicParsing="false" onAction="#onPreferences"
-                                  text="Préférences"/>
-                        <MenuItem id="menuBarFileQuit" mnemonicParsing="false" onAction="#onQuit" text="Quitter"/>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Aide">
-                    <items>
-                        <MenuItem id="menuBarHelpAbout" mnemonicParsing="false" onAction="#onAbout" text="À propos"/>
-                    </items>
-                </Menu>
-            </menus>
+            <Menu mnemonicParsing="false" text="Fichier">
+                <MenuItem id="menuBarFilePreferences" mnemonicParsing="false" onAction="#onPreferences"
+                          text="Préférences"/>
+                <MenuItem id="menuBarFileQuit" mnemonicParsing="false" onAction="#onQuit" text="Quitter"/>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Aide">
+                <MenuItem id="menuBarHelpAbout" mnemonicParsing="false" onAction="#onAbout" text="À propos"/>
+            </Menu>
         </MenuBar>
     </top>
     <bottom>
         <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" styleClass="footer">
-            <children>
-                <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0"
-                       text="Copyright © Ouatelse. All rights reserved." HBox.hgrow="ALWAYS">
-                    <font>
-                        <Font size="11.0" fx:id="x3"/>
-                    </font>
-                    <textFill>
-                        <Color red="0.625" green="0.625" blue="0.625" fx:id="x4"/>
-                    </textFill>
-                </Label>
-                <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS"/>
-                <Label font="$x3" maxWidth="-1.0" text="Version ${project.version}" textFill="$x4" HBox.hgrow="NEVER"/>
-            </children>
             <padding>
                 <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>
             </padding>
+            <Label maxHeight="1.7976931348623157E308"
+                   text="Copyright © Ouatelse. All rights reserved." HBox.hgrow="ALWAYS">
+                <font>
+                    <Font size="11.0" fx:id="x3"/>
+                </font>
+                <textFill>
+                    <Color red="0.625" green="0.625" blue="0.625" fx:id="x4"/>
+                </textFill>
+            </Label>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Label font="$x3" text="Version ${project.version}" textFill="$x4" HBox.hgrow="NEVER"/>
         </HBox>
     </bottom>
     <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="content" BorderPane.alignment="CENTER">
             <top>
                 <HBox alignment="CENTER" prefHeight="78.0" prefWidth="798.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="313.0"
-                               text="Gestion des Rôles" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                            <font>
-                                <Font size="32.0"/>
-                            </font>
-                        </Label>
-                    </children>
+                    <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="313.0"
+                           text="Gestion des Rôles" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                        <font>
+                            <Font size="32.0"/>
+                        </font>
+                    </Label>
                 </HBox>
             </top>
             <center>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <JFXListView fx:id="rolesListView" minWidth="300.0" prefWidth="300.0"
-                                     style="-fx-background-color: #2f3b52; -fx-border-width: 0;" HBox.hgrow="SOMETIMES">
-                            <HBox.margin>
-                                <Insets left="50.0"/>
-                            </HBox.margin>
-                        </JFXListView>
-                        <VBox alignment="CENTER" minWidth="300.0" prefWidth="300.0"
-                              style="-fx-background-color: #2f3b52;" HBox.hgrow="SOMETIMES">
-                            <children>
-                                <JFXTextField fx:id="newRoleNameField" alignment="CENTER" focusColor="RED"
-                                              maxWidth="200.0" prefWidth="200.0" promptText="Nom du Rôle"
-                                              unFocusColor="WHITE" VBox.vgrow="ALWAYS">
-                                    <font>
-                                        <Font size="16.0"/>
-                                    </font>
-                                </JFXTextField>
-                                <Pane prefHeight="20.0"/>
-                                <JFXButton alignment="CENTER" onMouseClicked="#onAddButtonClick" prefWidth="200.0"
-                                           style="-fx-background-color: red;" text="Ajouter" textAlignment="CENTER"
-                                           textFill="WHITE" wrapText="true" VBox.vgrow="ALWAYS">
-                                    <font>
-                                        <Font size="14.0"/>
-                                    </font>
-                                    <cursor>
-                                        <Cursor fx:constant="HAND"/>
-                                    </cursor>
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="CHECK"/>
-                                    </graphic>
-                                </JFXButton>
-                                <Pane layoutX="10.0" layoutY="61.0" prefHeight="10.0"/>
-                                <JFXButton alignment="CENTER" onMouseClicked="#onDeleteButtonClick" prefWidth="200.0"
-                                           style="-fx-background-color: red;" text="Supprimer" textAlignment="CENTER"
-                                           textFill="WHITE" wrapText="true" VBox.vgrow="ALWAYS">
-                                    <font>
-                                        <Font size="14.0"/>
-                                    </font>
-                                    <cursor>
-                                        <Cursor fx:constant="HAND"/>
-                                    </cursor>
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="REMOVE"/>
-                                    </graphic>
-                                </JFXButton>
-                            </children>
-                            <HBox.margin>
-                                <Insets left="50.0" right="50.0"/>
-                            </HBox.margin>
-                        </VBox>
-                    </children>
+                    <JFXListView fx:id="rolesListView" minWidth="300.0" prefWidth="300.0"
+                                 style="-fx-background-color: #2f3b52; -fx-border-width: 0;" HBox.hgrow="SOMETIMES">
+                        <HBox.margin>
+                            <Insets left="50.0"/>
+                        </HBox.margin>
+                    </JFXListView>
+                    <VBox alignment="CENTER" minWidth="300.0" prefWidth="300.0"
+                          style="-fx-background-color: #2f3b52;" HBox.hgrow="SOMETIMES">
+                        <HBox.margin>
+                            <Insets left="50.0" right="50.0"/>
+                        </HBox.margin>
+                        <JFXTextField fx:id="newRoleNameField" alignment="CENTER" focusColor="RED"
+                                      maxWidth="200.0" prefWidth="200.0" promptText="Nom du Rôle"
+                                      unFocusColor="WHITE" VBox.vgrow="ALWAYS">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </JFXTextField>
+                        <Pane prefHeight="20.0"/>
+                        <JFXButton alignment="CENTER" onMouseClicked="#onAddButtonClick" prefWidth="200.0"
+                                   style="-fx-background-color: red;" text="Ajouter" textAlignment="CENTER"
+                                   textFill="WHITE" wrapText="true" VBox.vgrow="ALWAYS">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                            <cursor>
+                                <Cursor fx:constant="HAND"/>
+                            </cursor>
+                            <graphic>
+                                <FontAwesomeIconView fill="WHITE" glyphName="CHECK"/>
+                            </graphic>
+                        </JFXButton>
+                        <Pane layoutX="10.0" layoutY="61.0" prefHeight="10.0"/>
+                        <JFXButton alignment="CENTER" onMouseClicked="#onDeleteButtonClick" prefWidth="200.0"
+                                   style="-fx-background-color: red;" text="Supprimer" textAlignment="CENTER"
+                                   textFill="WHITE" wrapText="true" VBox.vgrow="ALWAYS">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                            <cursor>
+                                <Cursor fx:constant="HAND"/>
+                            </cursor>
+                            <graphic>
+                                <FontAwesomeIconView fill="WHITE" glyphName="REMOVE"/>
+                            </graphic>
+                        </JFXButton>
+                    </VBox>
                 </HBox>
             </center>
             <bottom>
                 <HBox alignment="CENTER" prefHeight="330.0" prefWidth="798.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <JFXListView fx:id="permissionsRoleHas" prefWidth="1000.0"
-                                     style="-fx-background-color: #2f3b52;">
-                            <HBox.margin>
-                                <Insets bottom="50.0" left="50.0" top="50.0"/>
-                            </HBox.margin>
-                        </JFXListView>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="750.0">
-                            <children>
-                                <JFXButton fx:id="addPermissionButton" contentDisplay="CENTER" minWidth="50.0"
-                                           onMouseClicked="#onAddPermissionButtonClick"
-                                           style="-fx-background-color: red;" text=" " textAlignment="CENTER"
-                                           textFill="WHITE" wrapText="true">
-                                    <font>
-                                        <Font size="14.0"/>
-                                    </font>
-                                    <cursor>
-                                        <Cursor fx:constant="HAND"/>
-                                    </cursor>
-                                    <VBox.margin>
-                                        <Insets bottom="50.0"/>
-                                    </VBox.margin>
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="ARROW_LEFT"/>
-                                    </graphic>
-                                </JFXButton>
-                                <JFXButton fx:id="deletePermissionButton" contentDisplay="CENTER" minWidth="50.0"
-                                           onMouseClicked="#onDeletePermissionButtonClick"
-                                           style="-fx-background-color: red;" text=" " textAlignment="CENTER"
-                                           textFill="WHITE" wrapText="true">
-                                    <font>
-                                        <Font size="14.0"/>
-                                    </font>
-                                    <cursor>
-                                        <Cursor fx:constant="HAND"/>
-                                    </cursor>
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="ARROW_RIGHT"/>
-                                    </graphic>
-                                </JFXButton>
-                            </children>
-                            <padding>
-                                <Insets bottom="50.0" top="50.0"/>
-                            </padding>
-                        </VBox>
-                        <JFXListView fx:id="permissionsRoleHasnt" prefHeight="267.0" prefWidth="1000.0"
-                                     style="-fx-background-color: #2f3b52;">
-                            <HBox.margin>
-                                <Insets bottom="50.0" right="50.0" top="50.0"/>
-                            </HBox.margin>
-                        </JFXListView>
-                    </children>
+                    <JFXListView fx:id="permissionsRoleHas" prefWidth="1000.0"
+                                 style="-fx-background-color: #2f3b52;">
+                        <HBox.margin>
+                            <Insets bottom="50.0" left="50.0" top="50.0"/>
+                        </HBox.margin>
+                    </JFXListView>
+                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="750.0">
+                        <padding>
+                            <Insets bottom="50.0" top="50.0"/>
+                        </padding>
+                        <JFXButton fx:id="addPermissionButton" contentDisplay="CENTER" minWidth="50.0"
+                                   onMouseClicked="#onAddPermissionButtonClick"
+                                   style="-fx-background-color: red;" text=" " textAlignment="CENTER"
+                                   textFill="WHITE" wrapText="true">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                            <cursor>
+                                <Cursor fx:constant="HAND"/>
+                            </cursor>
+                            <VBox.margin>
+                                <Insets bottom="50.0"/>
+                            </VBox.margin>
+                            <graphic>
+                                <FontAwesomeIconView fill="WHITE" glyphName="ARROW_LEFT"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="deletePermissionButton" contentDisplay="CENTER" minWidth="50.0"
+                                   onMouseClicked="#onDeletePermissionButtonClick"
+                                   style="-fx-background-color: red;" text=" " textAlignment="CENTER"
+                                   textFill="WHITE" wrapText="true">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                            <cursor>
+                                <Cursor fx:constant="HAND"/>
+                            </cursor>
+                            <graphic>
+                                <FontAwesomeIconView fill="WHITE" glyphName="ARROW_RIGHT"/>
+                            </graphic>
+                        </JFXButton>
+                    </VBox>
+                    <JFXListView fx:id="permissionsRoleHasnt" prefHeight="267.0" prefWidth="1000.0"
+                                 style="-fx-background-color: #2f3b52;">
+                        <HBox.margin>
+                            <Insets bottom="50.0" right="50.0" top="50.0"/>
+                        </HBox.margin>
+                    </JFXListView>
                 </HBox>
             </bottom>
         </BorderPane>

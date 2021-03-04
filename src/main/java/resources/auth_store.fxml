@@ -15,37 +15,29 @@
             fx:controller="fr.s4e2.ouatelse.controllers.AuthStoreController">
     <top>
         <MenuBar fx:id="menuBar" stylesheets="@css/base.css" BorderPane.alignment="CENTER">
-            <menus>
-                <Menu mnemonicParsing="false" text="Fichier">
-                    <items>
-                        <MenuItem id="menuBarFilePreferences" mnemonicParsing="false" onAction="#onPreferences"
-                                  text="Préférences"/>
-                        <MenuItem id="menuBarFileQuit" mnemonicParsing="false" onAction="#onQuit" text="Quitter"/>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Aide">
-                    <items>
-                        <MenuItem id="menuBarHelpAbout" mnemonicParsing="false" onAction="#onAbout" text="À propos"/>
-                    </items>
-                </Menu>
-            </menus>
+            <Menu mnemonicParsing="false" text="Fichier">
+                <MenuItem id="menuBarFilePreferences" mnemonicParsing="false" onAction="#onPreferences"
+                          text="Préférences"/>
+                <MenuItem id="menuBarFileQuit" mnemonicParsing="false" onAction="#onQuit" text="Quitter"/>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Aide">
+                <MenuItem id="menuBarHelpAbout" mnemonicParsing="false" onAction="#onAbout" text="À propos"/>
+            </Menu>
         </MenuBar>
     </top>
     <bottom>
         <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" styleClass="footer">
-            <children>
-                <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0"
-                       text="Copyright © Ouatelse. All rights reserved." textFill="WHITE" HBox.hgrow="ALWAYS">
-                    <font>
-                        <Font size="11.0"/>
-                    </font>
-                </Label>
-                <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS"/>
-                <Label maxWidth="-1.0" text="Version ${project.version}" textFill="WHITE" HBox.hgrow="NEVER"/>
-            </children>
             <padding>
                 <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>
             </padding>
+            <Label maxHeight="1.7976931348623157E308" text="Copyright © Ouatelse. All rights reserved." textFill="WHITE"
+                   HBox.hgrow="ALWAYS">
+                <font>
+                    <Font size="11.0"/>
+                </font>
+            </Label>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Label text="Version ${project.version}" textFill="WHITE" HBox.hgrow="NEVER"/>
         </HBox>
     </bottom>
     <stylesheets>
@@ -67,47 +59,45 @@
                 <RowConstraints maxHeight="214.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES"/>
                 <RowConstraints maxHeight="274.0" minHeight="10.0" prefHeight="146.0" vgrow="SOMETIMES"/>
             </rowConstraints>
-            <children>
-                <FontAwesomeIconView fill="RED" glyphName="HOME" size="75.0" GridPane.columnIndex="1"
-                                     GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
-                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="10000.0" text="Authentification Magasin"
-                       textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="1"
-                       GridPane.rowIndex="1">
-                    <font>
-                        <Font size="32.0"/>
-                    </font>
-                </Label>
-                <JFXTextField fx:id="idField" alignment="CENTER" focusColor="RED" prefHeight="35.0" prefWidth="250.0"
-                              promptText="Identifiant Magasin" unFocusColor="WHITE" GridPane.columnIndex="1"
-                              GridPane.rowIndex="2">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </JFXTextField>
-                <JFXPasswordField fx:id="passwordField" alignment="CENTER" focusColor="RED" promptText="Mot de passe"
-                                  unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </JFXPasswordField>
-                <JFXButton alignment="CENTER" onMouseClicked="#onConnectionButtonClick" prefHeight="39.0"
-                           prefWidth="150.0" style="-fx-background-color: red;" text="Connexion" textAlignment="CENTER"
-                           textFill="WHITE" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER"
-                           GridPane.rowIndex="5" GridPane.valignment="CENTER">
-                    <font>
-                        <Font size="18.0"/>
-                    </font>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="SIGN_IN"/>
-                    </graphic>
-                    <cursor>
-                        <Cursor fx:constant="HAND"/>
-                    </cursor>
-                </JFXButton>
-                <Label fx:id="errorMessageField" alignment="CENTER" prefHeight="17.0" prefWidth="267.0" text="{{error}}"
-                       textAlignment="CENTER" textFill="RED" wrapText="true" GridPane.columnIndex="1"
-                       GridPane.rowIndex="4"/>
-            </children>
+            <FontAwesomeIconView fill="RED" glyphName="HOME" size="75.0" GridPane.columnIndex="1"
+                                 GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+            <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="10000.0" text="Authentification Magasin"
+                   textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="1"
+                   GridPane.rowIndex="1">
+                <font>
+                    <Font size="32.0"/>
+                </font>
+            </Label>
+            <JFXTextField fx:id="idField" alignment="CENTER" focusColor="RED" prefHeight="35.0" prefWidth="250.0"
+                          promptText="Identifiant Magasin" unFocusColor="WHITE" GridPane.columnIndex="1"
+                          GridPane.rowIndex="2">
+                <font>
+                    <Font size="16.0"/>
+                </font>
+            </JFXTextField>
+            <JFXPasswordField fx:id="passwordField" alignment="CENTER" focusColor="RED" promptText="Mot de passe"
+                              unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <font>
+                    <Font size="16.0"/>
+                </font>
+            </JFXPasswordField>
+            <JFXButton alignment="CENTER" onMouseClicked="#onConnectionButtonClick" prefHeight="39.0" prefWidth="150.0"
+                       style="-fx-background-color: red;" text="Connexion" textAlignment="CENTER" textFill="WHITE"
+                       wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5"
+                       GridPane.valignment="CENTER">
+                <font>
+                    <Font size="18.0"/>
+                </font>
+                <graphic>
+                    <FontAwesomeIconView glyphName="SIGN_IN"/>
+                </graphic>
+                <cursor>
+                    <Cursor fx:constant="HAND"/>
+                </cursor>
+            </JFXButton>
+            <Label fx:id="errorMessageField" alignment="CENTER" prefHeight="17.0" prefWidth="267.0" text="{{error}}"
+                   textAlignment="CENTER" textFill="RED" wrapText="true" GridPane.columnIndex="1"
+                   GridPane.halignment="CENTER" GridPane.rowIndex="4"/>
         </GridPane>
     </center>
 </BorderPane>
