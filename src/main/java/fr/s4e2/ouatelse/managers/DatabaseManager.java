@@ -3,6 +3,7 @@ package fr.s4e2.ouatelse.managers;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import fr.s4e2.ouatelse.exceptions.DatabaseInitialisationException;
 import fr.s4e2.ouatelse.objects.*;
 import lombok.Getter;
 
@@ -16,9 +17,9 @@ import java.util.logging.Logger;
 
 @Getter
 public class DatabaseManager {
-
-    private ConnectionSource connectionSource;
-
+    private static final String DATABASE_NOT_INITIALIZED_EXCEPTION = "Could not setup the database";
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private final ConnectionSource connectionSource;
     private EntityManagerAddress entityManagerAddress;
     private EntityManagerRole entityManagerRole;
     private EntityManagerStore entityManagerStore;
@@ -26,17 +27,15 @@ public class DatabaseManager {
     private EntityManagerProduct entityManagerProduct;
     private EntityManagerVendor entityManagerVendor;
 
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
-
     public DatabaseManager(String databaseName) {
         try {
             this.connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + databaseName);
             this.setupTables();
             this.setupDao();
             this.fillDatabase();
-        } catch (SQLException e) {
-            this.logger.log(Level.SEVERE, "Could not setup the database", e);
-            System.exit(0);
+        } catch (SQLException exception) {
+            this.logger.log(Level.SEVERE, DATABASE_NOT_INITIALIZED_EXCEPTION, exception);
+            throw new DatabaseInitialisationException(DATABASE_NOT_INITIALIZED_EXCEPTION);
         }
     }
 

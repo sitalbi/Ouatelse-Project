@@ -17,7 +17,10 @@ import javafx.scene.control.TreeItem;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +35,7 @@ public class ManagementProductController extends BaseController {
     private final EntityManagerProduct entityManagerProduct = Main.getDatabaseManager().getEntityManagerProduct();
     private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
     private final EntityManagerVendor entityManagerVendor = Main.getDatabaseManager().getEntityManagerVendor();
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     // top
     @FXML
     private JFXTreeTableView<Product.ProductTree> productsTreeView;
@@ -73,6 +77,8 @@ public class ManagementProductController extends BaseController {
     @FXML
     private Label informationErrorLabel;
     private Product currentProduct;
+    @FXML
+    private JFXTextField productSearchBar;
 
     /**
      * Called to initialize a controller after its root element has been
@@ -108,6 +114,28 @@ public class ManagementProductController extends BaseController {
                 this.currentProduct = null;
             }
         });
+
+        this.productSearchBar.textProperty().addListener((observable, oldValue, newValue) -> searchProductFromText(newValue.trim()));
+    }
+
+    /**
+     * Searches a product in the database from its name
+     *
+     * @param input the searched product name
+     */
+    private void searchProductFromText(String input) {
+        this.productsTreeView.getRoot().getChildren().clear();
+
+        if (input.isEmpty()) {
+            this.loadProductTreeTable();
+        } else {
+            try {
+                List<Product> searchResults = this.entityManagerProduct.executeQuery(this.entityManagerProduct.getQueryBuilder().where().like("name", "%" + input + "%").prepare());
+                searchResults.forEach(this::addProductToTreeTable);
+            } catch (SQLException exception) {
+                this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+            }
+        }
     }
 
 

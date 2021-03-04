@@ -6,17 +6,23 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
+import fr.s4e2.ouatelse.exceptions.DatabaseInitialisationException;
 import fr.s4e2.ouatelse.objects.Address;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The type EntityManagerAddress
  */
 public class EntityManagerAddress {
+    private static final String ADDRESS_MANAGER_NOT_INITIALIZED = "EntityManagerAddress could not be initialized";
+
     private final ConnectionSource connectionSource;
-    private Dao<Address, Long> instance;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private final Dao<Address, Long> instance;
 
     /**
      * Instantiates a new EntityManagerAddress
@@ -28,8 +34,8 @@ public class EntityManagerAddress {
         try {
             this.instance = DaoManager.createDao(this.connectionSource, Address.class);
         } catch (SQLException exception) {
-            exception.printStackTrace();
-            System.exit(0);
+            this.logger.log(Level.SEVERE, ADDRESS_MANAGER_NOT_INITIALIZED);
+            throw new DatabaseInitialisationException(ADDRESS_MANAGER_NOT_INITIALIZED);
         }
     }
 
