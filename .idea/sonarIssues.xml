@@ -383,6 +383,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/fr/s4e2/ouatelse/managers/EntityManagerVendorTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/test/java/fr/s4e2/ouatelse/utils/UtilsTest.java">
           <value>
             <set />
