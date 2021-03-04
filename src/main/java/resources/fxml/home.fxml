@@ -15,7 +15,7 @@
             minWidth="800.0" prefHeight="600.0" prefWidth="1006.0" style="-fx-background-color: #242e41;"
             xmlns="http://javafx.com/javafx/15.0.1" fx:controller="fr.s4e2.ouatelse.controllers.HomeController">
     <top>
-        <MenuBar fx:id="menuBar" style="-fx-background-color: #242e41;" stylesheets="@css/base.css"
+        <MenuBar fx:id="menuBar" style="-fx-background-color: #242e41;" stylesheets="@../css/base.css"
                  BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="Fichier">
                 <MenuItem id="menuBarFilePreferences" mnemonicParsing="false" onAction="#onPreferences"
@@ -93,7 +93,7 @@
             </Label>
             <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true"
                        GridPane.columnIndex="1" GridPane.rowIndex="1">
-                <Image url="@images/ouatelse_icon.png"/>
+                <Image url="@../images/ouatelse_icon.png"/>
             </ImageView>
             <Circle fill="WHITE" opacity="0.45" radius="93.0" stroke="BLACK" GridPane.columnIndex="1"
                     GridPane.rowIndex="1"/>
@@ -123,7 +123,7 @@
         </GridPane>
     </center>
     <stylesheets>
-        <URL value="@css/base.css"/>
-        <URL value="@css/home.css"/>
+        <URL value="@../css/base.css"/>
+        <URL value="@../css/home.css"/>
     </stylesheets>
 </BorderPane>

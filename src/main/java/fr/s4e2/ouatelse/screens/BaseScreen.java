@@ -22,13 +22,15 @@ import java.util.Objects;
 public abstract class BaseScreen {
 
     public static final Image OUATELSE_ICON = new Image(Objects.requireNonNull(Main.class.getClassLoader().getResource("images/ouatelse_icon.png")).toExternalForm());
+    private static final String FXML_PATH = "fxml/";
+    private static final String CSS_PATH = "css/";
 
     private Stage stage;
 
     protected BaseScreen(String fxml, String title) {
         this.stage = new Stage();
 
-        FXMLLoader loader = new FXMLLoader(Main.class.getClassLoader().getResource(fxml));
+        FXMLLoader loader = new FXMLLoader(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
         stage.getIcons().add(OUATELSE_ICON);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinHeight(650);
@@ -48,7 +50,7 @@ public abstract class BaseScreen {
         this.stage = new Stage();
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getClassLoader().getResource(fxml));
+        loader.setLocation(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
         stage.getIcons().add(OUATELSE_ICON);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinHeight(650);
@@ -73,7 +75,7 @@ public abstract class BaseScreen {
         this.stage = new Stage();
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getClassLoader().getResource(fxml));
+        loader.setLocation(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
         stage.getIcons().add(OUATELSE_ICON);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinHeight(650);
@@ -94,7 +96,7 @@ public abstract class BaseScreen {
     }
 
     public void addStyleSheet(String cssFile) {
-        this.getStage().getScene().getStylesheets().add(cssFile);
+        this.getStage().getScene().getStylesheets().add(CSS_PATH + cssFile);
     }
 
     public void open() {

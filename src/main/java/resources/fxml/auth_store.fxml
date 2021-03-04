@@ -14,7 +14,7 @@
             prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="fr.s4e2.ouatelse.controllers.AuthStoreController">
     <top>
-        <MenuBar fx:id="menuBar" stylesheets="@css/base.css" BorderPane.alignment="CENTER">
+        <MenuBar fx:id="menuBar" stylesheets="@../css/base.css" BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="Fichier">
                 <MenuItem id="menuBarFilePreferences" mnemonicParsing="false" onAction="#onPreferences"
                           text="Préférences"/>
@@ -41,7 +41,7 @@
         </HBox>
     </bottom>
     <stylesheets>
-        <URL value="@css/base.css"/>
+        <URL value="@../css/base.css"/>
     </stylesheets>
     <center>
         <GridPane alignment="CENTER" maxWidth="10000.0" prefHeight="10000.0" styleClass="content"
