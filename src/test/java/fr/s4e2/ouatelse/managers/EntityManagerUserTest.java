@@ -113,7 +113,7 @@ class EntityManagerUserTest {
         Use cases :
             - User does not exist in the database, so it shouldn't change
             - User exists in the database, so its attributes should change
-        In both cases, no exception should be thrown as they should be catched by the code
+        In both cases, no exception should be thrown as they should be caught by the code
     */
     @Test
     void update() {
@@ -159,9 +159,7 @@ class EntityManagerUserTest {
 
 
         // There are users in the database
-        List<User> iteratedUsers
-                = new ArrayList<>();
-
+        List<User> iteratedUsers = new ArrayList<>();
 
         this.entityManagerUser.create(createCompliantUser());
         this.entityManagerUser.create(createCompliantUser());
