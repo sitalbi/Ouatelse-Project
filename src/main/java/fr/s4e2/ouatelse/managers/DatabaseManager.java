@@ -140,15 +140,12 @@ public class DatabaseManager {
                     Permission.EMPLOYEES_MANAGEMENT,
                     Permission.ROLE_MANAGEMENT,
                     Permission.STORE_MANAGEMENT,
-                    Permission.USER_MANAGEMENT,
                     Permission.MONITORING,
-                    Permission.EMPLOYEES_MANAGEMENT,
                     Permission.SALARY_MANAGEMENT,
                     Permission.STATISTICS,
                     Permission.PRODUCTS_MANAGEMENT,
                     Permission.STOCKS_MANAGEMENT,
                     Permission.SALES_MANAGEMENT,
-                    Permission.CLIENTS_MANAGEMENT,
                     Permission.PLANNING_MANAGEMENT,
                     Permission.VENDORS_MANAGEMENT
             ));
@@ -165,13 +162,10 @@ public class DatabaseManager {
                     Permission.EMPLOYEES_MANAGEMENT,
                     Permission.ROLE_MANAGEMENT,
                     Permission.STORE_MANAGEMENT,
-                    Permission.USER_MANAGEMENT,
-                    Permission.EMPLOYEES_MANAGEMENT,
                     Permission.SALARY_MANAGEMENT,
                     Permission.PRODUCTS_MANAGEMENT,
                     Permission.STOCKS_MANAGEMENT,
                     Permission.SALES_MANAGEMENT,
-                    Permission.CLIENTS_MANAGEMENT,
                     Permission.PLANNING_MANAGEMENT,
                     Permission.VENDORS_MANAGEMENT
             ));
@@ -207,7 +201,6 @@ public class DatabaseManager {
                     Permission.CLIENTS_MANAGEMENT,
                     Permission.USER_MANAGEMENT,
                     Permission.EMPLOYEES_MANAGEMENT,
-                    Permission.CLIENTS_MANAGEMENT,
                     Permission.PLANNING_MANAGEMENT
             ));
             humanResourcesManager.setPermissions(humanResourcesManagerPermission);
