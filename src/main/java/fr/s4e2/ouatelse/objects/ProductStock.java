@@ -14,6 +14,9 @@ import lombok.Setter;
 @DatabaseTable(tableName = "product_stock")
 public class ProductStock {
 
+    @DatabaseField(generatedId = true)
+    private long id;
+
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Product product;
 

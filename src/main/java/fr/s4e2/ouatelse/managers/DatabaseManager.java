@@ -20,6 +20,8 @@ public class DatabaseManager {
     private static final String DATABASE_NOT_INITIALIZED_EXCEPTION = "Could not setup the database";
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final ConnectionSource connectionSource;
+
+    private EntityManagerProductStock entityManagerProductStock;
     private EntityManagerAddress entityManagerAddress;
     private EntityManagerRole entityManagerRole;
     private EntityManagerStore entityManagerStore;
@@ -74,6 +76,7 @@ public class DatabaseManager {
         this.entityManagerUser = new EntityManagerUser(connectionSource);
         this.entityManagerProduct = new EntityManagerProduct(connectionSource);
         this.entityManagerVendor = new EntityManagerVendor(connectionSource);
+        this.entityManagerProductStock = new EntityManagerProductStock(connectionSource);
     }
 
     public void fillDatabase() throws SQLException {
