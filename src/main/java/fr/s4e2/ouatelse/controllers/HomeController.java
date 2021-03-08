@@ -121,9 +121,7 @@ public class HomeController extends BaseController {
     }
 
     private void onClientsButtonClick() {
-        //todo : open monitoring screen
-
-        System.out.println("Open monitoring screen");
+        new ManagementClientScreen().open();
     }
 
     private void onVendorButtonClick() {
