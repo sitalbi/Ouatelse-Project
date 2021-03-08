@@ -26,6 +26,9 @@ public class DatabaseManager {
     private EntityManagerStore entityManagerStore;
     private EntityManagerUser entityManagerUser;
 
+    /**
+     * Constructs the DatabaseManager
+     */
     public DatabaseManager(String databaseName) {
         try {
             this.connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + databaseName);
