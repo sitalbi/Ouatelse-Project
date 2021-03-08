@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * The controller of the database of the application
+ * The controller of the database of the applicatio
  */
 public class BaseController implements Initializable {
 
