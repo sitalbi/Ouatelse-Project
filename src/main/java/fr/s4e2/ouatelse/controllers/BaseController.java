@@ -6,6 +6,7 @@ import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
 import lombok.Getter;
 
+import javax.swing.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -20,15 +21,25 @@ public class BaseController implements Initializable {
     }
 
     public void onQuit() {
-        Stage stage = (Stage) this.menuBar.getScene().getWindow();
-        stage.close();
+        int choice = JOptionPane.showConfirmDialog(
+                null,
+                "Voulez-vous vraiment quitter l'application?",
+                "Quitter", JOptionPane.YES_NO_OPTION);
+
+        if (choice == JOptionPane.YES_OPTION) {
+            Stage stage = (Stage) this.menuBar.getScene().getWindow();
+            stage.close();
+        }
     }
 
     public void onAbout() {
-        throw new UnsupportedOperationException();
+        JOptionPane.showMessageDialog(
+                null,
+                "Logiciel Outaelse.\n Développeurs: S. CAILLAT, M.CARAVATI, V. LEROY, S. TALBI, L. VOLANT",
+                "A propos", JOptionPane.PLAIN_MESSAGE);
     }
 
     public void onPreferences() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Not implemented yet!");
     }
 }
