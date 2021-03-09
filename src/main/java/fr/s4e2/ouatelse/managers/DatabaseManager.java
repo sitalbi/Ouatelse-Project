@@ -81,15 +81,12 @@ public class DatabaseManager {
 
     public void fillDatabase() throws SQLException {
         this.setupRoles();
-        this.setupTestUser();
         this.setupTestStore();
+        this.setupTestUser();
     }
 
     private void setupTestUser() throws SQLException {
-        if (this.connectionSource == null
-                || this.entityManagerUser == null
-                || this.entityManagerRole == null
-        ) return;
+        if (this.connectionSource == null || this.entityManagerUser == null || this.entityManagerRole == null) return;
 
         if (this.entityManagerUser.getUserIfExists("test", "test") == null) {
             User user = new User();
@@ -102,10 +99,21 @@ public class DatabaseManager {
             user.setStatus(PersonState.EMPLOYED);
             user.setCredentials("test");
             user.setPassword("test");
-            user.setRole(this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().where().eq("name", "Admin").prepare()).stream().findFirst().orElse(null));
+            user.setRole(entityManagerRole.executeQuery(
+                    entityManagerRole.getQueryBuilder().where().eq("name", "Admin").prepare()
+            ).stream().findFirst().orElse(null));
             user.setHiringDate(new Date());
             user.setHoursPerWeek(35);
 
+            Address address = new Address();
+            address.setAddress("Test Address");
+            address.setCity("Test City");
+            address.setZipCode(0);
+
+            user.setAddress(address);
+            user.setWorkingStore(this.entityManagerStore.getQueryForAll().stream().findFirst().orElse(null));
+
+            this.entityManagerAddress.create(address);
             this.entityManagerUser.create(user);
         }
     }
@@ -131,9 +139,11 @@ public class DatabaseManager {
 
         if (this.connectionSource == null || this.entityManagerRole == null) return;
 
-        List<Role> temporaryResultsList = this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().where().eq("name", DIRECTOR_ROLE_NAME).prepare());
+        List<Role> temporaryResultsList = entityManagerRole.executeQuery(
+                entityManagerRole.getQueryBuilder().where().eq("name", DIRECTOR_ROLE_NAME).prepare()
+        );
         if (temporaryResultsList.isEmpty()) {
-            Role director = this.entityManagerRole.create(DIRECTOR_ROLE_NAME);
+            Role director = entityManagerRole.create(DIRECTOR_ROLE_NAME);
             ArrayList<Permission> directorPermission = new ArrayList<>(Arrays.asList(
                     Permission.CLIENTS_MANAGEMENT,
                     Permission.USER_MANAGEMENT,
@@ -153,9 +163,11 @@ public class DatabaseManager {
             this.entityManagerRole.update(director);
         }
 
-        temporaryResultsList = this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().where().eq("name", ADMIN_ROLE_NAME).prepare());
+        temporaryResultsList = entityManagerRole.executeQuery(
+                entityManagerRole.getQueryBuilder().where().eq("name", ADMIN_ROLE_NAME).prepare()
+        );
         if (temporaryResultsList.isEmpty()) {
-            Role admin = this.entityManagerRole.create(ADMIN_ROLE_NAME);
+            Role admin = entityManagerRole.create(ADMIN_ROLE_NAME);
             ArrayList<Permission> adminPermission = new ArrayList<>(Arrays.asList(
                     Permission.CLIENTS_MANAGEMENT,
                     Permission.USER_MANAGEMENT,
@@ -173,9 +185,11 @@ public class DatabaseManager {
             this.entityManagerRole.update(admin);
         }
 
-        temporaryResultsList = this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().where().eq("name", BUYINGS_AND_STOCKS_MANAGER_ROLE_NAME).prepare());
+        temporaryResultsList = entityManagerRole.executeQuery(
+                entityManagerRole.getQueryBuilder().where().eq("name", BUYINGS_AND_STOCKS_MANAGER_ROLE_NAME).prepare()
+        );
         if (temporaryResultsList.isEmpty()) {
-            Role buyingsAndStocksManager = this.entityManagerRole.create(BUYINGS_AND_STOCKS_MANAGER_ROLE_NAME);
+            Role buyingsAndStocksManager = entityManagerRole.create(BUYINGS_AND_STOCKS_MANAGER_ROLE_NAME);
             ArrayList<Permission> buyingsAndStocksManagerPermission = new ArrayList<>(Arrays.asList(
                     Permission.PRODUCTS_MANAGEMENT,
                     Permission.STOCKS_MANAGEMENT
@@ -184,9 +198,11 @@ public class DatabaseManager {
             this.entityManagerRole.update(buyingsAndStocksManager);
         }
 
-        temporaryResultsList = this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().where().eq("name", SALES_MANAGER_ROLE_NAME).prepare());
+        temporaryResultsList = entityManagerRole.executeQuery(
+                entityManagerRole.getQueryBuilder().where().eq("name", SALES_MANAGER_ROLE_NAME).prepare()
+        );
         if (temporaryResultsList.isEmpty()) {
-            Role salesManager = this.entityManagerRole.create(SALES_MANAGER_ROLE_NAME);
+            Role salesManager = entityManagerRole.create(SALES_MANAGER_ROLE_NAME);
             ArrayList<Permission> salesManagerPermission = new ArrayList<>(Collections.singletonList(
                     Permission.SALES_MANAGEMENT
             ));
@@ -194,9 +210,11 @@ public class DatabaseManager {
             this.entityManagerRole.update(salesManager);
         }
 
-        temporaryResultsList = this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().where().eq("name", HUMAN_RESOURCES_MANAGER_ROLE_NAME).prepare());
+        temporaryResultsList = entityManagerRole.executeQuery(
+                entityManagerRole.getQueryBuilder().where().eq("name", HUMAN_RESOURCES_MANAGER_ROLE_NAME).prepare()
+        );
         if (temporaryResultsList.isEmpty()) {
-            Role humanResourcesManager = this.entityManagerRole.create(HUMAN_RESOURCES_MANAGER_ROLE_NAME);
+            Role humanResourcesManager = entityManagerRole.create(HUMAN_RESOURCES_MANAGER_ROLE_NAME);
             ArrayList<Permission> humanResourcesManagerPermission = new ArrayList<>(Arrays.asList(
                     Permission.CLIENTS_MANAGEMENT,
                     Permission.USER_MANAGEMENT,
