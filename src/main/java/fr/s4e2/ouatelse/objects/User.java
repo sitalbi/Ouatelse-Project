@@ -28,7 +28,7 @@ public class User extends Person {
     @DatabaseField(canBeNull = false)
     private String password;
 
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, canBeNull = true)
     private Role role;
 
     @DatabaseField(canBeNull = false)
