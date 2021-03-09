@@ -18,6 +18,31 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/java/fr/iut/HelloServlet.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/java/fr/iut/HomeServlet.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/java/resources/templates/home.ftl">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/webapp/index.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/.gitignore">
           <value>
             <set />
@@ -84,6 +109,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/ManagementRoleController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/ManagementStockController.java">
           <value>
             <set />
           </value>
@@ -188,6 +218,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/objects/ProductStock.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/objects/Right.java">
           <value>
             <set />
@@ -268,6 +303,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/screens/ManagementStockScreen.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/screens/ManagementUserScreen.java">
           <value>
             <set />
@@ -299,6 +339,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/resources/base.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/resources/fxml/management_stocks.fxml">
           <value>
             <set />
           </value>
