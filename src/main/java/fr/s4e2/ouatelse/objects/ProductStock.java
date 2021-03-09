@@ -59,4 +59,21 @@ public class ProductStock {
             this.priceWithoutTaxes.bind(this.priceWithTaxes.subtract(this.priceWithTaxes.multiply(this.taxes)));
         }
     }
+
+    @Getter
+    public static class ProductStockTree extends RecursiveTreeObject<ProductStockTree> {
+        private final LongProperty reference;
+        private final StringProperty article;
+        private final DoubleProperty unitValue;
+        private final IntegerProperty stockQuantity;
+        private final StringProperty productState;
+
+        public ProductStockTree(Long reference, String article, Double unitValue, Integer stockQuantity, ProductState productState) {
+            this.reference = new SimpleLongProperty(reference);
+            this.article = new SimpleStringProperty(article);
+            this.unitValue = new SimpleDoubleProperty(unitValue);
+            this.stockQuantity = new SimpleIntegerProperty(stockQuantity);
+            this.productState = new SimpleStringProperty(productState.toString());
+        }
+    }
 }
