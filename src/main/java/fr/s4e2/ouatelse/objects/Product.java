@@ -79,14 +79,10 @@ public class Product {
 
             this.sellingPrice = new SimpleDoubleProperty();
 
-            this.sellingPrice.bind(
-                    this.purchasePrice.add(
-                            this.purchasePrice.multiply(this.margin)
-                    ).add(
-                            this.purchasePrice.add(
-                                    this.purchasePrice.multiply(this.margin)
-                            ).multiply(this.taxes)
-                    ));
+            this.sellingPrice.bind(this.purchasePrice
+                            .add(this.purchasePrice.multiply(this.margin))
+                            .add(this.purchasePrice.add(this.purchasePrice.multiply(this.margin)).multiply(this.taxes))
+            );
         }
     }
 }
