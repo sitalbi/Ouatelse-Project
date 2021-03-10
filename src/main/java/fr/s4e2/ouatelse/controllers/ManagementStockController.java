@@ -8,6 +8,7 @@ import fr.s4e2.ouatelse.managers.EntityManagerStore;
 import fr.s4e2.ouatelse.objects.ProductStock;
 import fr.s4e2.ouatelse.objects.ProductStock.ProductStockTree;
 import fr.s4e2.ouatelse.objects.Store;
+import fr.s4e2.ouatelse.utils.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -33,6 +34,8 @@ public class ManagementStockController extends BaseController {
     private JFXTextField stockCurrentQuantityInput;
     @FXML
     private JFXTextField stockWorthInput;
+    @FXML
+    private JFXTextField stockSellingWorthInput;
     @FXML
     private JFXTextField stockQuantityInput;
 
@@ -74,13 +77,13 @@ public class ManagementStockController extends BaseController {
             if (newValue != null) {
                 try {
                     this.currentStock = entityManagerProductStock.executeQuery(entityManagerProductStock.getQueryBuilder()
-                            .where().eq("id", newValue.getValue().getReference().getValue())
+                            .where().eq("id", newValue.getValue().getId().getValue())
                             .prepare()
                     ).stream().findFirst().orElse(null);
                 } catch (SQLException exception) {
                     exception.printStackTrace();
                 }
-                this.loadProductStockInformation();
+                this.loadInformation();
             } else {
                 this.currentStock = null;
             }
@@ -92,7 +95,7 @@ public class ManagementStockController extends BaseController {
                 this.currentStore = newValue;
                 this.loadProductStockTreeTable();
             } else {
-                this.currentStock = null;
+                this.currentStore = null;
             }
 
         });
@@ -106,6 +109,8 @@ public class ManagementStockController extends BaseController {
      * Prepares an order for a selected product
      */
     public void onScheduleOrderButtonClick() {
+        if (currentStock == null) return;
+
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 
@@ -115,7 +120,12 @@ public class ManagementStockController extends BaseController {
      * Deletes the stock of a product
      */
     public void onDeleteStockButtonClick() {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (currentStock == null) return;
+
+        this.currentStock.setQuantity(0);
+        this.entityManagerProductStock.update(currentStock);
+        this.stockQuantityInput.setText("");
+        this.addProductStockToTreeTable(currentStock);
     }
 
     /**
@@ -124,14 +134,36 @@ public class ManagementStockController extends BaseController {
      * Adds to the stock of a product
      */
     public void onAddStockButtonClick() {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (currentStock == null) return;
+
+        Integer quantity = Utils.getNumber(stockQuantityInput.getText().trim());
+        if (quantity == null) return;
+
+        this.currentStock.setQuantity(currentStock.getQuantity() + quantity);
+        this.entityManagerProductStock.update(currentStock);
+        this.stockQuantityInput.setText("");
+        this.addProductStockToTreeTable(currentStock);
     }
 
     /**
      * Clears the product stocks' information from the differents fields
      */
     private void clearInformation() {
+        this.stockCurrentQuantityInput.setText("");
+        this.stockWorthInput.setText("");
+        this.stockSellingWorthInput.setText("");
         this.stockQuantityInput.setText("");
+    }
+
+    /**
+     * Loads the product stock's information
+     */
+    private void loadInformation() {
+        if (currentStock == null) return;
+
+        this.stockCurrentQuantityInput.setText(String.valueOf(currentStock.getQuantity()));
+        this.stockWorthInput.setText(String.valueOf(currentStock.getProduct().getPurchasePrice() * currentStock.getQuantity()));
+        this.stockSellingWorthInput.setText(String.valueOf(currentStock.getProduct().getSellingPrice() * currentStock.getQuantity()));
     }
 
     /**
@@ -154,17 +186,6 @@ public class ManagementStockController extends BaseController {
                 this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             }
         }
-    }
-
-    /**
-     * Loads the product stock information into the fields
-     */
-    private void loadProductStockInformation() {
-        this.clearInformation();
-
-        if (!this.isEditing()) return;
-
-        this.stockQuantityInput.setText(String.valueOf(currentStock.getQuantity()));
     }
 
     /**
@@ -200,6 +221,7 @@ public class ManagementStockController extends BaseController {
                 ).forEach(productStock -> {
                     if (productStock.getProduct() != null) {
                         productStocks.add(new ProductStockTree(
+                                productStock.getId(),
                                 productStock.getProduct().getReference(),
                                 productStock.getProduct().getName(),
                                 productStock.getProduct().getPurchasePrice(),
@@ -228,6 +250,7 @@ public class ManagementStockController extends BaseController {
      */
     private void addProductStockToTreeTable(ProductStock productStock) {
         TreeItem<ProductStockTree> productStockRow = new TreeItem<>(new ProductStockTree(
+                productStock.getId(),
                 productStock.getProduct().getReference(),
                 productStock.getProduct().getName(),
                 productStock.getProduct().getPurchasePrice(),
@@ -238,6 +261,7 @@ public class ManagementStockController extends BaseController {
         this.stockTreeTableView.getRoot().getChildren().remove(stockTreeTableView.getSelectionModel().getSelectedItem());
         this.stockTreeTableView.getRoot().getChildren().add(productStockRow);
         this.stockTreeTableView.getSelectionModel().select(productStockRow);
+        this.loadInformation();
     }
 
     /**
