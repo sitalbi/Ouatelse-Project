@@ -2,16 +2,17 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXDatePicker?>
-<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -22,7 +23,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/base.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.s4e2.ouatelse.controllers.ManagementClientController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.s4e2.ouatelse.controllers.ManagementClientController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="Fichier">
@@ -51,59 +52,113 @@
             <Label font="$x3" text="Version ${project.version}" textFill="$x4" HBox.hgrow="NEVER" />
         </HBox>
     </bottom>
-   <center>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <top>
-            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label text="Gestion des Clients" />
-               </children>
-            </HBox>
-         </top>
+    <center>
+        <BorderPane prefHeight="549.0" prefWidth="482.0" styleClass="content" BorderPane.alignment="CENTER">
+            <top>
+                <HBox alignment="CENTER" prefHeight="50.0" prefWidth="798.0" BorderPane.alignment="CENTER">
+                    <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="47.0" prefWidth="405.0" text="Gestion des Clients" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                        <font>
+                            <Font size="32.0" />
+                        </font>
+                    </Label>
+                </HBox>
+            </top>
+            <center>
+                <GridPane prefHeight="417.0" prefWidth="417.0" styleClass="user-table-pane" BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <BorderPane.margin>
+                        <Insets bottom="20.0" right="20.0" top="20.0" />
+                    </BorderPane.margin>
+                    <JFXTreeTableView fx:id="usersTreeTableView" GridPane.columnSpan="3" GridPane.rowSpan="2">
+                        <columnResizePolicy>
+                            <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                        </columnResizePolicy>
+                        <GridPane.margin>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </GridPane.margin>
+                    </JFXTreeTableView>
+                </GridPane>
+            </center>
          <left>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="446.0" prefWidth="227.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXTextField promptText="Nom" />
-                  <JFXTextField promptText="Prénom" />
-                  <JFXTextField promptText="Téléphone" />
-                  <JFXTextField promptText="Email" />
-                  <JFXDatePicker fx:id="userBirthDate" defaultColor="RED" promptText="Date de naissance" />
-                  <JFXComboBox fx:id="userCivilityDropdown" focusColor="RED" prefHeight="25.0" prefWidth="141.0" promptText="Civilité" unFocusColor="WHITE" />
-                  <JFXTextField fx:id="userAddressInput" focusColor="RED" promptText="Adresse" unFocusColor="WHITE" />
-                  <JFXTextField promptText="Fax" />
-                  <JFXTextArea promptText="Détails" />
-                  <JFXButton onMouseClicked="#onConfirmButtonClick" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: red;" text="Confirmer" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                  <JFXComboBox fx:id="userCivilityDropdown" focusColor="RED" promptText="Civilité" unFocusColor="WHITE">
+                     <VBox.margin>
+                        <Insets left="15.0" top="25.0" />
+                     </VBox.margin>
+                  </JFXComboBox>
+                  <JFXTextField fx:id="userLastNameInput" focusColor="RED" promptText="Nom" unFocusColor="WHITE">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" top="15.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="userFirstNameInput" focusColor="RED" promptText="Prénom" unFocusColor="WHITE">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" top="15.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="userEmailInput" focusColor="RED" promptText="Email" unFocusColor="WHITE">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" top="15.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="userPhoneInput" focusColor="RED" promptText="Téléphone" unFocusColor="WHITE">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" top="15.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="userAddressInput" focusColor="RED" promptText="Adresse" unFocusColor="WHITE">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" top="15.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="userCityInput" focusColor="RED" promptText="Ville" unFocusColor="WHITE">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" top="15.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="userZipcodeInput" focusColor="RED" promptText="Code Postal" unFocusColor="WHITE">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" top="15.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXButton onMouseClicked="#onConfirmButtonClick" style="-fx-background-color: red;" text="Confirmer" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="CHECK" />
                      </graphic>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <VBox.margin>
+                        <Insets left="70.0" top="30.0" />
+                     </VBox.margin>
                   </JFXButton>
-                  <JFXButton onMouseClicked="#onDeleteButtonClick" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: red;" text="Supprimer" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                  <JFXButton onMouseClicked="#onDeleteButtonClick" style="-fx-background-color: red;" text="Supprimer" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="REMOVE" />
                      </graphic>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <VBox.margin>
+                        <Insets left="70.0" top="15.0" />
+                     </VBox.margin>
                   </JFXButton>
                </children>
             </VBox>
          </left>
-         <center>
-            <GridPane BorderPane.alignment="CENTER">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
-         </center>
-      </BorderPane>
-   </center>
+        </BorderPane>
+    </center>
+    <stylesheets>
+        <URL value="@../css/base.css" />
+        <URL value="@../css/management.css" />
+    </stylesheets>
 </BorderPane>
