@@ -53,6 +53,11 @@ public class Product {
     private Store store;
     // ###########################################################
 
+    public double getSellingPrice() {
+        double priceWithMargin = (purchasePrice + (margin * purchasePrice));
+        return priceWithMargin + (taxes * priceWithMargin);
+    }
+
     @Getter
     public static class ProductTree extends RecursiveTreeObject<ProductTree> {
         private final LongProperty reference;

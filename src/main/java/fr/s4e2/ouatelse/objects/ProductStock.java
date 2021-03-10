@@ -62,13 +62,15 @@ public class ProductStock {
 
     @Getter
     public static class ProductStockTree extends RecursiveTreeObject<ProductStockTree> {
+        private final LongProperty id;
         private final LongProperty reference;
         private final StringProperty article;
         private final DoubleProperty unitValue;
         private final IntegerProperty stockQuantity;
         private final StringProperty productState;
 
-        public ProductStockTree(Long reference, String article, Double unitValue, Integer stockQuantity, ProductState productState) {
+        public ProductStockTree(Long id, Long reference, String article, Double unitValue, Integer stockQuantity, ProductState productState) {
+            this.id = new SimpleLongProperty(id);
             this.reference = new SimpleLongProperty(reference);
             this.article = new SimpleStringProperty(article);
             this.unitValue = new SimpleDoubleProperty(unitValue);
