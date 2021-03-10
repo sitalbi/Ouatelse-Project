@@ -18,7 +18,7 @@ public class Client extends Person {
     @DatabaseField(canBeNull = false)
     private String workPhoneNumber;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String fax;
 
     @DatabaseField()
