@@ -23,7 +23,7 @@ public class Client extends Person {
     @DatabaseField(canBeNull = false)
     private String workPhoneNumber;
 
-    @DatabaseField(canBeNull = true)
+    @DatabaseField
     private String fax;
 
     @DatabaseField()
