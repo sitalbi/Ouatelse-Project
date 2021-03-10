@@ -17,13 +17,13 @@ import lombok.Setter;
 @DatabaseTable(tableName = "client")
 public class Client extends Person {
 
-    @DatabaseField
+    @DatabaseField(canBeNull = false)
     private String homePhoneNumber;
 
-    @DatabaseField
+    @DatabaseField(canBeNull = false)
     private String workPhoneNumber;
 
-    @DatabaseField
+    @DatabaseField(canBeNull = true)
     private String fax;
 
     @DatabaseField()
