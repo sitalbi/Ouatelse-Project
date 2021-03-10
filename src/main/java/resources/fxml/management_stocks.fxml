@@ -162,6 +162,23 @@
                         </padding>
                     </JFXTextField>
                 </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="39.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label text="Valeur du stock totale (après vente) : " textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="25.0" />
+                     </HBox.margin>
+                  </Label>
+                  <JFXTextField fx:id="stockSellingWorthInput" disable="true" focusColor="RED" promptText="N/A" unFocusColor="WHITE">
+                     <padding>
+                        <Insets bottom="5.0" />
+                     </padding>
+                  </JFXTextField>
+               </children>
+            </HBox>
                 <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                     <Label text="Article :" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                         <font>
@@ -198,7 +215,7 @@
                      <Insets />
                   </opaqueInsets>
                     </Button>
-                    <Button mnemonicParsing="false" onMouseClicked="#onDeleteStockButtonClick" style="-fx-background-color: red;" text="Supprimer" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                    <Button mnemonicParsing="false" onMouseClicked="#onDeleteStockButtonClick" style="-fx-background-color: red;" text="Supprimer Stock" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                         <font>
                             <Font size="14.0" />
                         </font>
@@ -212,7 +229,7 @@
                             <Insets right="15.0" />
                         </HBox.margin>
                     </Button>
-                    <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onMouseClicked="#onAddStockButtonClick" style="-fx-background-color: red;" text="Ajouter" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                    <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onMouseClicked="#onAddStockButtonClick" style="-fx-background-color: red;" text="Ajouter Stock" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                         <font>
                             <Font size="14.0" />
                         </font>
