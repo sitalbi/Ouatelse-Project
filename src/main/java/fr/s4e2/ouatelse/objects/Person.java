@@ -34,7 +34,7 @@ public class Person {
     @DatabaseField(canBeNull = false, dataType = DataType.ENUM_INTEGER)
     private Civility civility;
 
-    @DatabaseField(dataType = DataType.ENUM_INTEGER)
+    @DatabaseField(canBeNull = true, dataType = DataType.ENUM_INTEGER)
     private PersonState status;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
