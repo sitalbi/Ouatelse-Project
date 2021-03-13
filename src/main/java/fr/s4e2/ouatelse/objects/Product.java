@@ -58,6 +58,10 @@ public class Product {
         return priceWithMargin + (taxes * priceWithMargin);
     }
 
+    public double getPriceWithoutTaxes() {
+        return purchasePrice + (margin * purchasePrice);
+    }
+
     @Getter
     public static class ProductTree extends RecursiveTreeObject<ProductTree> {
         private final LongProperty reference;
@@ -89,5 +93,75 @@ public class Product {
                             .add(this.purchasePrice.add(this.purchasePrice.multiply(this.margin)).multiply(this.taxes))
             );
         }
+    }
+
+    /**
+     * Converts this object into a tree table object representing it's information
+     *
+     * @return a tree table object representing this object's information
+     */
+    public ProductTree toProductTree() {
+        return new ProductTree(
+                this.getReference(),
+                this.getName(),
+                this.getMargin(),
+                this.getPurchasePrice(),
+                this.getBrand(),
+                this.getState().toString(),
+                this.getCategory(),
+                (this.getSoldBy() != null) ? this.getSoldBy().getName() : "",
+                this.getTaxes()
+        );
+    }
+
+    @Getter
+    public static class ProductPricesTree extends RecursiveTreeObject<ProductPricesTree> {
+        private DoubleProperty buyingPrice;
+        private DoubleProperty margin;
+        private final DoubleProperty priceWithoutTaxes;
+        private DoubleProperty taxes;
+        private final DoubleProperty priceWithTaxes;
+
+        public ProductPricesTree(Double buyingPrice, Double margin, Double taxes) {
+            this.buyingPrice = new SimpleDoubleProperty(buyingPrice);
+            this.margin = new SimpleDoubleProperty(margin);
+            this.priceWithoutTaxes = new SimpleDoubleProperty();
+            this.taxes = new SimpleDoubleProperty(taxes);
+            this.priceWithTaxes = new SimpleDoubleProperty();
+
+            this.loadValues();
+        }
+
+        public void setBuyingPrice(double buyingPrice) {
+            this.buyingPrice = new SimpleDoubleProperty(buyingPrice);
+            this.loadValues();
+        }
+
+        public void setMargin(double margin) {
+            this.margin = new SimpleDoubleProperty(margin);
+            this.loadValues();
+        }
+
+        public void setTaxes(double taxes) {
+            this.taxes = new SimpleDoubleProperty(taxes);
+            this.loadValues();
+        }
+
+        private void loadValues() {
+            this.priceWithTaxes.bind(this.buyingPrice
+                    .add(this.buyingPrice.multiply(this.margin))
+                    .add(this.buyingPrice.add(this.buyingPrice.multiply(this.margin)).multiply(this.taxes))
+            );
+            this.priceWithoutTaxes.bind(this.priceWithTaxes.subtract(this.priceWithTaxes.multiply(this.taxes)));
+        }
+    }
+
+    /**
+     * Converts this object into a tree table object representing it's prices
+     *
+     * @return a tree table object representing this object's prices
+     */
+    public ProductPricesTree toProductPricesTree() {
+        return new ProductPricesTree(this.getPurchasePrice(), this.getMargin(), this.getTaxes());
     }
 }
