@@ -1,7 +1,7 @@
 package fr.s4e2.ouatelse;
 
 import fr.s4e2.ouatelse.managers.DatabaseManager;
-import fr.s4e2.ouatelse.screens.AuthUserScreen;
+import fr.s4e2.ouatelse.screens.ManagementRoleScreen;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -21,6 +21,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        new AuthUserScreen().open();
+        new ManagementRoleScreen().open();
     }
 }

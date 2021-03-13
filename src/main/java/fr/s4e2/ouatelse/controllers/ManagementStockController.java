@@ -61,7 +61,7 @@ public class ManagementStockController extends BaseController {
         this.entityManagerStore.getQueryForAll().forEach(store -> stockStoreComboBox.getItems().add(store));
 
         // deselect an item in the stock tree table
-        this.stockTreeTableView.setOnKeyReleased(event -> {
+        this.getBaseBorderPane().setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
 
             TreeItem<ProductStockTree> stock = stockTreeTableView.getSelectionModel().getSelectedItem();
@@ -111,6 +111,7 @@ public class ManagementStockController extends BaseController {
     public void onScheduleOrderButtonClick() {
         if (currentStock == null) return;
 
+        // todo : implement this
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 

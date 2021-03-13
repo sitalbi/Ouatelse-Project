@@ -75,7 +75,7 @@ public class ManagementStoreController extends BaseController {
         });
 
         // escape to unselect item in the list box
-        this.storesListView.setOnKeyReleased(event -> {
+        this.getBaseBorderPane().setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
 
             Store store = storesListView.getSelectionModel().getSelectedItem();

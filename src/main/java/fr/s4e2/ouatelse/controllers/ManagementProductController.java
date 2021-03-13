@@ -118,7 +118,7 @@ public class ManagementProductController extends BaseController {
         });
 
         // deselect an item in the product tree table
-        this.productsTreeView.setOnKeyReleased(event -> {
+        this.getBaseBorderPane().setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
 
             TreeItem<ProductTree> product = productsTreeView.getSelectionModel().getSelectedItem();

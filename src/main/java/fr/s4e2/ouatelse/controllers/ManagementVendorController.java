@@ -63,7 +63,7 @@ public class ManagementVendorController extends BaseController {
         this.loadVendorsTreeTable();
 
         // escape to unselect item in the table
-        this.vendorsTreeTableView.setOnKeyReleased(event -> {
+        this.getBaseBorderPane().setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
 
             if (vendorsTreeTableView.getSelectionModel().getSelectedItem() == null) return;
@@ -214,12 +214,7 @@ public class ManagementVendorController extends BaseController {
         contractState.setCellValueFactory(param -> param.getValue().getValue().getContractState());
 
         ObservableList<VendorTree> vendors = FXCollections.observableArrayList();
-        this.entityManagerVendor.getQueryForAll().forEach(vendor -> vendors.add(new VendorTree(
-                vendor.getName(),
-                vendor.getAddress().getCity(),
-                vendor.getEmail(),
-                vendor.isContractState()
-        )));
+        this.entityManagerVendor.getQueryForAll().forEach(vendor -> vendors.add(vendor.toVendorTree()));
 
         TreeItem<VendorTree> root = new RecursiveTreeItem<>(vendors, RecursiveTreeObject::getChildren);
         //noinspection unchecked
@@ -235,12 +230,7 @@ public class ManagementVendorController extends BaseController {
      * @param vendor a Vendor to add in the tree table
      */
     private void addVendorToTreeTable(Vendor vendor) {
-        this.vendorsTreeTableView.getRoot().getChildren().add(new TreeItem<>(new VendorTree(
-                vendor.getName(),
-                vendor.getAddress().getCity(),
-                vendor.getEmail(),
-                vendor.isContractState()
-        )));
+        this.vendorsTreeTableView.getRoot().getChildren().add(new TreeItem<>(vendor.toVendorTree()));
     }
 
     /**
