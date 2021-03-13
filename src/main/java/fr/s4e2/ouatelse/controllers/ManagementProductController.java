@@ -8,6 +8,10 @@ import fr.s4e2.ouatelse.managers.EntityManagerProductStock;
 import fr.s4e2.ouatelse.managers.EntityManagerStore;
 import fr.s4e2.ouatelse.managers.EntityManagerVendor;
 import fr.s4e2.ouatelse.objects.*;
+import fr.s4e2.ouatelse.objects.Product.ProductPricesTree;
+import fr.s4e2.ouatelse.objects.Product.ProductTree;
+import fr.s4e2.ouatelse.objects.ProductStock.ProductStockInfoTree;
+import fr.s4e2.ouatelse.utils.TableTreeUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,7 +19,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.scene.input.KeyCode;
+import javafx.util.StringConverter;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -41,7 +47,7 @@ public class ManagementProductController extends BaseController {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     // top
     @FXML
-    private JFXTreeTableView<Product.ProductTree> productsTreeView;
+    private JFXTreeTableView<ProductTree> productsTreeView;
 
     // Error labels
     @FXML
@@ -73,17 +79,19 @@ public class ManagementProductController extends BaseController {
     @FXML
     private ComboBox<Store> stockStoreComboBox;
     @FXML
-    private JFXTreeTableView<ProductStock.ProductStockTreeTop> stockOrderTreeView;
+    private JFXTreeTableView<ProductStockInfoTree> stockOrderTreeView;
     @FXML
-    private JFXTreeTableView<ProductStock.ProductStockTreeBottom> stockPricesTreeView;
+    private JFXTreeTableView<ProductPricesTree> stockPricesTreeView;
 
     @FXML
     private Button confirmPriceStockButton;
     @FXML
     private Label informationErrorLabel;
-    private Product currentProduct;
     @FXML
     private JFXTextField productSearchBar;
+
+    private Product currentProduct;
+    private Store currentStore;
 
     /**
      * Called to initialize a controller after its root element has been
@@ -97,6 +105,8 @@ public class ManagementProductController extends BaseController {
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
         this.loadProductTreeTable();
+        this.initializeProductPricesTreeTable();
+        this.initializeProductStockInfoTreeTable();
 
         // Fill the combo box with vendors (2nd tab)
         this.entityManagerVendor.getAll().forEachRemaining(vendor -> descriptionVendorComboBox.getItems().add(vendor));
@@ -111,7 +121,7 @@ public class ManagementProductController extends BaseController {
         this.productsTreeView.setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
 
-            TreeItem<Product.ProductTree> product = productsTreeView.getSelectionModel().getSelectedItem();
+            TreeItem<ProductTree> product = productsTreeView.getSelectionModel().getSelectedItem();
             if (product == null) return;
             productsTreeView.getSelectionModel().clearSelection();
             currentProduct = null;
@@ -133,6 +143,16 @@ public class ManagementProductController extends BaseController {
                 this.loadProductInformation();
             } else {
                 this.currentProduct = null;
+            }
+        });
+
+        // Handles the selection of a store
+        this.stockStoreComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                this.currentStore = newValue;
+                this.loadProductStockInfo();
+            } else {
+                this.currentStore = null;
             }
         });
 
@@ -278,10 +298,18 @@ public class ManagementProductController extends BaseController {
     // Third tab ################################
 
     /**
-     * Sets the stocks related to the currently selected product
+     * Sets the prices related to the currently selected product
      */
     public void onConfirmPriceStockButton() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        TreeItem<ProductPricesTree> pricesTreeTreeItem = stockPricesTreeView.getTreeItem(0);
+        if (pricesTreeTreeItem == null) return;
+        if (currentProduct == null) return;
+
+        this.currentProduct.setMargin(pricesTreeTreeItem.getValue().getMargin().getValue());
+        this.currentProduct.setTaxes(pricesTreeTreeItem.getValue().getTaxes().getValue());
+        this.currentProduct.setPurchasePrice(pricesTreeTreeItem.getValue().getBuyingPrice().getValue());
+
+        this.entityManagerProduct.update(currentProduct);
     }
     // ##########################################
 
@@ -289,14 +317,14 @@ public class ManagementProductController extends BaseController {
      * Loads the list of products into the table
      */
     private void loadProductTreeTable() {
-        JFXTreeTableColumn<Product.ProductTree, Long> reference = new JFXTreeTableColumn<>("Référence");
-        JFXTreeTableColumn<Product.ProductTree, String> name = new JFXTreeTableColumn<>("Nom");
-        JFXTreeTableColumn<Product.ProductTree, Double> sellingPrice = new JFXTreeTableColumn<>("Prix de vente");
-        JFXTreeTableColumn<Product.ProductTree, Double> purchasePrice = new JFXTreeTableColumn<>("Prix d'achat");
-        JFXTreeTableColumn<Product.ProductTree, String> brand = new JFXTreeTableColumn<>("Marque");
-        JFXTreeTableColumn<Product.ProductTree, String> state = new JFXTreeTableColumn<>("Etat");
-        JFXTreeTableColumn<Product.ProductTree, String> category = new JFXTreeTableColumn<>("Catégorie");
-        JFXTreeTableColumn<Product.ProductTree, String> soldByName = new JFXTreeTableColumn<>("Vendeur");
+        JFXTreeTableColumn<ProductTree, Long> reference = new JFXTreeTableColumn<>("Référence");
+        JFXTreeTableColumn<ProductTree, String> name = new JFXTreeTableColumn<>("Nom");
+        JFXTreeTableColumn<ProductTree, Double> sellingPrice = new JFXTreeTableColumn<>("Prix de vente");
+        JFXTreeTableColumn<ProductTree, Double> purchasePrice = new JFXTreeTableColumn<>("Prix d'achat");
+        JFXTreeTableColumn<ProductTree, String> brand = new JFXTreeTableColumn<>("Marque");
+        JFXTreeTableColumn<ProductTree, String> state = new JFXTreeTableColumn<>("Etat");
+        JFXTreeTableColumn<ProductTree, String> category = new JFXTreeTableColumn<>("Catégorie");
+        JFXTreeTableColumn<ProductTree, String> soldByName = new JFXTreeTableColumn<>("Vendeur");
         reference.setSortNode(reference.getSortNode());
 
         reference.setCellValueFactory(param -> param.getValue().getValue().getReference().asObject());
@@ -308,35 +336,97 @@ public class ManagementProductController extends BaseController {
         category.setCellValueFactory(param -> param.getValue().getValue().getCategory());
         soldByName.setCellValueFactory(param -> param.getValue().getValue().getSoldByName());
 
-        reference.setContextMenu(null);
-        name.setContextMenu(null);
-        sellingPrice.setContextMenu(null);
-        purchasePrice.setContextMenu(null);
-        brand.setContextMenu(null);
-        state.setContextMenu(null);
-        category.setContextMenu(null);
-        soldByName.setContextMenu(null);
 
+        ObservableList<ProductTree> products = FXCollections.observableArrayList();
+        this.entityManagerProduct.getQueryForAll().forEach(product -> products.add(product.toProductTree()));
 
-        ObservableList<Product.ProductTree> products = FXCollections.observableArrayList();
-        this.entityManagerProduct.getQueryForAll().forEach(product -> products.add(new Product.ProductTree(
-                product.getReference(),
-                product.getName(),
-                product.getMargin(),
-                product.getPurchasePrice(),
-                product.getBrand(),
-                product.getState().toString(),
-                product.getCategory(),
-                (product.getSoldBy() != null) ? product.getSoldBy().getName() : "",
-                product.getTaxes()
-        )));
-
-        TreeItem<Product.ProductTree> root = new RecursiveTreeItem<>(products, RecursiveTreeObject::getChildren);
+        TreeItem<ProductTree> root = new RecursiveTreeItem<>(products, RecursiveTreeObject::getChildren);
 
         //noinspection unchecked
         this.productsTreeView.getColumns().setAll(reference, name, sellingPrice, purchasePrice, brand, state, category, soldByName);
+        this.productsTreeView.getColumns().forEach(c -> c.setContextMenu(null));
         this.productsTreeView.setRoot(root);
         this.productsTreeView.setShowRoot(false);
+    }
+
+    /**
+     * Sets up the table for product prices
+     */
+    private void initializeProductPricesTreeTable() {
+        JFXTreeTableColumn<ProductPricesTree, Double> buyingPrice = new JFXTreeTableColumn<>("Prix achat");
+        JFXTreeTableColumn<ProductPricesTree, Double> margin = new JFXTreeTableColumn<>("Marge HT");
+        JFXTreeTableColumn<ProductPricesTree, Double> priceWithoutTaxes = new JFXTreeTableColumn<>("Prix HT");
+        JFXTreeTableColumn<ProductPricesTree, Double> tax = new JFXTreeTableColumn<>("Taxe");
+        JFXTreeTableColumn<ProductPricesTree, Double> sellingPrice = new JFXTreeTableColumn<>("Prix TTC");
+        buyingPrice.setSortNode(buyingPrice.getSortNode());
+
+        buyingPrice.setCellValueFactory(param -> param.getValue().getValue().getBuyingPrice().asObject());
+        margin.setCellValueFactory(param -> param.getValue().getValue().getMargin().asObject());
+        priceWithoutTaxes.setCellValueFactory(param -> param.getValue().getValue().getPriceWithoutTaxes().asObject());
+        tax.setCellValueFactory(param -> param.getValue().getValue().getTaxes().asObject());
+        sellingPrice.setCellValueFactory(param -> param.getValue().getValue().getPriceWithTaxes().asObject());
+
+        StringConverter<Double> converter = TableTreeUtils.getDoubleConverter();
+
+        buyingPrice.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn(converter)); // allowed to edit
+        margin.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn(converter)); // allowed to edit
+        tax.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn(converter)); // allowed to edit
+
+        buyingPrice.setOnEditCommit(event -> stockPricesTreeView.getTreeItem(event.getTreeTablePosition().getRow()).getValue().setBuyingPrice(event.getNewValue()));
+        margin.setOnEditCommit(event -> stockPricesTreeView.getTreeItem(event.getTreeTablePosition().getRow()).getValue().setMargin(event.getNewValue()));
+        tax.setOnEditCommit(event -> stockPricesTreeView.getTreeItem(event.getTreeTablePosition().getRow()).getValue().setTaxes(event.getNewValue()));
+
+        //noinspection unchecked
+        this.stockPricesTreeView.getColumns().setAll(buyingPrice, margin, priceWithoutTaxes, tax, sellingPrice);
+        this.stockPricesTreeView.getColumns().forEach(c -> c.setContextMenu(null));
+        this.stockPricesTreeView.setRoot(new RecursiveTreeItem<ProductPricesTree>(FXCollections.observableArrayList(), RecursiveTreeObject::getChildren));
+        this.stockPricesTreeView.setShowRoot(false);
+    }
+
+    /**
+     * Sets up the table for stock info
+     */
+    private void initializeProductStockInfoTreeTable() {
+        JFXTreeTableColumn<ProductStockInfoTree, Long> reference = new JFXTreeTableColumn<>("Référence");
+        JFXTreeTableColumn<ProductStockInfoTree, Integer> stock = new JFXTreeTableColumn<>("Stock");
+        JFXTreeTableColumn<ProductStockInfoTree, String> order = new JFXTreeTableColumn<>("Commande");
+        JFXTreeTableColumn<ProductStockInfoTree, String> orderArrival = new JFXTreeTableColumn<>("Arrivée Commande");
+        reference.setSortNode(reference.getSortNode());
+
+        reference.setCellValueFactory(param -> param.getValue().getValue().getReference().asObject());
+        stock.setCellValueFactory(param -> param.getValue().getValue().getStockQuantity().asObject());
+        order.setCellValueFactory(param -> param.getValue().getValue().getOrder());
+        orderArrival.setCellValueFactory(param -> param.getValue().getValue().getOrder());
+
+        //noinspection unchecked
+        this.stockOrderTreeView.getColumns().setAll(reference, stock, order, orderArrival);
+        this.stockOrderTreeView.setRoot(new RecursiveTreeItem<ProductStockInfoTree>(FXCollections.observableArrayList(), RecursiveTreeObject::getChildren));
+        this.stockOrderTreeView.getColumns().forEach(c -> c.setContextMenu(null));
+        this.stockOrderTreeView.setShowRoot(false);
+    }
+
+    /**
+     * Loads the stock info of the product into the table (tab 3)
+     */
+    private void loadProductStockInfo() {
+        this.stockOrderTreeView.getRoot().getChildren().clear();
+
+        if (currentStore != null) {
+            ObservableList<TreeItem<ProductStockInfoTree>> productStocks = stockOrderTreeView.getRoot().getChildren();
+
+            try {
+                // loads all product stocks for selected store
+                this.entityManagerProductStock.executeQuery(
+                        entityManagerProductStock.getQueryBuilder().where().eq("store_id", currentStore.getId()).prepare()
+                ).forEach(productStock -> {
+                    if (productStock.getProduct() != null) {
+                        productStocks.add(new TreeItem<>(productStock.toProductStockInfoTree()));
+                    }
+                });
+            } catch (SQLException exception) {
+                this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+            }
+        }
     }
 
     /**
@@ -363,7 +453,9 @@ public class ManagementProductController extends BaseController {
                 .findFirst()
                 .ifPresent(vendor -> descriptionVendorComboBox.getSelectionModel().select(vendor));
 
-        // TODO : Fill the third tab's fields
+        // TODO : test and finish
+        this.stockPricesTreeView.getRoot().getChildren().add(new TreeItem<>(currentProduct.toProductPricesTree()));
+
     }
 
     /**
@@ -372,17 +464,7 @@ public class ManagementProductController extends BaseController {
      * @param product The product to add to the sheet
      */
     private void addProductToTreeTable(Product product) {
-        TreeItem<Product.ProductTree> productRow = new TreeItem<>(new Product.ProductTree(
-                product.getReference(),
-                product.getName(),
-                product.getMargin(),
-                product.getPurchasePrice(),
-                product.getBrand(),
-                product.getState().toString(),
-                product.getCategory(),
-                (product.getSoldBy() == null) ? "" : product.getSoldBy().getName(),
-                product.getTaxes()
-        ));
+        TreeItem<ProductTree> productRow = new TreeItem<>(product.toProductTree());
 
         this.productsTreeView.getRoot().getChildren().remove(productsTreeView.getSelectionModel().getSelectedItem());
         this.productsTreeView.getRoot().getChildren().add(productRow);
@@ -408,7 +490,8 @@ public class ManagementProductController extends BaseController {
 
         // Third tab fields
         this.stockStoreComboBox.getSelectionModel().select(-1);
-        // TODO : Finish the third tab
+        this.stockPricesTreeView.getRoot().getChildren().clear();
+        this.stockOrderTreeView.getRoot().getChildren().clear();
     }
 
     /**

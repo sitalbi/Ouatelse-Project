@@ -213,11 +213,6 @@ public class ManagementVendorController extends BaseController {
         email.setCellValueFactory(param -> param.getValue().getValue().getEmail());
         contractState.setCellValueFactory(param -> param.getValue().getValue().getContractState());
 
-        name.setContextMenu(null);
-        city.setContextMenu(null);
-        email.setContextMenu(null);
-        contractState.setContextMenu(null);
-
         ObservableList<VendorTree> vendors = FXCollections.observableArrayList();
         this.entityManagerVendor.getQueryForAll().forEach(vendor -> vendors.add(new VendorTree(
                 vendor.getName(),
@@ -229,6 +224,7 @@ public class ManagementVendorController extends BaseController {
         TreeItem<VendorTree> root = new RecursiveTreeItem<>(vendors, RecursiveTreeObject::getChildren);
         //noinspection unchecked
         this.vendorsTreeTableView.getColumns().setAll(name, city, email, contractState);
+        this.vendorsTreeTableView.getColumns().forEach(c -> c.setContextMenu(null));
         this.vendorsTreeTableView.setRoot(root);
         this.vendorsTreeTableView.setShowRoot(false);
     }
