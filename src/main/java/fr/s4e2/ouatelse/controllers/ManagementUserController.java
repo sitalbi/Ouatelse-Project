@@ -17,12 +17,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
-import javafx.util.StringConverter;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
@@ -98,39 +95,11 @@ public class ManagementUserController extends BaseController {
         this.loadUserTreeTable();
 
         // format date
-        this.userHiringDate.setConverter(new StringConverter<LocalDate>() {
-            private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            @Override
-            public String toString(LocalDate localDate) {
-                if (localDate == null) return "";
-                return dateTimeFormatter.format(localDate);
-            }
-
-            @Override
-            public LocalDate fromString(String dateString) {
-                if (dateString == null || dateString.trim().isEmpty()) return null;
-                return LocalDate.parse(dateString, dateTimeFormatter);
-            }
-        });
-        this.userBirthDate.setConverter(new StringConverter<LocalDate>() {
-            private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            @Override
-            public String toString(LocalDate localDate) {
-                if (localDate == null) return "";
-                return dateTimeFormatter.format(localDate);
-            }
-
-            @Override
-            public LocalDate fromString(String dateString) {
-                if (dateString == null || dateString.trim().isEmpty()) return null;
-                return LocalDate.parse(dateString, dateTimeFormatter);
-            }
-        });
+        this.userHiringDate.setConverter(Utils.getDateConverter());
+        this.userBirthDate.setConverter(Utils.getDateConverter());
 
         // escape to unselect item in the table
-        this.usersTreeTableView.setOnKeyReleased(event -> {
+        this.getBaseBorderPane().setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
 
             if (usersTreeTableView.getSelectionModel().getSelectedItem() == null) return;
