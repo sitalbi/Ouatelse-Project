@@ -61,6 +61,7 @@
     <stylesheets>
         <URL value="@../css/base.css" />
         <URL value="@../css/management.css" />
+      <URL value="@../css/management_products.css" />
     </stylesheets>
     <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="content" BorderPane.alignment="CENTER">
@@ -288,8 +289,8 @@
                                     </VBox.margin>
                                 </Label>
                             </VBox>
-                            <HBox alignment="CENTER" layoutY="145.0" prefHeight="100.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                <JFXTreeTableView fx:id="stockPricesTreeView" HBox.hgrow="ALWAYS">
+                            <HBox alignment="CENTER" layoutY="145.0" prefHeight="103.0" prefWidth="798.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                <JFXTreeTableView fx:id="stockPricesTreeView" editable="true" styleClass="product-management-prices" HBox.hgrow="ALWAYS">
                                     <columns>
                                         <TreeTableColumn prefWidth="62.0" sortable="false" text="Prix achat" />
                                         <TreeTableColumn prefWidth="97.0" sortable="false" text="Prix de revient" />
@@ -327,7 +328,7 @@
             <top>
                 <HBox alignment="CENTER" prefHeight="260.0" prefWidth="798.0" BorderPane.alignment="CENTER">
                     <VBox alignment="CENTER">
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="313.0" text="Gestion des Produits" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="1000.0" text="Gestion des Produits" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                             <font>
                                 <Font size="32.0" />
                             </font>

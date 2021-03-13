@@ -1,0 +1,12 @@
+.product-management-prices:filled:hover {
+    -fx-background-color: green;
+    -fx-cursor: hand;
+}
+
+.product-management-prices:filled:selected {
+    -fx-background-color: green;
+}
+
+.product-management-prices:filled:selected:hover {
+    -fx-background-color: green;
+}
