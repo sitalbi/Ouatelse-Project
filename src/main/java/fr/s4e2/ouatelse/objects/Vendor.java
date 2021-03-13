@@ -57,4 +57,18 @@ public class Vendor {
             this.contractState = new SimpleStringProperty(contractState ? "\u2713" : "\u274c");
         }
     }
+
+    /**
+     * Converts this object into a tree table object representing it's information
+     *
+     * @return a tree table object representing this object's information
+     */
+    public VendorTree toVendorTree() {
+        return new VendorTree(
+                this.getName(),
+                this.getAddress().getCity(),
+                this.getEmail(),
+                this.isContractState()
+        );
+    }
 }
