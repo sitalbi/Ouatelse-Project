@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,38 +29,36 @@ public class ProductStock {
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Store store;
 
+    @DatabaseField
+    private Date date;
+
     @Getter
-    public static class ProductStockTreeTop extends RecursiveTreeObject<ProductStockTreeTop> {
+    public static class ProductStockInfoTree extends RecursiveTreeObject<ProductStockInfoTree> {
         private final LongProperty reference;
         private final IntegerProperty stockQuantity;
         private final StringProperty order;
         private final StringProperty shippingDate;
 
-        public ProductStockTreeTop(Long reference, Integer stockQuantity, String order, String shippingDate) {
+        public ProductStockInfoTree(Long reference, Integer stockQuantity, String order, Date shippingDate) {
             this.reference = new SimpleLongProperty(reference);
             this.stockQuantity = new SimpleIntegerProperty(stockQuantity);
             this.order = new SimpleStringProperty(order);
-            this.shippingDate = new SimpleStringProperty(shippingDate);
+            this.shippingDate = new SimpleStringProperty(new SimpleDateFormat("").format(shippingDate));
         }
     }
 
-    @Getter
-    public static class ProductStockTreeBottom extends RecursiveTreeObject<ProductStockTreeBottom> {
-        private final DoubleProperty buyingPrice;
-        private final DoubleProperty margin;
-        private final DoubleProperty priceWithoutTaxes;
-        private final DoubleProperty taxes;
-        private final DoubleProperty priceWithTaxes;
-
-        public ProductStockTreeBottom(Double buyingPrice, Double margin, Double taxes, Double sellingPrice) {
-            this.buyingPrice = new SimpleDoubleProperty(buyingPrice);
-            this.margin = new SimpleDoubleProperty(margin);
-            this.taxes = new SimpleDoubleProperty(taxes);
-            this.priceWithTaxes = new SimpleDoubleProperty(sellingPrice);
-            this.priceWithoutTaxes = new SimpleDoubleProperty();
-
-            this.priceWithoutTaxes.bind(this.priceWithTaxes.subtract(this.priceWithTaxes.multiply(this.taxes)));
-        }
+    /**
+     * Converts this object into a tree table object representing its information
+     *
+     * @return a tree table object representing this object's information
+     */
+    public ProductStockInfoTree toProductStockInfoTree() {
+        return new ProductStockInfoTree(
+                this.getProduct().getReference(),
+                this.getQuantity(),
+                String.valueOf(this.getId()),
+                this.getDate()
+        );
     }
 
     @Getter
@@ -77,5 +78,21 @@ public class ProductStock {
             this.stockQuantity = new SimpleIntegerProperty(stockQuantity);
             this.productState = new SimpleStringProperty(productState.toString());
         }
+    }
+
+    /**
+     * Converts this object into a tree table object fully representing its information
+     *
+     * @return a tree table object fully representing this object's information
+     */
+    public ProductStockTree toProductStockTree() {
+        return new ProductStockTree(
+                this.getId(),
+                this.getProduct().getReference(),
+                this.getProduct().getName(),
+                this.getProduct().getPurchasePrice(),
+                this.getQuantity(),
+                this.getProduct().getState()
+        );
     }
 }

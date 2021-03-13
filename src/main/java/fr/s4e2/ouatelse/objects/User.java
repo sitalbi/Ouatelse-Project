@@ -69,4 +69,20 @@ public class User extends Person {
             this.status = new SimpleStringProperty(status != null ? status.toString() : "");
         }
     }
+
+    /**
+     * Converts this object into a tree table object representing it's information
+     *
+     * @return a tree table object representing this object's information
+     */
+    public UserTree toUserTree() {
+        return new UserTree(
+                this.getCredentials(),
+                this.getSurname(),
+                this.getName(),
+                this.getRole(),
+                this.getWorkingStore(),
+                this.getStatus()
+        );
+    }
 }
