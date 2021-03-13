@@ -172,7 +172,7 @@ public class ManagementStockController extends BaseController {
      * @param input the searched product name
      */
     private void searchProductFromText(String input) {
-        this.stockTreeTableView.getRoot().getChildren().clear();
+        this.stockTreeTableView.getRoot().getChildren().clear(); //todo : finish search bar
 
         if (input.isEmpty()) {
             this.loadProductStockTreeTable();
@@ -205,29 +205,16 @@ public class ManagementStockController extends BaseController {
         stockQuantity.setCellValueFactory(param -> param.getValue().getValue().getStockQuantity().asObject());
         state.setCellValueFactory(param -> param.getValue().getValue().getProductState());
 
-        reference.setContextMenu(null);
-        product.setContextMenu(null);
-        unitValue.setContextMenu(null);
-        stockQuantity.setContextMenu(null);
-        state.setContextMenu(null);
-
         ObservableList<ProductStockTree> productStocks = FXCollections.observableArrayList();
 
-        if (currentStore != null) {
+        if (this.isStoreSelected()) {
             try {
                 // loads all product stocks for selected store
                 this.entityManagerProductStock.executeQuery(
                         entityManagerProductStock.getQueryBuilder().where().eq("store_id", currentStore.getId()).prepare()
                 ).forEach(productStock -> {
                     if (productStock.getProduct() != null) {
-                        productStocks.add(new ProductStockTree(
-                                productStock.getId(),
-                                productStock.getProduct().getReference(),
-                                productStock.getProduct().getName(),
-                                productStock.getProduct().getPurchasePrice(),
-                                productStock.getQuantity(),
-                                productStock.getProduct().getState()
-                        ));
+                        productStocks.add(productStock.toProductStockTree());
                     }
                 });
             } catch (SQLException exception) {
@@ -239,6 +226,7 @@ public class ManagementStockController extends BaseController {
 
         //noinspection unchecked
         this.stockTreeTableView.getColumns().setAll(reference, product, unitValue, stockQuantity, state);
+        this.stockTreeTableView.getColumns().forEach(c -> c.setContextMenu(null));
         this.stockTreeTableView.setRoot(root);
         this.stockTreeTableView.setShowRoot(false);
     }
@@ -249,14 +237,7 @@ public class ManagementStockController extends BaseController {
      * @param productStock The product stock to add to the table
      */
     private void addProductStockToTreeTable(ProductStock productStock) {
-        TreeItem<ProductStockTree> productStockRow = new TreeItem<>(new ProductStockTree(
-                productStock.getId(),
-                productStock.getProduct().getReference(),
-                productStock.getProduct().getName(),
-                productStock.getProduct().getPurchasePrice(),
-                productStock.getQuantity(),
-                productStock.getProduct().getState()
-        ));
+        TreeItem<ProductStockTree> productStockRow = new TreeItem<>(productStock.toProductStockTree());
 
         this.stockTreeTableView.getRoot().getChildren().remove(stockTreeTableView.getSelectionModel().getSelectedItem());
         this.stockTreeTableView.getRoot().getChildren().add(productStockRow);

@@ -341,14 +341,7 @@ public class ManagementUserController extends BaseController {
         status.setContextMenu(null);
 
         ObservableList<UserTree> users = FXCollections.observableArrayList();
-        this.entityManagerUser.getQueryForAll().forEach(user -> users.add(new UserTree(
-                user.getCredentials(),
-                user.getSurname(),
-                user.getName(),
-                user.getRole(),
-                user.getWorkingStore(),
-                user.getStatus()
-        )));
+        this.entityManagerUser.getQueryForAll().forEach(user -> users.add(user.toUserTree()));
 
         TreeItem<UserTree> root = new RecursiveTreeItem<>(users, RecursiveTreeObject::getChildren);
         //noinspection unchecked
@@ -383,14 +376,7 @@ public class ManagementUserController extends BaseController {
      * @param user a User to add in the tree table
      */
     private void addUserToTreeTable(User user) {
-        this.usersTreeTableView.getRoot().getChildren().add(new TreeItem<>(new UserTree(
-                user.getCredentials(),
-                user.getSurname(),
-                user.getName(),
-                user.getRole(),
-                user.getWorkingStore(),
-                user.getStatus()
-        )));
+        this.usersTreeTableView.getRoot().getChildren().add(new TreeItem<>(user.toUserTree()));
     }
 
     /**
