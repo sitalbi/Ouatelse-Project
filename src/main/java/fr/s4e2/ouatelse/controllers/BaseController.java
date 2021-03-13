@@ -3,6 +3,7 @@ package fr.s4e2.ouatelse.controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.Getter;
 
@@ -15,6 +16,10 @@ public class BaseController implements Initializable {
     @FXML
     @Getter
     private MenuBar menuBar;
+
+    @FXML
+    @Getter
+    private BorderPane baseBorderPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

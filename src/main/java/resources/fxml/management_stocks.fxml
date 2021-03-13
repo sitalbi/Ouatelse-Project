@@ -1,38 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import com.jfoenix.controls.*?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TreeTableView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.Color?>
-<?import javafx.scene.text.Font?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/base.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.s4e2.ouatelse.controllers.ManagementStockController">
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="baseBorderPane" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/base.css"
+            xmlns="http://javafx.com/javafx/15.0.1"
+            fx:controller="fr.s4e2.ouatelse.controllers.ManagementStockController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="Fichier">
-                <MenuItem id="menuBarFilePreferences" mnemonicParsing="false" onAction="#onPreferences" text="Préférences" />
-                <MenuItem id="menuBarFileQuit" mnemonicParsing="false" onAction="#onQuit" text="Quitter" />
+                <MenuItem id="menuBarFilePreferences" mnemonicParsing="false" onAction="#onPreferences"
+                          text="Préférences"/>
+                <MenuItem id="menuBarFileQuit" mnemonicParsing="false" onAction="#onQuit" text="Quitter"/>
             </Menu>
             <Menu mnemonicParsing="false" text="Aide">
-                <MenuItem id="menuBarHelpAbout" mnemonicParsing="false" onAction="#onAbout" text="À propos" />
+                <MenuItem id="menuBarHelpAbout" mnemonicParsing="false" onAction="#onAbout" text="À propos"/>
             </Menu>
         </MenuBar>
     </top>
@@ -153,42 +142,44 @@
                             <Font size="14.0" />
                         </font>
                         <HBox.margin>
-                            <Insets right="25.0" />
+                            <Insets right="25.0"/>
                         </HBox.margin>
                     </Label>
-                    <JFXTextField fx:id="stockWorthInput" disable="true" focusColor="RED" promptText="N/A" unFocusColor="WHITE">
+                    <JFXTextField fx:id="stockWorthInput" disable="true" focusColor="RED" promptText="N/A"
+                                  unFocusColor="WHITE">
                         <padding>
-                            <Insets bottom="5.0" />
+                            <Insets bottom="5.0"/>
                         </padding>
                     </JFXTextField>
                 </HBox>
-            <HBox alignment="CENTER" layoutX="10.0" layoutY="39.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Label text="Valeur du stock totale (après vente) : " textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="25.0" />
-                     </HBox.margin>
-                  </Label>
-                  <JFXTextField fx:id="stockSellingWorthInput" disable="true" focusColor="RED" promptText="N/A" unFocusColor="WHITE">
-                     <padding>
-                        <Insets bottom="5.0" />
-                     </padding>
-                  </JFXTextField>
-               </children>
-            </HBox>
+                <HBox alignment="CENTER" layoutX="10.0" layoutY="39.0" VBox.vgrow="ALWAYS">
+                    <Label text="Valeur du stock totale (après vente) : " textAlignment="CENTER" textFill="WHITE"
+                           wrapText="true">
+                        <font>
+                            <Font size="14.0"/>
+                        </font>
+                        <HBox.margin>
+                            <Insets right="25.0"/>
+                        </HBox.margin>
+                    </Label>
+                    <JFXTextField fx:id="stockSellingWorthInput" disable="true" focusColor="RED" promptText="N/A"
+                                  unFocusColor="WHITE">
+                        <padding>
+                            <Insets bottom="5.0"/>
+                        </padding>
+                    </JFXTextField>
+                </HBox>
                 <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                     <Label text="Article :" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                         <font>
-                            <Font size="14.0" />
+                            <Font size="14.0"/>
                         </font>
                         <HBox.margin>
-                            <Insets right="25.0" />
+                            <Insets right="25.0"/>
                         </HBox.margin>
                     </Label>
-                    <JFXTextField fx:id="stockQuantityInput" focusColor="RED" promptText="Quantité à ajouter" unFocusColor="WHITE">
+                    <JFXTextField fx:id="stockQuantityInput" focusColor="RED" promptText="Quantité à ajouter"
+                                  unFocusColor="WHITE">
                         <padding>
                             <Insets bottom="5.0" />
                         </padding>
