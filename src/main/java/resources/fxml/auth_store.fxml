@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.net.URL?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="600.0"
-            prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="fr.s4e2.ouatelse.controllers.AuthStoreController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="baseBorderPane" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/15.0.1" fx:controller="fr.s4e2.ouatelse.controllers.AuthStoreController">
     <top>
         <MenuBar fx:id="menuBar" stylesheets="@../css/base.css" BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="Fichier">
