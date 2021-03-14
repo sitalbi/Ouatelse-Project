@@ -11,6 +11,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The Vendor table contains an identifier, a name, an address, an email, a contract status, a phone number and a list of the products it supplies
+ */
 @Getter
 @Setter
 @NoArgsConstructor

@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The Salary table contains an identifier, a month, a gross salary, employer and employee charges, and a imposable state
+ */
 @Getter
 @Setter
 @NoArgsConstructor
