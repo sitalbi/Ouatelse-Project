@@ -137,7 +137,7 @@ public class EntityManagerClient {
      * @param lastName    the lastName of the client
      * @return the client if exists, else null
      */
-    public Client getUserIfExists(long id, String firstName, String lastName) {
+    public Client getClientIfExists(long id, String firstName, String lastName) {
         Client client = null;
 
         try {
