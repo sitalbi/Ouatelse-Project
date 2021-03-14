@@ -15,6 +15,10 @@ import lombok.Setter;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+/**
+ * The User table contains credentials, an encrypted password, a role, a hiring date, the
+ * number of hours per week the user works, a salary list, and the store where the user works
+ */
 @SuppressWarnings("ALL")
 @Getter
 @Setter
@@ -43,10 +47,21 @@ public class User extends Person {
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Store workingStore;
 
+    /**
+     * Creates an encrypted password from a String
+     *
+     * @param password the Password before encryption
+     */
     public void setPassword(String password) {
         this.password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
     }
 
+    /**
+     * Checks if the provided String is a Password
+     *
+     * @param password the provided Password
+     * @return True or False
+     */
     public boolean isPassword(String password) {
         return this.password.equals(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString());
     }

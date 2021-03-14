@@ -9,6 +9,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The Product table contains an identifier, a barcode, a name, a selling price, a purchase price,
+ * a reference, a brand, a product status, a category, a vendor and a store
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -53,15 +57,28 @@ public class Product {
     private Store store;
     // ###########################################################
 
+    /**
+     * Allows you to get the selling price of a product
+     *
+     * @return the selling price
+     */
     public double getSellingPrice() {
         double priceWithMargin = (purchasePrice + (margin * purchasePrice));
         return priceWithMargin + (taxes * priceWithMargin);
     }
 
+    /**
+     * Allows you to get the tax-free price of a product
+     *
+     * @return the tax-free price
+     */
     public double getPriceWithoutTaxes() {
         return purchasePrice + (margin * purchasePrice);
     }
 
+    /**
+     * TODO
+     */
     @Getter
     public static class ProductTree extends RecursiveTreeObject<ProductTree> {
         private final LongProperty reference;
@@ -89,8 +106,8 @@ public class Product {
             this.sellingPrice = new SimpleDoubleProperty();
 
             this.sellingPrice.bind(this.purchasePrice
-                            .add(this.purchasePrice.multiply(this.margin))
-                            .add(this.purchasePrice.add(this.purchasePrice.multiply(this.margin)).multiply(this.taxes))
+                    .add(this.purchasePrice.multiply(this.margin))
+                    .add(this.purchasePrice.add(this.purchasePrice.multiply(this.margin)).multiply(this.taxes))
             );
         }
     }
@@ -114,6 +131,9 @@ public class Product {
         );
     }
 
+    /**
+     * Recursive Product Prices Tree
+     */
     @Getter
     public static class ProductPricesTree extends RecursiveTreeObject<ProductPricesTree> {
         private DoubleProperty buyingPrice;

@@ -8,6 +8,9 @@ import lombok.Setter;
 
 import java.util.Date;
 
+/**
+ * The ScheduledOrder table has an identifier, a product and a date
+ */
 @Getter
 @Setter
 @NoArgsConstructor
