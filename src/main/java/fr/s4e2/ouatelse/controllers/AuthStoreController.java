@@ -17,6 +17,9 @@ import lombok.Setter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the {@link fr.s4e2.ouatelse.screens.AuthStoreScreen}
+ */
 public class AuthStoreController extends BaseController {
 
     @FXML
@@ -31,6 +34,14 @@ public class AuthStoreController extends BaseController {
     @Setter
     private EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
 
+    /**
+     * Called to initialize a controller after its root element has been
+     * completely processed.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or
+     *                  <tt>null</tt> if the location is not known.
+     * @param resources The resources used to localize the root object, or <tt>null</tt> if
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
@@ -44,6 +55,11 @@ public class AuthStoreController extends BaseController {
         });
     }
 
+    /**
+     * Handles the button click event for the connection button
+     * <p>
+     * Connects to a store (Store Authentication)
+     */
     public void onConnectionButtonClick() {
         if (idField.getText().trim().isEmpty() || passwordField.getText().trim().isEmpty()) {
             this.errorMessageField.setText("Veuillez remplir tout les champs");

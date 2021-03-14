@@ -14,6 +14,9 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the {@link fr.s4e2.ouatelse.screens.AuthUserScreen}
+ */
 public class AuthUserController extends BaseController {
     @FXML
     private JFXPasswordField passwordField;
@@ -23,6 +26,14 @@ public class AuthUserController extends BaseController {
     private Label errorMessageField;
     private final EntityManagerUser entityManagerUser = Main.getDatabaseManager().getEntityManagerUser();
 
+    /**
+     * Called to initialize a controller after its root element has been
+     * completely processed.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or
+     *                  <tt>null</tt> if the location is not known.
+     * @param resources The resources used to localize the root object, or <tt>null</tt> if
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
@@ -36,6 +47,11 @@ public class AuthUserController extends BaseController {
         });
     }
 
+    /**
+     * Handles the button click event for the connection button
+     * <p>
+     * Connects as a user (User Authentication)
+     */
     public void onConnectionButtonClick() {
         if (idField.getText().trim().isEmpty() && passwordField.getText().trim().isEmpty()) {
             this.errorMessageField.setText("Veuillez remplir tout les champs");

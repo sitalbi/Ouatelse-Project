@@ -21,6 +21,9 @@ import java.util.ResourceBundle;
 
 import static fr.s4e2.ouatelse.objects.Vendor.VendorTree;
 
+/**
+ * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementVendorScreen}
+ */
 public class ManagementVendorController extends BaseController {
 
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
