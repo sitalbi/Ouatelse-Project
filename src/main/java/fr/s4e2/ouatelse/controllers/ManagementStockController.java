@@ -25,6 +25,9 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementStockScreen}
+ */
 public class ManagementStockController extends BaseController {
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
