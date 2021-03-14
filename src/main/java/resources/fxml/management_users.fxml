@@ -97,10 +97,10 @@
                         </GridPane.margin>
                     </JFXTextField>
                     <JFXComboBox fx:id="userCivilityDropdown" focusColor="RED" layoutX="25.0" layoutY="278.0"
-                                 prefHeight="25.0" prefWidth="141.0" promptText="Civilité" unFocusColor="WHITE"
-                                 GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                                 prefHeight="25.0" prefWidth="145.0" promptText="Civilité" unFocusColor="WHITE"
+                                 GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5">
                         <GridPane.margin>
-                            <Insets/>
+                            <Insets left="15.0"/>
                         </GridPane.margin>
                     </JFXComboBox>
                     <JFXTextField fx:id="userLastNameInput" focusColor="RED" promptText="Nom" unFocusColor="WHITE"
@@ -166,13 +166,13 @@
                     </JFXPasswordField>
                     <JFXDatePicker fx:id="userHiringDate" defaultColor="RED" nodeOrientation="LEFT_TO_RIGHT"
                                    promptText="Date d'embauche" GridPane.columnIndex="1" GridPane.halignment="CENTER"
-                                   GridPane.rowIndex="5">
+                                   GridPane.rowIndex="6">
                         <GridPane.margin>
                             <Insets bottom="3.0" left="15.0" right="15.0"/>
                         </GridPane.margin>
                     </JFXDatePicker>
                     <JFXDatePicker fx:id="userBirthDate" defaultColor="RED" promptText="Date de naissance"
-                                   GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+                                   GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7">
                         <GridPane.margin>
                             <Insets bottom="3.0" left="15.0" right="15.0"/>
                         </GridPane.margin>
@@ -232,6 +232,16 @@
                             <Font size="14.0"/>
                         </font>
                     </Label>
+                    <JFXTextField fx:id="userHoursPerWeekInput" focusColor="RED" prefHeight="25.0" prefWidth="194.0"
+                                  promptText="Heures Par Semaine" unFocusColor="WHITE" GridPane.columnIndex="1"
+                                  GridPane.rowIndex="4">
+                        <padding>
+                            <Insets left="15.0"/>
+                        </padding>
+                        <GridPane.margin>
+                            <Insets right="20.0"/>
+                        </GridPane.margin>
+                    </JFXTextField>
                 </GridPane>
             </left>
             <center>
