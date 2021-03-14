@@ -1,12 +1,31 @@
-.product-management-prices:filled:hover {
-    -fx-background-color: green;
-    -fx-cursor: hand;
+.product-management-prices .tree-table-view .label {
+    -fx-text-fill: black;
 }
 
-.product-management-prices:filled:selected {
-    -fx-background-color: green;
+.product-management-prices .tree-table-row-cell {
+    -fx-background-color: white;
+    -fx-text-fill: black;
 }
 
-.product-management-prices:filled:selected:hover {
-    -fx-background-color: green;
+.product-management-prices .tree-table-view:focused .tree-table-row-cell:selected .tree-table-cell {
+    -fx-text-fill: black;
+}
+
+.tree-table-view:focused .tree-table-row-cell:selected .tree-table-cell {
+    -fx-text-fill: black;
+}
+
+.product-management-prices .tree-table-row-cell:filled:hover {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.product-management-prices .tree-table-row-cell:filled:selected {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.product-management-prices .tree-table-row-cell:filled:selected:hover {
+    -fx-background-color: white;
+    -fx-text-fill: black;
 }
