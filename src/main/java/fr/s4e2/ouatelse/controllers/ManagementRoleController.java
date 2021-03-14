@@ -17,6 +17,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
+/**
+ * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementRoleScreen}
+ */
 public class ManagementRoleController extends BaseController {
 
     private static final String TEXT_FIELD_HINT = "Veuillez saisir un nom";

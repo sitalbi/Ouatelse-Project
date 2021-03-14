@@ -20,6 +20,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementStoreScreen}
+ */
 public class ManagementStoreController extends BaseController {
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
     private static final String STORE_ALREADY_EXISTS = "Ce magasin existe déjà!";

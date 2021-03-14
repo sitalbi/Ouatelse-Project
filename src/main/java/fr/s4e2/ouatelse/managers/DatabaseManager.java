@@ -15,9 +15,13 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Manages the Database connection and the creation of tables
+ */
 @Getter
 public class DatabaseManager {
     private static final String DATABASE_NOT_INITIALIZED_EXCEPTION = "Could not setup the database";
+
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final ConnectionSource connectionSource;
 
@@ -29,6 +33,9 @@ public class DatabaseManager {
     private EntityManagerProduct entityManagerProduct;
     private EntityManagerVendor entityManagerVendor;
 
+    /**
+     * Constructs the DatabaseManager
+     */
     public DatabaseManager(String databaseName) {
         try {
             this.connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + databaseName);
@@ -41,6 +48,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Deletes a database by its name
+     *
+     * @param databaseName database name to delete
+     */
     public static void deleteDatabase(String databaseName) {
         if (databaseName == null || databaseName.trim().isEmpty()) return;
         try {
@@ -50,10 +62,20 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Closes the connection source
+     *
+     * @throws IOException Signals that an I/O exception of some sort has occurred. This class is the general class of exceptions produced by failed or interrupted I/O operations.
+     */
     public void close() throws IOException {
         connectionSource.close();
     }
 
+    /**
+     * Sets up all the necessary tables
+     *
+     * @throws SQLException occurs when there is a connection that can't be made
+     */
     public void setupTables() throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, Address.class);
         TableUtils.createTableIfNotExists(connectionSource, Availability.class);
@@ -69,6 +91,9 @@ public class DatabaseManager {
         TableUtils.createTableIfNotExists(connectionSource, Vendor.class);
     }
 
+    /**
+     * Sets up all the Entity Managers
+     */
     public void setupDao() {
         this.entityManagerAddress = new EntityManagerAddress(connectionSource);
         this.entityManagerRole = new EntityManagerRole(connectionSource);
@@ -79,12 +104,22 @@ public class DatabaseManager {
         this.entityManagerProductStock = new EntityManagerProductStock(connectionSource);
     }
 
+    /**
+     * Fills the database with default data
+     *
+     * @throws SQLException occurs when there is a connection that can't be established
+     */
     public void fillDatabase() throws SQLException {
         this.setupRoles();
         this.setupTestStore();
         this.setupTestUser();
     }
 
+    /**
+     * Fills the database with standard user data
+     *
+     * @throws SQLException occurs when there is a connection that can't be established
+     */
     private void setupTestUser() throws SQLException {
         if (this.connectionSource == null || this.entityManagerUser == null || this.entityManagerRole == null) return;
 
@@ -118,6 +153,9 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Fills the database with standard store data
+     */
     private void setupTestStore() {
         if (this.connectionSource == null || this.entityManagerStore == null) return;
 
@@ -130,6 +168,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Fills the database with standard role data
+     *
+     * @throws SQLException occurs when there is a connection that can't be established
+     */
     private void setupRoles() throws SQLException {
         final String DIRECTOR_ROLE_NAME = "Director";
         final String ADMIN_ROLE_NAME = "Admin";
