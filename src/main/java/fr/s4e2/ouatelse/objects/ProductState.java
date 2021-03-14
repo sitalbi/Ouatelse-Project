@@ -11,7 +11,7 @@ public enum ProductState {
     OUT_OF_STOCK;
 
     /**
-     * Allows to capitalize the first letter of the first name and last name and replace "_" by blanks
+     * Allows to capitalize the Product State and replace "_" by blanks
      *
      * @return the converted name
      */

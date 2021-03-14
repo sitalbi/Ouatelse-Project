@@ -33,8 +33,6 @@ public class Salary {
     @DatabaseField(canBeNull = false)
     private boolean imposable;
 
-    //ded?
-
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private User user;
 }
