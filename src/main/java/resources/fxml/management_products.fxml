@@ -255,50 +255,44 @@
                                         <TreeTableColumn prefWidth="121.0" text="Référence" />
                                         <TreeTableColumn prefWidth="94.0" text="Stock" />
                                         <TreeTableColumn prefWidth="114.0" text="Commande" />
-                                        <TreeTableColumn prefWidth="136.0" text="Arrivée Commande" />
                                     </columns>
                                     <VBox.margin>
-                                        <Insets left="50.0" right="50.0" />
+                                        <Insets bottom="10.0" left="50.0" right="50.0"/>
                                     </VBox.margin>
                                     <columnResizePolicy>
                                         <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                     </columnResizePolicy>
                                 </JFXTreeTableView>
-                                <Label fx:id="stockErrorLabel" alignment="CENTER" prefWidth="10000.0" textAlignment="CENTER" textFill="RED" wrapText="true">
-                                    <font>
-                                        <Font size="14.0" />
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets bottom="2.0" top="2.0" />
-                                    </VBox.margin>
-                                </Label>
                             </VBox>
                             <HBox alignment="CENTER" layoutY="145.0" prefHeight="103.0" prefWidth="798.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                 <JFXTreeTableView fx:id="stockPricesTreeView" editable="true" styleClass="product-management-prices" HBox.hgrow="ALWAYS">
                                     <columns>
-                                        <TreeTableColumn prefWidth="62.0" sortable="false" text="Prix achat" />
-                                        <TreeTableColumn prefWidth="97.0" sortable="false" text="Prix de revient" />
-                                        <TreeTableColumn prefWidth="74.0" sortable="false" text="Marge HT" />
-                                        <TreeTableColumn prefWidth="63.0" sortable="false" text="Prix HT" />
-                                        <TreeTableColumn prefWidth="55.0" sortable="false" text="Taxe" />
-                                        <TreeTableColumn prefWidth="75.0" sortable="false" text="Prix TTC" />
+                                        <TreeTableColumn prefWidth="62.0" sortable="false" text="Prix achat"/>
+                                        <TreeTableColumn prefWidth="97.0" sortable="false" text="Prix de revient"/>
+                                        <TreeTableColumn prefWidth="74.0" sortable="false" text="Marge HT"/>
+                                        <TreeTableColumn prefWidth="63.0" sortable="false" text="Prix HT"/>
+                                        <TreeTableColumn prefWidth="55.0" sortable="false" text="Taxe"/>
+                                        <TreeTableColumn prefWidth="75.0" sortable="false" text="Prix TTC"/>
                                     </columns>
                                     <HBox.margin>
-                                        <Insets left="50.0" right="10.0" />
+                                        <Insets left="50.0" right="10.0"/>
                                     </HBox.margin>
                                     <columnResizePolicy>
-                                        <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                        <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                                     </columnResizePolicy>
                                 </JFXTreeTableView>
-                                <Button fx:id="confirmPriceStockButton" alignment="BOTTOM_CENTER" mnemonicParsing="false" onMouseClicked="#onConfirmPriceStockButton" prefWidth="120.0" style="-fx-background-color: red;" text="Valider" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                                <Button alignment="BOTTOM_CENTER" mnemonicParsing="false"
+                                        onMouseClicked="#onConfirmPriceStockButton" prefWidth="120.0"
+                                        style="-fx-background-color: red;" text="Valider" textAlignment="CENTER"
+                                        textFill="WHITE" wrapText="true">
                                     <font>
-                                        <Font size="14.0" />
+                                        <Font size="14.0"/>
                                     </font>
                                     <cursor>
-                                        <Cursor fx:constant="HAND" />
+                                        <Cursor fx:constant="HAND"/>
                                     </cursor>
                                     <HBox.margin>
-                                        <Insets right="50.0" top="66.0" />
+                                        <Insets right="50.0" top="66.0"/>
                                     </HBox.margin>
                                     <graphic>
                                         <FontAwesomeIconView fill="WHITE" glyphName="CHECK" />

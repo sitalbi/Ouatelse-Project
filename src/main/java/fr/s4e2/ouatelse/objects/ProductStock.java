@@ -8,9 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,24 +26,6 @@ public class ProductStock {
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Store store;
 
-    @DatabaseField
-    private Date date;
-
-    @Getter
-    public static class ProductStockInfoTree extends RecursiveTreeObject<ProductStockInfoTree> {
-        private final LongProperty reference;
-        private final IntegerProperty stockQuantity;
-        private final StringProperty order;
-        private final StringProperty shippingDate;
-
-        public ProductStockInfoTree(Long reference, Integer stockQuantity, String order, Date shippingDate) {
-            this.reference = new SimpleLongProperty(reference);
-            this.stockQuantity = new SimpleIntegerProperty(stockQuantity);
-            this.order = new SimpleStringProperty(order);
-            this.shippingDate = new SimpleStringProperty(new SimpleDateFormat("").format(shippingDate));
-        }
-    }
-
     /**
      * Converts this object into a tree table object representing its information
      *
@@ -56,9 +35,21 @@ public class ProductStock {
         return new ProductStockInfoTree(
                 this.getProduct().getReference(),
                 this.getQuantity(),
-                String.valueOf(this.getId()),
-                this.getDate()
+                String.valueOf(this.getId())
         );
+    }
+
+    @Getter
+    public static class ProductStockInfoTree extends RecursiveTreeObject<ProductStockInfoTree> {
+        private final LongProperty reference;
+        private final IntegerProperty stockQuantity;
+        private final StringProperty order;
+
+        public ProductStockInfoTree(Long reference, Integer stockQuantity, String order) {
+            this.reference = new SimpleLongProperty(reference);
+            this.stockQuantity = new SimpleIntegerProperty(stockQuantity);
+            this.order = new SimpleStringProperty(order);
+        }
     }
 
     @Getter
