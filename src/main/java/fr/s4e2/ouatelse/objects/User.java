@@ -66,6 +66,9 @@ public class User extends Person {
         return this.password.equals(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString());
     }
 
+    /**
+     * Recursive User Tree
+     */
     @Getter
     public static class UserTree extends RecursiveTreeObject<UserTree> {
         private final StringProperty id;
@@ -75,6 +78,16 @@ public class User extends Person {
         private final StringProperty storeName;
         private final StringProperty status;
 
+        /**
+         * Constructor
+         *
+         * @param id        the ID
+         * @param lastName  the Last Name
+         * @param firstName the First Name
+         * @param role      the Role
+         * @param storeName the Name of the Store
+         * @param status    the User Status
+         */
         public UserTree(String id, String lastName, String firstName, Role role, Store storeName, PersonState status) {
             this.id = new SimpleStringProperty(id);
             this.lastName = new SimpleStringProperty(lastName);
@@ -88,7 +101,7 @@ public class User extends Person {
     /**
      * Converts this object into a tree table object representing it's information
      *
-     * @return a tree table object representing this object's information
+     * @return A tree table object representing this object's information
      */
     public UserTree toUserTree() {
         return new UserTree(

@@ -41,11 +41,19 @@ public class Vendor {
     @ForeignCollectionField(eager = true)
     private ForeignCollection<Product> products;
 
+    /**
+     * Getter
+     *
+     * @return the Vendor name
+     */
     @Override
     public String toString() {
         return this.getName();
     }
 
+    /**
+     * Recursive Vendor Tree
+     */
     @Getter
     public static class VendorTree extends RecursiveTreeObject<Vendor.VendorTree> {
         private final StringProperty name;
@@ -53,6 +61,14 @@ public class Vendor {
         private final StringProperty city;
         private final StringProperty contractState;
 
+        /**
+         * Constructor
+         *
+         * @param name          the Name
+         * @param city          the City
+         * @param email         the Email
+         * @param contractState the state of the Contract
+         */
         public VendorTree(String name, String city, String email, boolean contractState) {
             this.name = new SimpleStringProperty(name);
             this.city = new SimpleStringProperty(city);
