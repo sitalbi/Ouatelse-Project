@@ -1,10 +1,13 @@
 package fr.s4e2.ouatelse.controllers;
 
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import fr.s4e2.ouatelse.Main;
+import fr.s4e2.ouatelse.managers.EntityManagerProduct;
 import fr.s4e2.ouatelse.managers.EntityManagerProductStock;
 import fr.s4e2.ouatelse.managers.EntityManagerStore;
+import fr.s4e2.ouatelse.objects.Product;
 import fr.s4e2.ouatelse.objects.ProductStock;
 import fr.s4e2.ouatelse.objects.ProductStock.ProductStockTree;
 import fr.s4e2.ouatelse.objects.Store;
@@ -24,6 +27,11 @@ import java.util.logging.Logger;
 
 public class ManagementStockController extends BaseController {
 
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
+    private final EntityManagerProductStock entityManagerProductStock = Main.getDatabaseManager().getEntityManagerProductStock();
+    private final EntityManagerProduct entityManagerProduct = Main.getDatabaseManager().getEntityManagerProduct();
+
     @FXML
     private JFXTextField stockSearchBar;
     @FXML
@@ -42,10 +50,6 @@ public class ManagementStockController extends BaseController {
     private ProductStock currentStock;
     private Store currentStore;
 
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
-    private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
-    private final EntityManagerProductStock entityManagerProductStock = Main.getDatabaseManager().getEntityManagerProductStock();
-
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
@@ -63,41 +67,40 @@ public class ManagementStockController extends BaseController {
         // deselect an item in the stock tree table
         this.getBaseBorderPane().setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
+            if (stockTreeTableView.getSelectionModel().getSelectedItem() == null) return;
 
-            TreeItem<ProductStockTree> stock = stockTreeTableView.getSelectionModel().getSelectedItem();
-            if (stock == null) return;
             stockTreeTableView.getSelectionModel().clearSelection();
             currentStock = null;
-
             this.clearInformation();
         });
 
         // Handles the selection of a stock
         this.stockTreeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                try {
-                    this.currentStock = entityManagerProductStock.executeQuery(entityManagerProductStock.getQueryBuilder()
-                            .where().eq("id", newValue.getValue().getId().getValue())
-                            .prepare()
-                    ).stream().findFirst().orElse(null);
-                } catch (SQLException exception) {
-                    exception.printStackTrace();
-                }
-                this.loadInformation();
-            } else {
+            if (newValue == null) {
                 this.currentStock = null;
+                return;
             }
+
+            try {
+                this.currentStock = entityManagerProductStock.executeQuery(entityManagerProductStock.getQueryBuilder()
+                        .where().eq("id", newValue.getValue().getId().getValue()).prepare())
+                        .stream().findFirst().orElse(null);
+            } catch (SQLException exception) {
+                this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+            }
+            this.loadInformation();
+
         });
 
-        // Handles the slection of a store
+        // Handles the selection of a store
         this.stockStoreComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                this.currentStore = newValue;
-                this.loadProductStockTreeTable();
-            } else {
+            if (newValue == null) {
                 this.currentStore = null;
+                return;
             }
 
+            this.currentStore = newValue;
+            this.loadProductStockTreeTable();
         });
 
         this.stockSearchBar.textProperty().addListener((observable, oldValue, newValue) -> searchProductFromText(newValue.trim()));
@@ -109,7 +112,7 @@ public class ManagementStockController extends BaseController {
      * Prepares an order for a selected product
      */
     public void onScheduleOrderButtonClick() {
-        if (currentStock == null) return;
+        if (!this.isStockEditing()) return;
 
         // todo : implement this
         throw new UnsupportedOperationException("Not implemented yet.");
@@ -121,7 +124,7 @@ public class ManagementStockController extends BaseController {
      * Deletes the stock of a product
      */
     public void onDeleteStockButtonClick() {
-        if (currentStock == null) return;
+        if (!this.isStockEditing()) return;
 
         this.currentStock.setQuantity(0);
         this.entityManagerProductStock.update(currentStock);
@@ -135,7 +138,7 @@ public class ManagementStockController extends BaseController {
      * Adds to the stock of a product
      */
     public void onAddStockButtonClick() {
-        if (currentStock == null) return;
+        if (!this.isStockEditing()) return;
 
         Integer quantity = Utils.getNumber(stockQuantityInput.getText().trim());
         if (quantity == null) return;
@@ -160,7 +163,7 @@ public class ManagementStockController extends BaseController {
      * Loads the product stock's information
      */
     private void loadInformation() {
-        if (currentStock == null) return;
+        if (!this.isStockEditing()) return;
 
         this.stockCurrentQuantityInput.setText(String.valueOf(currentStock.getQuantity()));
         this.stockWorthInput.setText(String.valueOf(currentStock.getProduct().getPurchasePrice() * currentStock.getQuantity()));
@@ -173,19 +176,29 @@ public class ManagementStockController extends BaseController {
      * @param input the searched product name
      */
     private void searchProductFromText(String input) {
-        this.stockTreeTableView.getRoot().getChildren().clear(); //todo : finish search bar
+        if (!this.isStoreSelected()) return;
+
+        this.stockTreeTableView.getRoot().getChildren().clear();
 
         if (input.isEmpty()) {
             this.loadProductStockTreeTable();
-        } else {
-            try {
-                List<ProductStock> searchResults = entityManagerProductStock.executeQuery(
-                        entityManagerProductStock.getQueryBuilder().where().like("product.name", "%" + input + "%").prepare()
-                );
-                searchResults.forEach(this::addProductStockToTreeTable);
-            } catch (SQLException exception) {
-                this.logger.log(Level.SEVERE, exception.getMessage(), exception);
-            }
+            return;
+        }
+
+        try {
+            QueryBuilder<Product, Long> productQueryBuilder = entityManagerProduct.getQueryBuilder();
+            productQueryBuilder.where().like("name", "%" + input + "%");
+
+            List<ProductStock> searchResults = entityManagerProductStock.executeQuery(
+                    entityManagerProductStock.getQueryBuilder()
+                            .join(productQueryBuilder)
+                            .where()
+                            .eq("store_id", this.currentStore.getId())
+                            .prepare()
+            );
+            searchResults.forEach(this::addProductStockToTreeTable);
+        } catch (SQLException exception) {
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -251,7 +264,7 @@ public class ManagementStockController extends BaseController {
      *
      * @return true if a product stock is selected, else false
      */
-    private boolean isEditing() {
+    private boolean isStockEditing() {
         return this.currentStock != null;
     }
 
