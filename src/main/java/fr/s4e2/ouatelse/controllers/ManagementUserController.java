@@ -32,14 +32,13 @@ public class ManagementUserController extends BaseController {
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
     private static final String USER_ALREADY_EXISTS = "Cet utilisateur existe déjà!";
     private static final String NOT_A_ZIPCODE = "Le code postal est incorrect!";
+    private static final String NOT_AN_HOUR = "Les heures par semaine sont incorrectes!";
     private static final String PASSWORD_NOT_MATCHING = "Mot de passe non concordants!";
 
     @FXML
     private Label errorMessage;
     @FXML
     private JFXTextField userIdInput;
-    @FXML
-    private JFXComboBox<Civility> userCivilityDropdown;
     @FXML
     private JFXTextField userLastNameInput;
     @FXML
@@ -62,6 +61,10 @@ public class ManagementUserController extends BaseController {
     private JFXPasswordField userConfirmPasswordInput;
     @FXML
     private JFXComboBox<Store> userStoreDropdown;
+    @FXML
+    private JFXTextField userHoursPerWeekInput;
+    @FXML
+    private JFXComboBox<Civility> userCivilityDropdown;
     @FXML
     private JFXDatePicker userHiringDate;
     @FXML
@@ -141,7 +144,7 @@ public class ManagementUserController extends BaseController {
                 || userEmailInput.getText().trim().isEmpty() || userPhoneInput.getText().trim().isEmpty()
                 || userAddressInput.getText().trim().isEmpty() || userCityInput.getText().trim().isEmpty() || userZipcodeInput.getText().trim().isEmpty()
                 || userRoleDropdown.getSelectionModel().isEmpty() || userStoreDropdown.getSelectionModel().isEmpty() || userCivilityDropdown.getSelectionModel().isEmpty()
-                || userHiringDate.getValue() == null || userBirthDate.getValue() == null) {
+                || userHoursPerWeekInput.getText().trim().isEmpty() || userHiringDate.getValue() == null || userBirthDate.getValue() == null) {
             this.errorMessage.setText(TEXT_FIELD_EMPTY_HINT);
             return;
         }
@@ -171,6 +174,14 @@ public class ManagementUserController extends BaseController {
         if (!userPasswordInput.getText().equals(userConfirmPasswordInput.getText())) {
             this.errorMessage.setText(PASSWORD_NOT_MATCHING);
             this.userPasswordInput.getParent().requestFocus();
+            return;
+        }
+
+        // incorrect zipcode
+        Integer hoursPerWeek = Utils.getNumber(userHoursPerWeekInput.getText().trim());
+        if (hoursPerWeek == null) {
+            this.errorMessage.setText(NOT_AN_HOUR);
+            this.userHoursPerWeekInput.getParent().requestFocus();
             return;
         }
 
@@ -259,6 +270,7 @@ public class ManagementUserController extends BaseController {
         this.userHiringDate.setDisable(true);
         this.userBirthDate.setValue(Utils.dateToLocalDate(currentUser.getBirthDate()));
         this.userBirthDate.getEditor().setText(userBirthDate.getConverter().toString(userBirthDate.getValue()));
+        this.userHoursPerWeekInput.setText(String.valueOf(currentUser.getHoursPerWeek()));
         this.userActiveToggle.setSelected(currentUser.getStatus() == PersonState.UNEMPLOYED);
     }
 
@@ -278,6 +290,7 @@ public class ManagementUserController extends BaseController {
         this.userZipcodeInput.setText("");
         this.userPasswordInput.setText("");
         this.userConfirmPasswordInput.setText("");
+        this.userHoursPerWeekInput.setText("");
         this.userActiveToggle.setSelected(false);
         this.userHiringDate.getEditor().clear();
         this.userHiringDate.setDisable(false);
@@ -335,6 +348,7 @@ public class ManagementUserController extends BaseController {
         user.setEmail(userEmailInput.getText().trim());
         user.setMobilePhoneNumber(userPhoneInput.getText().trim());
         user.setRole(userRoleDropdown.getValue());
+        user.setHoursPerWeek(Integer.parseInt(userHoursPerWeekInput.getText().trim()));
         if (!userPasswordInput.getText().trim().isEmpty()) user.setPassword(userPasswordInput.getText().trim());
         user.setWorkingStore(userStoreDropdown.getValue());
         user.setHiringDate(Utils.localDateToDate(userHiringDate.getValue()));

@@ -118,17 +118,6 @@ public class HomeController extends BaseController {
     }
 
     /**
-     * Handles the button click event for the employee management button
-     * <p>
-     * Opens the Employee Management Screen
-     */
-    private void onEmployeeManagementButtonClick() {
-        //todo : open employee management screen
-
-        System.out.println("Open employee management screen");
-    }
-
-    /**
      * Handles the button click event for the planning button
      * <p>
      * Opens the Planning Management Screen
@@ -264,11 +253,6 @@ public class HomeController extends BaseController {
                         newButton.setText("Gestion des clients");
                         newButton.setOnMouseClicked(event -> onClientsButtonClick());
                         fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.USERS);
-                        break;
-                    case EMPLOYEES_MANAGEMENT:
-                        newButton.setText("Gestion des employés");
-                        newButton.setOnMouseClicked(event -> onEmployeeManagementButtonClick());
-                        fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.WRENCH);
                         break;
                     case SALARY_MANAGEMENT:
                         newButton.setText("Gestion des salaires");

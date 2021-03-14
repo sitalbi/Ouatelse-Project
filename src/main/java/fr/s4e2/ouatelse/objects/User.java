@@ -39,7 +39,7 @@ public class User extends Person {
     private Date hiringDate;
 
     @DatabaseField(canBeNull = false)
-    private int hoursPerWeek;
+    private int hoursPerWeek = 0;
 
     @ForeignCollectionField(eager = true)
     private ForeignCollection<Salary> salarySheets;

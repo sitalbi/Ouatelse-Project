@@ -190,7 +190,6 @@ public class DatabaseManager {
             ArrayList<Permission> directorPermission = new ArrayList<>(Arrays.asList(
                     Permission.CLIENTS_MANAGEMENT,
                     Permission.USER_MANAGEMENT,
-                    Permission.EMPLOYEES_MANAGEMENT,
                     Permission.ROLE_MANAGEMENT,
                     Permission.STORE_MANAGEMENT,
                     Permission.MONITORING,
@@ -214,7 +213,6 @@ public class DatabaseManager {
             ArrayList<Permission> adminPermission = new ArrayList<>(Arrays.asList(
                     Permission.CLIENTS_MANAGEMENT,
                     Permission.USER_MANAGEMENT,
-                    Permission.EMPLOYEES_MANAGEMENT,
                     Permission.ROLE_MANAGEMENT,
                     Permission.STORE_MANAGEMENT,
                     Permission.SALARY_MANAGEMENT,
@@ -261,7 +259,6 @@ public class DatabaseManager {
             ArrayList<Permission> humanResourcesManagerPermission = new ArrayList<>(Arrays.asList(
                     Permission.CLIENTS_MANAGEMENT,
                     Permission.USER_MANAGEMENT,
-                    Permission.EMPLOYEES_MANAGEMENT,
                     Permission.PLANNING_MANAGEMENT
             ));
             humanResourcesManager.setPermissions(humanResourcesManagerPermission);
