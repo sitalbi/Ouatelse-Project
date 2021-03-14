@@ -11,7 +11,7 @@ import fr.s4e2.ouatelse.objects.*;
 import fr.s4e2.ouatelse.objects.Product.ProductPricesTree;
 import fr.s4e2.ouatelse.objects.Product.ProductTree;
 import fr.s4e2.ouatelse.objects.ProductStock.ProductStockInfoTree;
-import fr.s4e2.ouatelse.utils.TableTreeUtils;
+import fr.s4e2.ouatelse.utils.JFXUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -31,6 +31,9 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementProductScreen}
+ */
 public class ManagementProductController extends BaseController {
 
     // Error messages
@@ -365,7 +368,7 @@ public class ManagementProductController extends BaseController {
         tax.setCellValueFactory(param -> param.getValue().getValue().getTaxes().asObject());
         sellingPrice.setCellValueFactory(param -> param.getValue().getValue().getPriceWithTaxes().asObject());
 
-        StringConverter<Double> converter = TableTreeUtils.getDoubleConverter();
+        StringConverter<Double> converter = JFXUtils.getDoubleConverter();
 
         buyingPrice.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn(converter)); // allowed to edit
         margin.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn(converter)); // allowed to edit

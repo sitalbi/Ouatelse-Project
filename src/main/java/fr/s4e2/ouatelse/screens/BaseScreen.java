@@ -17,6 +17,9 @@ import lombok.Setter;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Base Screen for all screens
+ */
 @Getter
 @Setter
 public abstract class BaseScreen {
@@ -24,6 +27,7 @@ public abstract class BaseScreen {
     public static final Image OUATELSE_ICON = new Image(Objects.requireNonNull(Main.class.getClassLoader().getResource("images/ouatelse_icon.png")).toExternalForm());
     private static final String FXML_PATH = "fxml/";
     private static final String CSS_PATH = "css/";
+    private static final String PREFIX = "Ouatelse - ";
 
     private Stage stage;
 
@@ -55,7 +59,7 @@ public abstract class BaseScreen {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinHeight(650);
         stage.setMinWidth(825);
-        stage.setTitle(title);
+        stage.setTitle(PREFIX + title);
 
         try {
             Parent parent = loader.load();

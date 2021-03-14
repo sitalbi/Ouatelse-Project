@@ -10,6 +10,7 @@ import fr.s4e2.ouatelse.managers.EntityManagerStore;
 import fr.s4e2.ouatelse.managers.EntityManagerUser;
 import fr.s4e2.ouatelse.objects.*;
 import fr.s4e2.ouatelse.objects.User.UserTree;
+import fr.s4e2.ouatelse.utils.JFXUtils;
 import fr.s4e2.ouatelse.utils.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +24,9 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementUserScreen}
+ */
 public class ManagementUserController extends BaseController {
 
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
@@ -95,8 +99,8 @@ public class ManagementUserController extends BaseController {
         this.loadUserTreeTable();
 
         // format date
-        this.userHiringDate.setConverter(Utils.getDateConverter());
-        this.userBirthDate.setConverter(Utils.getDateConverter());
+        this.userHiringDate.setConverter(JFXUtils.getDateConverter());
+        this.userBirthDate.setConverter(JFXUtils.getDateConverter());
 
         // escape to unselect item in the table
         this.getBaseBorderPane().setOnKeyReleased(event -> {
