@@ -14,10 +14,10 @@ import lombok.Setter;
 @DatabaseTable(tableName = "client")
 public class Client extends Person {
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField
     private String homePhoneNumber;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField
     private String workPhoneNumber;
 
     @DatabaseField
