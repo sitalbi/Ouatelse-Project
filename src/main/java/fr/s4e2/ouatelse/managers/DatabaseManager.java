@@ -28,6 +28,7 @@ public class DatabaseManager {
     private EntityManagerUser entityManagerUser;
     private EntityManagerProduct entityManagerProduct;
     private EntityManagerVendor entityManagerVendor;
+    private EntityManagerClient entityManagerClient;
 
     public DatabaseManager(String databaseName) {
         try {
@@ -77,6 +78,7 @@ public class DatabaseManager {
         this.entityManagerProduct = new EntityManagerProduct(connectionSource);
         this.entityManagerVendor = new EntityManagerVendor(connectionSource);
         this.entityManagerProductStock = new EntityManagerProductStock(connectionSource);
+        this.entityManagerClient = new EntityManagerClient(connectionSource);
     }
 
     public void fillDatabase() throws SQLException {
