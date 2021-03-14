@@ -15,7 +15,6 @@ import fr.s4e2.ouatelse.utils.TableTreeUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
@@ -45,13 +44,12 @@ public class ManagementProductController extends BaseController {
     private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
     private final EntityManagerVendor entityManagerVendor = Main.getDatabaseManager().getEntityManagerVendor();
     private final Logger logger = Logger.getLogger(this.getClass().getName());
+
     // top
     @FXML
     private JFXTreeTableView<ProductTree> productsTreeView;
 
     // Error labels
-    @FXML
-    private Label stockErrorLabel;
     @FXML
     private Label descriptionErrorLabel;
 
@@ -83,8 +81,6 @@ public class ManagementProductController extends BaseController {
     @FXML
     private JFXTreeTableView<ProductPricesTree> stockPricesTreeView;
 
-    @FXML
-    private Button confirmPriceStockButton;
     @FXML
     private Label informationErrorLabel;
     @FXML
@@ -120,40 +116,42 @@ public class ManagementProductController extends BaseController {
         // deselect an item in the product tree table
         this.getBaseBorderPane().setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
+            if (productsTreeView.getSelectionModel().getSelectedItem() == null) return;
 
-            TreeItem<ProductTree> product = productsTreeView.getSelectionModel().getSelectedItem();
-            if (product == null) return;
             productsTreeView.getSelectionModel().clearSelection();
             currentProduct = null;
+            currentStore = null;
 
             this.clearInformation();
         });
 
         // On the window's top sheet click, load the selected product
         this.productsTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                try {
-                    this.currentProduct = entityManagerProduct.executeQuery(entityManagerProduct.getQueryBuilder()
-                            .where().eq("reference", newValue.getValue().getReference().getValue())
-                            .prepare()
-                    ).stream().findFirst().orElse(null);
-                } catch (SQLException exception) {
-                    exception.printStackTrace();
-                }
-                this.loadProductInformation();
-            } else {
+            if (newValue == null) {
                 this.currentProduct = null;
+                return;
             }
+
+            try {
+                this.currentProduct = entityManagerProduct.executeQuery(entityManagerProduct.getQueryBuilder()
+                        .where().eq("reference", newValue.getValue().getReference().getValue()).prepare())
+                        .stream().findFirst().orElse(null);
+            } catch (SQLException exception) {
+                this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+            }
+            this.loadProductInformation();
         });
 
         // Handles the selection of a store
         this.stockStoreComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                this.currentStore = newValue;
-                this.loadProductStockInfo();
-            } else {
+            if (newValue == null) {
                 this.currentStore = null;
+                return;
             }
+            if (!this.isSelected()) return;
+
+            this.currentStore = newValue;
+            this.loadProductStockInfo();
         });
 
         this.productSearchBar.textProperty().addListener((observable, oldValue, newValue) -> searchProductFromText(newValue.trim()));
@@ -169,15 +167,16 @@ public class ManagementProductController extends BaseController {
 
         if (input.isEmpty()) {
             this.loadProductTreeTable();
-        } else {
-            try {
-                List<Product> searchResults = entityManagerProduct.executeQuery(
-                        entityManagerProduct.getQueryBuilder().where().like("name", "%" + input + "%").prepare()
-                );
-                searchResults.forEach(this::addProductToTreeTable);
-            } catch (SQLException exception) {
-                this.logger.log(Level.SEVERE, exception.getMessage(), exception);
-            }
+            return;
+        }
+
+        try {
+            List<Product> searchResults = entityManagerProduct.executeQuery(
+                    entityManagerProduct.getQueryBuilder().where().like("name", "%" + input + "%").prepare()
+            );
+            searchResults.forEach(this::addProductToTreeTable);
+        } catch (SQLException exception) {
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -208,7 +207,7 @@ public class ManagementProductController extends BaseController {
         }
 
         // If product already exists
-        if (!this.isEditing()) {
+        if (!this.isSelected()) {
             Product product = entityManagerProduct.executeQuery(
                     entityManagerProduct.getQueryBuilder()
                             .where().eq("reference", informationReferenceInput.getText().trim())
@@ -222,7 +221,7 @@ public class ManagementProductController extends BaseController {
         }
 
         Store selectedStore = informationStoreComboBox.getSelectionModel().getSelectedItem();
-        if (this.isEditing()) {
+        if (this.isSelected()) {
             // Edits product
             this.currentProduct.setName(informationNameInput.getText().trim());
             this.currentProduct.setReference(Long.parseLong(informationReferenceInput.getText().trim()));
@@ -263,7 +262,7 @@ public class ManagementProductController extends BaseController {
      * Delete the currently selected product
      */
     public void onDeleteProductButton() {
-        if (!this.isEditing()) return;
+        if (!this.isSelected()) return;
 
         this.entityManagerProduct.delete(this.currentProduct);
         this.productsTreeView.getRoot().getChildren().remove(productsTreeView.getSelectionModel().getSelectedItem());
@@ -278,7 +277,7 @@ public class ManagementProductController extends BaseController {
      * Sets the currently selected product's informations from the second tab
      */
     public void onConfirmDescriptionButton() {
-        if (!this.isEditing()) {
+        if (!this.isSelected()) {
             this.descriptionErrorLabel.setText(CURRENT_USER_NOT_SET);
             return;
         }
@@ -390,16 +389,14 @@ public class ManagementProductController extends BaseController {
         JFXTreeTableColumn<ProductStockInfoTree, Long> reference = new JFXTreeTableColumn<>("Référence");
         JFXTreeTableColumn<ProductStockInfoTree, Integer> stock = new JFXTreeTableColumn<>("Stock");
         JFXTreeTableColumn<ProductStockInfoTree, String> order = new JFXTreeTableColumn<>("Commande");
-        JFXTreeTableColumn<ProductStockInfoTree, String> orderArrival = new JFXTreeTableColumn<>("Arrivée Commande");
         reference.setSortNode(reference.getSortNode());
 
         reference.setCellValueFactory(param -> param.getValue().getValue().getReference().asObject());
         stock.setCellValueFactory(param -> param.getValue().getValue().getStockQuantity().asObject());
         order.setCellValueFactory(param -> param.getValue().getValue().getOrder());
-        orderArrival.setCellValueFactory(param -> param.getValue().getValue().getOrder());
 
         //noinspection unchecked
-        this.stockOrderTreeView.getColumns().setAll(reference, stock, order, orderArrival);
+        this.stockOrderTreeView.getColumns().setAll(reference, stock, order);
         this.stockOrderTreeView.setRoot(new RecursiveTreeItem<ProductStockInfoTree>(FXCollections.observableArrayList(), RecursiveTreeObject::getChildren));
         this.stockOrderTreeView.getColumns().forEach(c -> c.setContextMenu(null));
         this.stockOrderTreeView.setShowRoot(false);
@@ -435,7 +432,7 @@ public class ManagementProductController extends BaseController {
     private void loadProductInformation() {
         this.clearInformation();
 
-        if (!this.isEditing()) return;
+        if (!this.isSelected()) return;
 
         this.informationNameInput.setText(this.currentProduct.getName());
         this.informationReferenceInput.setText(Long.toString(this.currentProduct.getReference()));
@@ -453,7 +450,6 @@ public class ManagementProductController extends BaseController {
                 .findFirst()
                 .ifPresent(vendor -> descriptionVendorComboBox.getSelectionModel().select(vendor));
 
-        // TODO : test and finish
         this.stockPricesTreeView.getRoot().getChildren().add(new TreeItem<>(currentProduct.toProductPricesTree()));
 
     }
@@ -499,7 +495,7 @@ public class ManagementProductController extends BaseController {
      *
      * @return true if a product is selected, else false
      */
-    private boolean isEditing() {
+    private boolean isSelected() {
         return this.currentProduct != null;
     }
 }
