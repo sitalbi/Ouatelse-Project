@@ -7,6 +7,7 @@ import fr.s4e2.ouatelse.managers.EntityManagerStore;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.screens.HomeScreen;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -17,13 +18,16 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * The controller of the authentification of the store
+ * Controller for the {@link fr.s4e2.ouatelse.screens.AuthStoreScreen}
  */
 public class AuthStoreController extends BaseController {
 
-    public Label errorMessageField;
-    public JFXPasswordField passwordField;
-    public JFXTextField idField;
+    @FXML
+    private Label errorMessageField;
+    @FXML
+    private JFXPasswordField passwordField;
+    @FXML
+    private JFXTextField idField;
     @Setter
     @Getter
     private User currentUser;
@@ -31,12 +35,12 @@ public class AuthStoreController extends BaseController {
     private EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
 
     /**
-     * Initializes the controller
+     * Called to initialize a controller after its root element has been
+     * completely processed.
      *
-     * @param location  The location used to resolve relative paths for the root object,
-     *                  or null if the location is not known.
-     * @param resources The resources used to localize the root object,
-     *                  or null if the location is not known.
+     * @param location  The location used to resolve relative paths for the root object, or
+     *                  <tt>null</tt> if the location is not known.
+     * @param resources The resources used to localize the root object, or <tt>null</tt> if
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -52,7 +56,9 @@ public class AuthStoreController extends BaseController {
     }
 
     /**
-     * Handles the connection to a store
+     * Handles the button click event for the connection button
+     * <p>
+     * Connects to a store (Store Authentication)
      */
     public void onConnectionButtonClick() {
         if (idField.getText().trim().isEmpty() || passwordField.getText().trim().isEmpty()) {
@@ -60,7 +66,7 @@ public class AuthStoreController extends BaseController {
             return;
         }
 
-        Store store = this.entityManagerStore.getStoreIfExists(idField.getText().trim(), passwordField.getText().trim());
+        Store store = this.entityManagerStore.authGetStoreIfExists(idField.getText().trim(), passwordField.getText().trim());
 
         if (store == null) {
             this.errorMessageField.setText("Erreur : Le magasin n'existe pas / mot de passe faux");

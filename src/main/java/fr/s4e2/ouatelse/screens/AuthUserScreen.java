@@ -1,7 +1,7 @@
 package fr.s4e2.ouatelse.screens;
 
 /**
- * Software authentication screen for Users
+ * User Authentication Screen
  */
 public class AuthUserScreen extends BaseScreen {
 
@@ -9,6 +9,6 @@ public class AuthUserScreen extends BaseScreen {
      * Automatically configures the user login screen to the software
      */
     public AuthUserScreen() {
-        super("auth_user.fxml", "Ouatelse - Authentification Utilisateur");
+        super("auth_user.fxml", "Authentification Utilisateur");
     }
 }

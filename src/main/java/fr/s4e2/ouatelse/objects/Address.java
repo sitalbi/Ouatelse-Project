@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * The Address table contains an identifier, a postal code, a city and an address
+ * The Address table contains an identifier, a zip code, a city, address
  */
 @Getter
 @Setter

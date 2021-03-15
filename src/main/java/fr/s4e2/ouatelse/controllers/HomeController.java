@@ -5,10 +5,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
-import fr.s4e2.ouatelse.screens.AuthUserScreen;
-import fr.s4e2.ouatelse.screens.ManagementRoleScreen;
-import fr.s4e2.ouatelse.screens.ManagementStoreScreen;
-import fr.s4e2.ouatelse.screens.ManagementUserScreen;
+import fr.s4e2.ouatelse.screens.*;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.ContentDisplay;
@@ -21,46 +18,33 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import lombok.Setter;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 /**
- * The controller of the the home menu
+ * Controller for the {@link fr.s4e2.ouatelse.screens.HomeScreen}
  */
 public class HomeController extends BaseController {
 
     private static final double DEFAULT_BUTTON_SIZE = 1000;
     private static final double MINIMUM_BUTTON_HEIGHT = 74;
 
-    public VBox verticalButtonsBar;
-    public Label roleField;
-    public ScrollPane scrollPanel;
     private User currentUser;
     @Setter
     private Store currentStore;
+
+    @FXML
+    private VBox verticalButtonsBar;
+    @FXML
+    private Label roleField;
+    @FXML
+    private ScrollPane scrollPanel;
     @FXML
     private Label homeAdminName;
-
     @FXML
     private Label homeAdminEmail;
 
     /**
-     * Initializes the controller
+     * Sets the current user for this Screen
      *
-     * @param location  The location used to resolve relative paths for the root object,
-     *                  or null if the location is not known.
-     * @param resources The resources used to localize the root object,
-     *                  or null if the location is not known.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        super.initialize(location, resources);
-    }
-
-    /**
-     * Sets user's datas on the application
-     *
-     * @param user the user of the application
+     * @param user the {@link User} to set
      */
     public void setCurrentUser(User user) {
         this.currentUser = user;
@@ -83,7 +67,9 @@ public class HomeController extends BaseController {
     }
 
     /**
-     * Handles the disconnection button
+     * Handles the button click event for the disconnect button
+     * <p>
+     * Disconnects from the Ouatelse application
      */
     public void onDisconnectClick() {
         this.currentUser = null;
@@ -94,28 +80,36 @@ public class HomeController extends BaseController {
     }
 
     /**
-     * Opens an user management screen
+     * Handles the button click event for the user management button
+     * <p>
+     * Opens the User Management Screen
      */
     private void onUserManagementButtonClick() {
         new ManagementUserScreen().open();
     }
 
     /**
-     * Opens a role management screen
+     * Handles the button click event for the role management button
+     * <p>
+     * Opens the Role Management Screen
      */
     private void onRoleManagementButtonClick() {
         new ManagementRoleScreen().open();
     }
 
     /**
-     * Opens a store management screen
+     * Handles the button click event for the store management button
+     * <p>
+     * Opens the Store Management Screen
      */
     private void onStoresButtonClick() {
         new ManagementStoreScreen().open();
     }
 
     /**
-     * Opens a monitoring screen
+     * Handles the button click event for the monitoring button
+     * <p>
+     * Opens the Monitoring Screen
      */
     private void onMonitoringButtonClick() {
         //todo : open monitoring screen
@@ -124,16 +118,9 @@ public class HomeController extends BaseController {
     }
 
     /**
-     * Opens an employee management screen
-     */
-    private void onEmployeeManagementButtonClick() {
-        //todo : open employee management screen
-
-        System.out.println("Open employee management screen");
-    }
-
-    /**
-     * Opens a planning screen
+     * Handles the button click event for the planning button
+     * <p>
+     * Opens the Planning Management Screen
      */
     private void onPlanningButtonClick() {
         //todo : open planning screen
@@ -142,7 +129,9 @@ public class HomeController extends BaseController {
     }
 
     /**
-     * Opens a salary management screen
+     * Handles the button click event for the salaray management button
+     * <p>
+     * Opens the Salary Management Screen
      */
     private void onSalaryManagementButtonClick() {
         //todo : open salaray management screen
@@ -151,7 +140,9 @@ public class HomeController extends BaseController {
     }
 
     /**
-     * Opens a statistics screen
+     * Handles the button click event for the statistics button
+     * <p>
+     * Opens the Statistics Screen
      */
     private void onStatisticsButtonClick() {
         //todo : open statistics screen
@@ -160,16 +151,18 @@ public class HomeController extends BaseController {
     }
 
     /**
-     * Opens a stocks management screen
+     * Handles the button click event for the stocks button
+     * <p>
+     * Opens the Stock Management Screen
      */
     private void onStocksButtonClick() {
-        //todo : open stocks screen
-
-        System.out.println("Open stocks screen");
+        new ManagementStockScreen().open();
     }
 
     /**
-     * Opens a sales screen
+     * Handles the button click event for the sales button
+     * <p>
+     * Opens the Sales Screen
      */
     private void onSalesButtonClick() {
         //todo : open sales screen
@@ -178,25 +171,36 @@ public class HomeController extends BaseController {
     }
 
     /**
-     * Opens a clients management screen
+     * Handles the button click event for the clients button
+     * <p>
+     * Opens the Client Management Screen
      */
     private void onClientsButtonClick() {
         //todo : open monitoring screen
 
-        System.out.println("Open monitoring screen");
+        System.out.println("Open client management screen");
     }
 
     /**
-     * Opens a products management screen
+     * Handles the button click event for the vendor button
+     * <p>
+     * Opens the Vendor Management Screen
+     */
+    private void onVendorButtonClick() {
+        new ManagementVendorScreen().open();
+    }
+
+    /**
+     * Handles the button click event for the products button
+     * <p>
+     * Opens the Product Management Screen
      */
     private void onProductsButtonClick() {
-        //todo : open parameters screen
-
-        System.out.println("Open parameters screen");
+        new ManagementProductScreen().open();
     }
 
     /**
-     * Builds buttons for user's permissions
+     * Builds the Home Screen with buttons according to the user's permissions
      */
     public void buildButtonsFromPermissions() {
         if (this.currentUser != null) {
@@ -250,11 +254,6 @@ public class HomeController extends BaseController {
                         newButton.setOnMouseClicked(event -> onClientsButtonClick());
                         fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.USERS);
                         break;
-                    case EMPLOYEES_MANAGEMENT:
-                        newButton.setText("Gestion des employés");
-                        newButton.setOnMouseClicked(event -> onEmployeeManagementButtonClick());
-                        fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.WRENCH);
-                        break;
                     case SALARY_MANAGEMENT:
                         newButton.setText("Gestion des salaires");
                         newButton.setOnMouseClicked(event -> onSalaryManagementButtonClick());
@@ -274,6 +273,11 @@ public class HomeController extends BaseController {
                         newButton.setText("Gestion des plannings");
                         newButton.setOnMouseClicked(event -> onPlanningButtonClick());
                         fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.CALENDAR);
+                        break;
+                    case VENDORS_MANAGEMENT:
+                        newButton.setText("Gestion des fournisseurs");
+                        newButton.setOnMouseClicked(event -> onVendorButtonClick());
+                        fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.CUBE);
                         break;
                 }
 

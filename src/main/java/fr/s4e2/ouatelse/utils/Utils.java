@@ -10,10 +10,23 @@ import java.util.Date;
 public class Utils {
 
     /**
+<<<<<<< HEAD
      * Get a Integer from a String
      *
      * @param s the String to be changed
      * @return the Integer
+=======
+     * Empty Constructor
+     */
+    private Utils() {
+    }
+
+    /**
+     * Returns an integer from a string
+     *
+     * @param s the String to be changed
+     * @return the integer value or null in the case of failure
+>>>>>>> productsManagement
      */
     public static Integer getNumber(String s) {
         try {

@@ -95,7 +95,7 @@ class EntityManagerAddressTest {
         Use cases :
             - Address does not exist in the database, so it shouldn't change
             - Address exists in the database, so its attributes should change
-        In both cases, no exception should be thrown as they should be catched by the code
+        In both cases, no exception should be thrown as they should be caught by the code
     */
     @Test
     void update() {
@@ -157,7 +157,7 @@ class EntityManagerAddressTest {
             iteratedAddresses.add(it.next());
         }
 
-        assertEquals(iteratedAddresses.size(), 2);
+        assertEquals(2, iteratedAddresses.size());
         assertFalse(addressesIterator.hasNext());
     }
 
@@ -197,7 +197,7 @@ class EntityManagerAddressTest {
 
         addressList = this.entityManagerAddress.getQueryForAll();
         assertFalse(addressList.isEmpty());
-        assertEquals(addressList.size(), 2);
+        assertEquals(2, addressList.size());
     }
 
     /*

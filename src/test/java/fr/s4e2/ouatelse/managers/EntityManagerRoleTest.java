@@ -66,7 +66,7 @@ class EntityManagerRoleTest {
         Use cases :
             - Role does not exist in the database, so its ID shouldn't change
             - Role exists in the database, so its ID should change
-        In both cases, no exception should be thrown as they should be catched by the code
+        In both cases, no exception should be thrown as they should be caught by the code
      */
     @Test
     void delete() {
@@ -146,7 +146,7 @@ class EntityManagerRoleTest {
             iteratedRoles.add(it.next());
         }
 
-        assertEquals(iteratedRoles.size(), 2);
+        assertEquals(2, iteratedRoles.size());
         assertFalse(rolesIterator.hasNext());
     }
 
@@ -178,12 +178,12 @@ class EntityManagerRoleTest {
 
 
         // There are roles in the database
-        Role firstRole = this.entityManagerRole.create("Some role");
-        Role secondRole = this.entityManagerRole.create("Some other role");
+        this.entityManagerRole.create("Some role");
+        this.entityManagerRole.create("Some other role");
 
         roleList = this.entityManagerRole.getQueryForAll();
         assertFalse(roleList.isEmpty());
-        assertEquals(roleList.size(), 2);
+        assertEquals(2, roleList.size());
     }
 
     /*

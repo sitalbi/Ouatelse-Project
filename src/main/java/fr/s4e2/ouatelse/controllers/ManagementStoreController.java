@@ -1,5 +1,6 @@
 package fr.s4e2.ouatelse.controllers;
 
+import com.j256.ormlite.dao.CloseableIterator;
 import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.managers.EntityManagerAddress;
 import fr.s4e2.ouatelse.managers.EntityManagerStore;
@@ -8,6 +9,7 @@ import fr.s4e2.ouatelse.objects.Address;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.utils.Utils;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
@@ -19,7 +21,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
- * Store Management Controller
+ * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementStoreScreen}
  */
 public class ManagementStoreController extends BaseController {
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
@@ -28,15 +30,24 @@ public class ManagementStoreController extends BaseController {
     private static final String MANAGER_NOT_FOUND = "Responsable du magasin pas trouvé!";
     private static final String PASSWORD_NOT_MATCHING = "Mot de passe non concordants!";
 
-    public ListView<Store> storesListView;
-    public TextField newStoreNameField;
-    public TextField newStoreManagerField;
-    public TextField newStoreAddressField;
-    public TextField newStoreCityField;
-    public TextField newStoreZipcodeField;
-    public PasswordField newStorePasswordField;
-    public PasswordField newStoreConfirmPasswordField;
-    public Label errorMessage;
+    @FXML
+    private ListView<Store> storesListView;
+    @FXML
+    private TextField newStoreNameField;
+    @FXML
+    private TextField newStoreManagerField;
+    @FXML
+    private TextField newStoreAddressField;
+    @FXML
+    private TextField newStoreCityField;
+    @FXML
+    private TextField newStoreZipcodeField;
+    @FXML
+    private PasswordField newStorePasswordField;
+    @FXML
+    private PasswordField newStoreConfirmPasswordField;
+    @FXML
+    private Label errorMessage;
 
     private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
     private final EntityManagerAddress entityManagerAddress = Main.getDatabaseManager().getEntityManagerAddress();
@@ -67,7 +78,7 @@ public class ManagementStoreController extends BaseController {
         });
 
         // escape to unselect item in the list box
-        this.storesListView.setOnKeyReleased(event -> {
+        this.getBaseBorderPane().setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
 
             Store store = storesListView.getSelectionModel().getSelectedItem();
@@ -114,7 +125,8 @@ public class ManagementStoreController extends BaseController {
 
         // store exists already!
         if (!this.isEditing()) {
-            for (Store store : this.entityManagerStore.getAll()) {
+            for (CloseableIterator<Store> it = this.entityManagerStore.getAll(); it.hasNext(); ) {
+                Store store = it.next();
                 if (store.getId().equals(newStoreNameField.getText().trim())) {
                     this.newStoreNameField.clear();
                     this.errorMessage.setText(STORE_ALREADY_EXISTS);
@@ -174,11 +186,12 @@ public class ManagementStoreController extends BaseController {
     }
 
     /**
-     * Deletes a Store
+     * Deletes a store
      */
     public void onDeleteButtonClick() {
-        this.entityManagerStore.delete(storesListView.getSelectionModel().getSelectedItem());
+        if (this.storesListView.getSelectionModel().isEmpty()) return;
 
+        this.entityManagerStore.delete(storesListView.getSelectionModel().getSelectedItem());
         this.loadStoresList();
         this.clearStoreInformation();
     }
@@ -224,7 +237,7 @@ public class ManagementStoreController extends BaseController {
      */
     private void loadStoresList() {
         this.storesListView.getItems().clear();
-        this.entityManagerStore.getAll().forEach(store -> this.storesListView.getItems().add(store));
+        this.entityManagerStore.getAll().forEachRemaining(store -> this.storesListView.getItems().add(store));
     }
 
     /**

@@ -4,7 +4,7 @@ import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 
 /**
- * Software home menu
+ * Home Screen
  */
 public class HomeScreen extends BaseScreen {
 
@@ -15,6 +15,6 @@ public class HomeScreen extends BaseScreen {
      * @param store the Store to be displayed
      */
     public HomeScreen(User user, Store store) {
-        super("home.fxml", "Ouatelse - Accueil", user, store);
+        super("home.fxml", "Accueil", user, store);
     }
 }

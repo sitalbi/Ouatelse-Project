@@ -11,9 +11,9 @@ public enum Civility {
     AUTRE;
 
     /**
-     * Allows to capitalize the first letter of the first name and last name
+     * Allows to capitalize the Civility and replace "_" by blanks
      *
-     * @return the converted name
+     * @return the Converted Name
      */
     @Override
     public String toString() {
