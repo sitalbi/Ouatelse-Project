@@ -3,8 +3,12 @@ package fr.s4e2.ouatelse.controllers;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import fr.s4e2.ouatelse.Main;
-import fr.s4e2.ouatelse.managers.*;
-import fr.s4e2.ouatelse.objects.*;
+import fr.s4e2.ouatelse.managers.EntityManagerAddress;
+import fr.s4e2.ouatelse.managers.EntityManagerClient;
+import fr.s4e2.ouatelse.objects.Address;
+import fr.s4e2.ouatelse.objects.Civility;
+import fr.s4e2.ouatelse.objects.Client;
+import fr.s4e2.ouatelse.utils.JFXUtils;
 import fr.s4e2.ouatelse.utils.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,13 +16,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
-import javafx.util.StringConverter;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
@@ -27,7 +27,8 @@ public class ManagementClientController extends BaseController {
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
     private static final String CLIENT_ALREADY_EXISTS = "Ce client existe déjà!";
     private static final String NOT_A_ZIPCODE = "Le code postal est incorrect!";
-
+    private final EntityManagerClient entityManagerClient = Main.getDatabaseManager().getEntityManagerClient();
+    private final EntityManagerAddress entityManagerAddress = Main.getDatabaseManager().getEntityManagerAddress();
     @FXML
     private Label errorMessage;
     @FXML
@@ -54,9 +55,6 @@ public class ManagementClientController extends BaseController {
     private JFXDatePicker clientBirthDate;
     @FXML
     private JFXTreeTableView<Client.ClientTree> clientTreeTableView;
-
-    private final EntityManagerClient entityManagerClient = Main.getDatabaseManager().getEntityManagerClient();
-    private final EntityManagerAddress entityManagerAddress = Main.getDatabaseManager().getEntityManagerAddress();
     private Client currentClient;
 
     /**
@@ -74,51 +72,34 @@ public class ManagementClientController extends BaseController {
         Arrays.stream(Civility.values()).forEach(value -> clientCivilityDropdown.getItems().add(value));
 
         this.loadClientTreeTable();
-
-
-        this.clientBirthDate.setConverter(new StringConverter<LocalDate>() {
-            private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            @Override
-            public String toString(LocalDate localDate) {
-                if (localDate == null) return "";
-                return dateTimeFormatter.format(localDate);
-            }
-
-            @Override
-            public LocalDate fromString(String dateString) {
-                if (dateString == null || dateString.trim().isEmpty()) return null;
-                return LocalDate.parse(dateString, dateTimeFormatter);
-            }
-        });
-
-
+        this.clientBirthDate.setConverter(JFXUtils.getDateConverter());
 
         // escape to unselect item in the table
-        this.clientTreeTableView.setOnKeyReleased(event -> {
+        this.getBaseBorderPane().setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
-
             if (clientTreeTableView.getSelectionModel().getSelectedItem() == null) return;
+
             this.clientTreeTableView.getSelectionModel().clearSelection();
             this.clearInformation();
         });
 
         // selected element in table listener
         this.clientTreeTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                try {
-                    this.currentClient = this.entityManagerClient.executeQuery(this.entityManagerClient.getQueryBuilder()
-                            .where().eq("id", newSelection.getValue().getId().getValue())
-                            .prepare()
-                    ).stream().findFirst().orElse(null);
-                } catch (SQLException exception) {
-                    exception.printStackTrace();
-                }
-
-                this.loadClientInformation();
-            } else {
+            if (newSelection == null) {
                 this.currentClient = null;
+                return;
             }
+            try {
+                this.currentClient = this.entityManagerClient.executeQuery(this.entityManagerClient.getQueryBuilder()
+                        .where().eq("id", newSelection.getValue().getId().getValue())
+                        .prepare()
+                ).stream().findFirst().orElse(null);
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
+
+            this.loadClientInformation();
+
         });
 
 
@@ -129,9 +110,9 @@ public class ManagementClientController extends BaseController {
      *
      * @throws SQLException if the client couldn't be created
      */
-    public void onConfirmButtonClick(MouseEvent mouseEvent) throws SQLException {
+    public void onConfirmButtonClick() throws SQLException {
         //necessary fields
-        if(clientFirstNameInput.getText().trim().isEmpty() || clientLastNameInput.getText().trim().isEmpty() ||
+        if (clientFirstNameInput.getText().trim().isEmpty() || clientLastNameInput.getText().trim().isEmpty() ||
                 clientPhoneInput.getText().trim().isEmpty() || clientEmailInput.getText().trim().isEmpty() ||
                 clientCivilityDropdown.getSelectionModel().isEmpty() || clientBirthDate.getValue() == null) {
             this.errorMessage.setText(TEXT_FIELD_EMPTY_HINT);
@@ -196,7 +177,7 @@ public class ManagementClientController extends BaseController {
     /**
      * Handles the delete button click event
      */
-    public void onDeleteButtonClick(MouseEvent mouseEvent) {
+    public void onDeleteButtonClick() {
         if (currentClient == null) return;
 
         this.entityManagerClient.delete(currentClient);
@@ -256,9 +237,6 @@ public class ManagementClientController extends BaseController {
         id.setCellValueFactory(param -> param.getValue().getValue().getId().asString());
         lastName.setCellValueFactory(param -> param.getValue().getValue().getSurname());
         firstName.setCellValueFactory(param -> param.getValue().getValue().getName());
-
-        id.setContextMenu(null);
-        lastName.setContextMenu(null);
         firstName.setContextMenu(null);
 
         ObservableList<Client.ClientTree> clients = FXCollections.observableArrayList();
@@ -272,8 +250,9 @@ public class ManagementClientController extends BaseController {
         )));
 
         TreeItem<Client.ClientTree> root = new RecursiveTreeItem<>(clients, RecursiveTreeObject::getChildren);
-        //no inspection unchecked
+        //noinspection unchecked
         this.clientTreeTableView.getColumns().setAll(id, lastName, firstName);
+        this.clientTreeTableView.getColumns().forEach(c -> c.setContextMenu(null));
         this.clientTreeTableView.setRoot(root);
         this.clientTreeTableView.setShowRoot(false);
     }
