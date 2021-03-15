@@ -114,7 +114,6 @@ public class ManagementClientController extends BaseController {
                 } catch (SQLException exception) {
                     exception.printStackTrace();
                 }
-
                 this.loadClientInformation();
             } else {
                 this.currentClient = null;
@@ -265,7 +264,7 @@ public class ManagementClientController extends BaseController {
         this.entityManagerClient.getQueryForAll().forEach(client -> clients.add(new Client.ClientTree(
                 client.getId(),
                 client.getName(),
-                client.getName(),
+                client.getSurname(),
                 client.getMobilePhoneNumber(),
                 client.getAddress().getCity(),
                 client.getAddress().getZipCode()
