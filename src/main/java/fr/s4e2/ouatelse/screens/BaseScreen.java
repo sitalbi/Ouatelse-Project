@@ -26,11 +26,16 @@ public abstract class BaseScreen {
 
     public static final Image OUATELSE_ICON = new Image(Objects.requireNonNull(Main.class.getClassLoader().getResource("images/ouatelse_icon.png")).toExternalForm());
     private static final String FXML_PATH = "fxml/";
-    private static final String CSS_PATH = "css/";
     private static final String PREFIX = "Ouatelse - ";
 
     private Stage stage;
 
+    /**
+     * Creates a Base Screen
+     *
+     * @param fxml  name of the fxml file to load from (must be in the fxml folder in resources)
+     * @param title the title of the window (the title suffixes the set prefix)
+     */
     protected BaseScreen(String fxml, String title) {
         this.stage = new Stage();
 
@@ -50,6 +55,14 @@ public abstract class BaseScreen {
         }
     }
 
+    /**
+     * Creates a Base Screen (Used for the {@link HomeController})
+     *
+     * @param fxml  name of the fxml file to load from (must be in the fxml folder in resources)
+     * @param title the title of the window (the title suffixes the set prefix)
+     * @param user  the authentified user
+     * @param store the authentified store
+     */
     protected BaseScreen(String fxml, String title, User user, Store store) {
         this.stage = new Stage();
 
@@ -60,30 +73,6 @@ public abstract class BaseScreen {
         stage.setMinHeight(650);
         stage.setMinWidth(825);
         stage.setTitle(PREFIX + title);
-
-        try {
-            Parent parent = loader.load();
-
-            AuthStoreController authStoreController = loader.getController();
-            authStoreController.setCurrentUser(user);
-
-            Scene scene = new Scene(parent);
-            stage.setScene(scene);
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    protected BaseScreen(String fxml, String title, User user) {
-        this.stage = new Stage();
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
-        stage.getIcons().add(OUATELSE_ICON);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setMinHeight(650);
-        stage.setMinWidth(825);
-        stage.setTitle(title);
 
         try {
             Parent parent = loader.load();
@@ -99,14 +88,35 @@ public abstract class BaseScreen {
         }
     }
 
-
     /**
-     * Allows to add a Cascading Style Sheet
+     * Creates a Base Screen (Used for the {@link AuthStoreController})
      *
-     * @param cssFile the CSS file to be added
+     * @param fxml  name of the fxml file to load from (must be in the fxml folder in resources)
+     * @param title the title of the window (the title suffixes the set prefix)
+     * @param user  the authentified user
      */
-    public void addStyleSheet(String cssFile) {
-        this.getStage().getScene().getStylesheets().add(CSS_PATH + cssFile);
+    protected BaseScreen(String fxml, String title, User user) {
+        this.stage = new Stage();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
+        stage.getIcons().add(OUATELSE_ICON);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setMinHeight(650);
+        stage.setMinWidth(825);
+        stage.setTitle(title);
+
+        try {
+            Parent parent = loader.load();
+
+            AuthStoreController authStoreController = loader.getController();
+            authStoreController.setCurrentUser(user);
+
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 
     /**
