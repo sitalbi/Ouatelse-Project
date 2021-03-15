@@ -20,6 +20,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementStoreScreen}
+ */
 public class ManagementStoreController extends BaseController {
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
     private static final String STORE_ALREADY_EXISTS = "Ce magasin existe déjà!";
@@ -52,12 +55,12 @@ public class ManagementStoreController extends BaseController {
     private Store currentStore;
 
     /**
-     * Called to initialize a controller after its root element has been
-     * completely processed.
+     * Initializes the controller
      *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  <tt>null</tt> if the location is not known.
-     * @param resources The resources used to localize the root object, or <tt>null</tt> if
+     * @param location  The location used to resolve relative paths for the root object,
+     *                  or null if the location is not known.
+     * @param resources The resources used to localize the root object,
+     *                  or null if the location is not known.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -75,7 +78,7 @@ public class ManagementStoreController extends BaseController {
         });
 
         // escape to unselect item in the list box
-        this.storesListView.setOnKeyReleased(event -> {
+        this.getBaseBorderPane().setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
 
             Store store = storesListView.getSelectionModel().getSelectedItem();
@@ -184,19 +187,19 @@ public class ManagementStoreController extends BaseController {
 
     /**
      * Deletes a store
-     *
      */
     public void onDeleteButtonClick() {
-        this.entityManagerStore.delete(storesListView.getSelectionModel().getSelectedItem());
+        if (this.storesListView.getSelectionModel().isEmpty()) return;
 
+        this.entityManagerStore.delete(storesListView.getSelectionModel().getSelectedItem());
         this.loadStoresList();
         this.clearStoreInformation();
     }
 
     /**
-     * Load the selected store's informations into the editable fields
+     * Load the selected Store's informations into the editable fields
      *
-     * @param store The store to view / edit the informations from
+     * @param store The Store to view/edit the informations from
      */
     private void loadStoreInformation(Store store) {
         this.clearStoreInformation();
@@ -216,7 +219,7 @@ public class ManagementStoreController extends BaseController {
     }
 
     /**
-     * Clears the editable fields from a store's informations
+     * Clears the editable fields from a Store's informations
      */
     private void clearStoreInformation() {
         this.newStoreNameField.setText("");
@@ -230,13 +233,18 @@ public class ManagementStoreController extends BaseController {
     }
 
     /**
-     * Loads the stores into the ListView storesListView
+     * Loads the Stores into the ListView storesListView
      */
     private void loadStoresList() {
         this.storesListView.getItems().clear();
         this.entityManagerStore.getAll().forEachRemaining(store -> this.storesListView.getItems().add(store));
     }
 
+    /**
+     * Checks if the current Store is being edited
+     *
+     * @return True or False
+     */
     private boolean isEditing() {
         return this.currentStore != null;
     }

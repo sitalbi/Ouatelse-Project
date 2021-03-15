@@ -17,16 +17,25 @@ import lombok.Setter;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Base Screen for all screens
+ */
 @Getter
 @Setter
 public abstract class BaseScreen {
 
     public static final Image OUATELSE_ICON = new Image(Objects.requireNonNull(Main.class.getClassLoader().getResource("images/ouatelse_icon.png")).toExternalForm());
     private static final String FXML_PATH = "fxml/";
-    private static final String CSS_PATH = "css/";
+    private static final String PREFIX = "Ouatelse - ";
 
     private Stage stage;
 
+    /**
+     * Creates a Base Screen
+     *
+     * @param fxml  name of the fxml file to load from (must be in the fxml folder in resources)
+     * @param title the title of the window (the title suffixes the set prefix)
+     */
     protected BaseScreen(String fxml, String title) {
         this.stage = new Stage();
 
@@ -46,6 +55,14 @@ public abstract class BaseScreen {
         }
     }
 
+    /**
+     * Creates a Base Screen (Used for the {@link HomeController})
+     *
+     * @param fxml  name of the fxml file to load from (must be in the fxml folder in resources)
+     * @param title the title of the window (the title suffixes the set prefix)
+     * @param user  the authentified user
+     * @param store the authentified store
+     */
     protected BaseScreen(String fxml, String title, User user, Store store) {
         this.stage = new Stage();
 
@@ -55,7 +72,7 @@ public abstract class BaseScreen {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinHeight(650);
         stage.setMinWidth(825);
-        stage.setTitle(title);
+        stage.setTitle(PREFIX + title);
 
         try {
             Parent parent = loader.load();
@@ -71,6 +88,13 @@ public abstract class BaseScreen {
         }
     }
 
+    /**
+     * Creates a Base Screen (Used for the {@link AuthStoreController})
+     *
+     * @param fxml  name of the fxml file to load from (must be in the fxml folder in resources)
+     * @param title the title of the window (the title suffixes the set prefix)
+     * @param user  the authentified user
+     */
     protected BaseScreen(String fxml, String title, User user) {
         this.stage = new Stage();
 
@@ -95,14 +119,16 @@ public abstract class BaseScreen {
         }
     }
 
-    public void addStyleSheet(String cssFile) {
-        this.getStage().getScene().getStylesheets().add(CSS_PATH + cssFile);
-    }
-
+    /**
+     * Allows to open the Stage
+     */
     public void open() {
         stage.show();
     }
 
+    /**
+     * Allows to close the Stage
+     */
     public void close() {
         stage.close();
     }

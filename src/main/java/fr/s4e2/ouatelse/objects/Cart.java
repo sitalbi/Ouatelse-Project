@@ -8,6 +8,9 @@ import lombok.Setter;
 
 import java.util.Date;
 
+/**
+ * The Cart table contains an identifier, a date, a product and a client
+ */
 @Getter
 @Setter
 @NoArgsConstructor

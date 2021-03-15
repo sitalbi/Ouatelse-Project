@@ -21,6 +21,9 @@ import java.util.ResourceBundle;
 
 import static fr.s4e2.ouatelse.objects.Vendor.VendorTree;
 
+/**
+ * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementVendorScreen}
+ */
 public class ManagementVendorController extends BaseController {
 
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
@@ -63,7 +66,7 @@ public class ManagementVendorController extends BaseController {
         this.loadVendorsTreeTable();
 
         // escape to unselect item in the table
-        this.vendorsTreeTableView.setOnKeyReleased(event -> {
+        this.getBaseBorderPane().setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
 
             if (vendorsTreeTableView.getSelectionModel().getSelectedItem() == null) return;
@@ -213,22 +216,13 @@ public class ManagementVendorController extends BaseController {
         email.setCellValueFactory(param -> param.getValue().getValue().getEmail());
         contractState.setCellValueFactory(param -> param.getValue().getValue().getContractState());
 
-        name.setContextMenu(null);
-        city.setContextMenu(null);
-        email.setContextMenu(null);
-        contractState.setContextMenu(null);
-
         ObservableList<VendorTree> vendors = FXCollections.observableArrayList();
-        this.entityManagerVendor.getQueryForAll().forEach(vendor -> vendors.add(new VendorTree(
-                vendor.getName(),
-                vendor.getAddress().getCity(),
-                vendor.getEmail(),
-                vendor.isContractState()
-        )));
+        this.entityManagerVendor.getQueryForAll().forEach(vendor -> vendors.add(vendor.toVendorTree()));
 
         TreeItem<VendorTree> root = new RecursiveTreeItem<>(vendors, RecursiveTreeObject::getChildren);
         //noinspection unchecked
         this.vendorsTreeTableView.getColumns().setAll(name, city, email, contractState);
+        this.vendorsTreeTableView.getColumns().forEach(c -> c.setContextMenu(null));
         this.vendorsTreeTableView.setRoot(root);
         this.vendorsTreeTableView.setShowRoot(false);
     }
@@ -239,12 +233,7 @@ public class ManagementVendorController extends BaseController {
      * @param vendor a Vendor to add in the tree table
      */
     private void addVendorToTreeTable(Vendor vendor) {
-        this.vendorsTreeTableView.getRoot().getChildren().add(new TreeItem<>(new VendorTree(
-                vendor.getName(),
-                vendor.getAddress().getCity(),
-                vendor.getEmail(),
-                vendor.isContractState()
-        )));
+        this.vendorsTreeTableView.getRoot().getChildren().add(new TreeItem<>(vendor.toVendorTree()));
     }
 
     /**

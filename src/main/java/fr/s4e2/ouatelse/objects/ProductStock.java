@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The ProductStock table contains an identifier, a product, the quantity and the associated store
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,37 +29,87 @@ public class ProductStock {
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Store store;
 
+    /**
+     * Converts this object into a tree table object representing its information
+     *
+     * @return A tree table object representing this object's information
+     */
+    public ProductStockInfoTree toProductStockInfoTree() {
+        return new ProductStockInfoTree(
+                this.getProduct().getReference(),
+                this.getQuantity(),
+                String.valueOf(this.getId())
+        );
+    }
+
+    /**
+     * Recursive Product Stock Info Tree
+     */
     @Getter
-    public static class ProductStockTreeTop extends RecursiveTreeObject<ProductStockTreeTop> {
+    public static class ProductStockInfoTree extends RecursiveTreeObject<ProductStockInfoTree> {
         private final LongProperty reference;
         private final IntegerProperty stockQuantity;
         private final StringProperty order;
-        private final StringProperty shippingDate;
 
-        public ProductStockTreeTop(Long reference, Integer stockQuantity, String order, String shippingDate) {
+        /**
+         * Constructor
+         *
+         * @param reference     the Reference of the Product
+         * @param stockQuantity the Quantity of Stock remaining
+         * @param order         the Order
+         */
+        public ProductStockInfoTree(Long reference, Integer stockQuantity, String order) {
             this.reference = new SimpleLongProperty(reference);
             this.stockQuantity = new SimpleIntegerProperty(stockQuantity);
             this.order = new SimpleStringProperty(order);
-            this.shippingDate = new SimpleStringProperty(shippingDate);
         }
     }
 
+    /**
+     * Recursive Product Stock Tree
+     */
     @Getter
-    public static class ProductStockTreeBottom extends RecursiveTreeObject<ProductStockTreeBottom> {
-        private final DoubleProperty buyingPrice;
-        private final DoubleProperty margin;
-        private final DoubleProperty priceWithoutTaxes;
-        private final DoubleProperty taxes;
-        private final DoubleProperty priceWithTaxes;
+    public static class ProductStockTree extends RecursiveTreeObject<ProductStockTree> {
+        private final LongProperty id;
+        private final LongProperty reference;
+        private final StringProperty article;
+        private final DoubleProperty unitValue;
+        private final IntegerProperty stockQuantity;
+        private final StringProperty productState;
 
-        public ProductStockTreeBottom(Double buyingPrice, Double margin, Double taxes, Double sellingPrice) {
-            this.buyingPrice = new SimpleDoubleProperty(buyingPrice);
-            this.margin = new SimpleDoubleProperty(margin);
-            this.taxes = new SimpleDoubleProperty(taxes);
-            this.priceWithTaxes = new SimpleDoubleProperty(sellingPrice);
-            this.priceWithoutTaxes = new SimpleDoubleProperty();
-
-            this.priceWithoutTaxes.bind(this.priceWithTaxes.subtract(this.priceWithTaxes.multiply(this.taxes)));
+        /**
+         * Constructor
+         *
+         * @param id            the ID
+         * @param reference     the Reference of the Product
+         * @param article       the Name of the Article
+         * @param unitValue     the Unit Price
+         * @param stockQuantity the Quantity of Stock remaining
+         * @param productState  the state of the Product
+         */
+        public ProductStockTree(Long id, Long reference, String article, Double unitValue, Integer stockQuantity, ProductState productState) {
+            this.id = new SimpleLongProperty(id);
+            this.reference = new SimpleLongProperty(reference);
+            this.article = new SimpleStringProperty(article);
+            this.unitValue = new SimpleDoubleProperty(unitValue);
+            this.stockQuantity = new SimpleIntegerProperty(stockQuantity);
+            this.productState = new SimpleStringProperty(productState.toString());
         }
+    }
+
+    /**
+     * Converts this object into a tree table object fully representing its information
+     *
+     * @return A tree table object fully representing this object's information
+     */
+    public ProductStockTree toProductStockTree() {
+        return new ProductStockTree(
+                this.getId(),
+                this.getProduct().getReference(),
+                this.getProduct().getName(),
+                this.getProduct().getPurchasePrice(),
+                this.getQuantity(),
+                this.getProduct().getState()
+        );
     }
 }

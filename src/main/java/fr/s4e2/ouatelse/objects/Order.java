@@ -9,6 +9,9 @@ import lombok.Setter;
 
 import java.util.HashMap;
 
+/**
+ * The Order table contains a list of products, a store and a vendor
+ */
 @Getter
 @Setter
 @NoArgsConstructor

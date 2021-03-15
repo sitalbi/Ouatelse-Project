@@ -10,6 +10,7 @@ import fr.s4e2.ouatelse.managers.EntityManagerStore;
 import fr.s4e2.ouatelse.managers.EntityManagerUser;
 import fr.s4e2.ouatelse.objects.*;
 import fr.s4e2.ouatelse.objects.User.UserTree;
+import fr.s4e2.ouatelse.utils.JFXUtils;
 import fr.s4e2.ouatelse.utils.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,28 +18,27 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
-import javafx.util.StringConverter;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementUserScreen}
+ */
 public class ManagementUserController extends BaseController {
 
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
     private static final String USER_ALREADY_EXISTS = "Cet utilisateur existe déjà!";
     private static final String NOT_A_ZIPCODE = "Le code postal est incorrect!";
+    private static final String NOT_AN_HOUR = "Les heures par semaine sont incorrectes!";
     private static final String PASSWORD_NOT_MATCHING = "Mot de passe non concordants!";
 
     @FXML
     private Label errorMessage;
     @FXML
     private JFXTextField userIdInput;
-    @FXML
-    private JFXComboBox<Civility> userCivilityDropdown;
     @FXML
     private JFXTextField userLastNameInput;
     @FXML
@@ -62,6 +62,10 @@ public class ManagementUserController extends BaseController {
     @FXML
     private JFXComboBox<Store> userStoreDropdown;
     @FXML
+    private JFXTextField userHoursPerWeekInput;
+    @FXML
+    private JFXComboBox<Civility> userCivilityDropdown;
+    @FXML
     private JFXDatePicker userHiringDate;
     @FXML
     private JFXDatePicker userBirthDate;
@@ -77,12 +81,12 @@ public class ManagementUserController extends BaseController {
     private User currentUser;
 
     /**
-     * Called to initialize a controller after its root element has been
-     * completely processed.
+     * Initializes the controller
      *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  <tt>null</tt> if the location is not known.
-     * @param resources The resources used to localize the root object, or <tt>null</tt> if
+     * @param location  The location used to resolve relative paths for the root object,
+     *                  or null if the location is not known.
+     * @param resources The resources used to localize the root object,
+     *                  or null if the location is not known.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -98,39 +102,11 @@ public class ManagementUserController extends BaseController {
         this.loadUserTreeTable();
 
         // format date
-        this.userHiringDate.setConverter(new StringConverter<LocalDate>() {
-            private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            @Override
-            public String toString(LocalDate localDate) {
-                if (localDate == null) return "";
-                return dateTimeFormatter.format(localDate);
-            }
-
-            @Override
-            public LocalDate fromString(String dateString) {
-                if (dateString == null || dateString.trim().isEmpty()) return null;
-                return LocalDate.parse(dateString, dateTimeFormatter);
-            }
-        });
-        this.userBirthDate.setConverter(new StringConverter<LocalDate>() {
-            private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            @Override
-            public String toString(LocalDate localDate) {
-                if (localDate == null) return "";
-                return dateTimeFormatter.format(localDate);
-            }
-
-            @Override
-            public LocalDate fromString(String dateString) {
-                if (dateString == null || dateString.trim().isEmpty()) return null;
-                return LocalDate.parse(dateString, dateTimeFormatter);
-            }
-        });
+        this.userHiringDate.setConverter(JFXUtils.getDateConverter());
+        this.userBirthDate.setConverter(JFXUtils.getDateConverter());
 
         // escape to unselect item in the table
-        this.usersTreeTableView.setOnKeyReleased(event -> {
+        this.getBaseBorderPane().setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
 
             if (usersTreeTableView.getSelectionModel().getSelectedItem() == null) return;
@@ -160,7 +136,7 @@ public class ManagementUserController extends BaseController {
     /**
      * Handles the confirm button event
      *
-     * @throws SQLException if the user couldn't be created
+     * @throws SQLException if the User couldn't be created
      */
     public void onConfirmButtonClick() throws SQLException {
         // necessary fields
@@ -168,7 +144,7 @@ public class ManagementUserController extends BaseController {
                 || userEmailInput.getText().trim().isEmpty() || userPhoneInput.getText().trim().isEmpty()
                 || userAddressInput.getText().trim().isEmpty() || userCityInput.getText().trim().isEmpty() || userZipcodeInput.getText().trim().isEmpty()
                 || userRoleDropdown.getSelectionModel().isEmpty() || userStoreDropdown.getSelectionModel().isEmpty() || userCivilityDropdown.getSelectionModel().isEmpty()
-                || userHiringDate.getValue() == null || userBirthDate.getValue() == null) {
+                || userHoursPerWeekInput.getText().trim().isEmpty() || userHiringDate.getValue() == null || userBirthDate.getValue() == null) {
             this.errorMessage.setText(TEXT_FIELD_EMPTY_HINT);
             return;
         }
@@ -198,6 +174,14 @@ public class ManagementUserController extends BaseController {
         if (!userPasswordInput.getText().equals(userConfirmPasswordInput.getText())) {
             this.errorMessage.setText(PASSWORD_NOT_MATCHING);
             this.userPasswordInput.getParent().requestFocus();
+            return;
+        }
+
+        // incorrect zipcode
+        Integer hoursPerWeek = Utils.getNumber(userHoursPerWeekInput.getText().trim());
+        if (hoursPerWeek == null) {
+            this.errorMessage.setText(NOT_AN_HOUR);
+            this.userHoursPerWeekInput.getParent().requestFocus();
             return;
         }
 
@@ -254,7 +238,7 @@ public class ManagementUserController extends BaseController {
     }
 
     /**
-     * Loads selected user's information in the inputs
+     * Loads selected User's information in the inputs
      */
     private void loadUserInformation() {
         this.clearInformation();
@@ -286,6 +270,7 @@ public class ManagementUserController extends BaseController {
         this.userHiringDate.setDisable(true);
         this.userBirthDate.setValue(Utils.dateToLocalDate(currentUser.getBirthDate()));
         this.userBirthDate.getEditor().setText(userBirthDate.getConverter().toString(userBirthDate.getValue()));
+        this.userHoursPerWeekInput.setText(String.valueOf(currentUser.getHoursPerWeek()));
         this.userActiveToggle.setSelected(currentUser.getStatus() == PersonState.UNEMPLOYED);
     }
 
@@ -305,6 +290,7 @@ public class ManagementUserController extends BaseController {
         this.userZipcodeInput.setText("");
         this.userPasswordInput.setText("");
         this.userConfirmPasswordInput.setText("");
+        this.userHoursPerWeekInput.setText("");
         this.userActiveToggle.setSelected(false);
         this.userHiringDate.getEditor().clear();
         this.userHiringDate.setDisable(false);
@@ -315,7 +301,7 @@ public class ManagementUserController extends BaseController {
     }
 
     /**
-     * Loads the user tree table on the right hand side
+     * Loads the User tree table on the right hand side
      */
     private void loadUserTreeTable() {
         JFXTreeTableColumn<UserTree, String> id = new JFXTreeTableColumn<>("Identifiant");
@@ -341,14 +327,7 @@ public class ManagementUserController extends BaseController {
         status.setContextMenu(null);
 
         ObservableList<UserTree> users = FXCollections.observableArrayList();
-        this.entityManagerUser.getQueryForAll().forEach(user -> users.add(new UserTree(
-                user.getCredentials(),
-                user.getSurname(),
-                user.getName(),
-                user.getRole(),
-                user.getWorkingStore(),
-                user.getStatus()
-        )));
+        this.entityManagerUser.getQueryForAll().forEach(user -> users.add(user.toUserTree()));
 
         TreeItem<UserTree> root = new RecursiveTreeItem<>(users, RecursiveTreeObject::getChildren);
         //noinspection unchecked
@@ -358,7 +337,7 @@ public class ManagementUserController extends BaseController {
     }
 
     /**
-     * Updates the user object with all of the inputted values (after checks)
+     * Updates the User object with all of the inputted values (after checks)
      *
      * @param user the User to update
      */
@@ -369,6 +348,7 @@ public class ManagementUserController extends BaseController {
         user.setEmail(userEmailInput.getText().trim());
         user.setMobilePhoneNumber(userPhoneInput.getText().trim());
         user.setRole(userRoleDropdown.getValue());
+        user.setHoursPerWeek(Integer.parseInt(userHoursPerWeekInput.getText().trim()));
         if (!userPasswordInput.getText().trim().isEmpty()) user.setPassword(userPasswordInput.getText().trim());
         user.setWorkingStore(userStoreDropdown.getValue());
         user.setHiringDate(Utils.localDateToDate(userHiringDate.getValue()));
@@ -378,25 +358,18 @@ public class ManagementUserController extends BaseController {
     }
 
     /**
-     * Adds a user to the tree table with a user instance
+     * Adds a User to the tree table with a user instance
      *
      * @param user a User to add in the tree table
      */
     private void addUserToTreeTable(User user) {
-        this.usersTreeTableView.getRoot().getChildren().add(new TreeItem<>(new UserTree(
-                user.getCredentials(),
-                user.getSurname(),
-                user.getName(),
-                user.getRole(),
-                user.getWorkingStore(),
-                user.getStatus()
-        )));
+        this.usersTreeTableView.getRoot().getChildren().add(new TreeItem<>(user.toUserTree()));
     }
 
     /**
-     * Returns if a user is selected/being edited
+     * Returns if a User is selected/being edited
      *
-     * @return if a user is being edited
+     * @return if a User is being edited
      */
     private boolean isEditing() {
         return this.currentUser != null;
