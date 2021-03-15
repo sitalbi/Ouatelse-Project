@@ -167,6 +167,14 @@ public class DatabaseManager {
             store.setId("test");
             store.setPassword("test");
 
+            Address address = new Address();
+            address.setAddress("Test Address");
+            address.setCity("Test City");
+            address.setZipCode(0);
+
+            store.setAddress(address);
+
+            this.entityManagerAddress.create(address);
             this.entityManagerStore.create(store);
         }
     }
