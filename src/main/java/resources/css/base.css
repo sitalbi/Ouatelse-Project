@@ -12,6 +12,10 @@
     -fx-text-fill: white;
 }
 
+.menu-item .label {
+    -fx-text-fill: white;
+}
+
 .menu-item:focused, .menu:hover, .menu:focused, .menu:selected, .menu:armed, .menu:showing {
     -fx-background-color: #2f3b52;
 }

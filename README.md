@@ -32,13 +32,13 @@
    ~~2.3 Supprimer un magasin~~\
    ~~2.4 Authentification dans un magasin~~
 3. Fonction du module de gestion des produits (GP)\
-   3.1 Ajouter un produit\
-   3.2 Modifier les caractéristiques d’un produits\
-   3.3 Supprimer un produit\
-   3.4 Rechercher un produit
+   ~~3.1 Ajouter un produit~~\
+   ~~3.2 Modifier les caractéristiques d’un produits~~\
+   ~~3.3 Supprimer un produit~~\
+   ~~3.4 Rechercher un produit~~
 4. Fonction du module de gestion des stocks\
-   4.1 Ajouter du stock\
-   4.2 Retirer du stock\
+   ~~4.1 Ajouter du stock~~\
+   ~~4.2 Retirer du stock~~\
    4.3 Alerter les ruptures de stock\
    4.4 Programmer une commande\
    4.5 Accès aux statistiques des commandes

@@ -15,6 +15,10 @@ import lombok.Setter;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+/**
+ * The User table contains credentials, an encrypted password, a role, a hiring date, the
+ * number of hours per week the user works, a salary list, and the store where the user works
+ */
 @SuppressWarnings("ALL")
 @Getter
 @Setter
@@ -28,14 +32,14 @@ public class User extends Person {
     @DatabaseField(canBeNull = false)
     private String password;
 
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, canBeNull = true)
     private Role role;
 
     @DatabaseField(canBeNull = false)
     private Date hiringDate;
 
     @DatabaseField(canBeNull = false)
-    private int hoursPerWeek;
+    private int hoursPerWeek = 0;
 
     @ForeignCollectionField(eager = true)
     private ForeignCollection<Salary> salarySheets;
@@ -43,14 +47,28 @@ public class User extends Person {
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Store workingStore;
 
+    /**
+     * Creates an encrypted password from a String
+     *
+     * @param password the Password before encryption
+     */
     public void setPassword(String password) {
         this.password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
     }
 
+    /**
+     * Checks if the provided String is a Password
+     *
+     * @param password the provided Password
+     * @return True or False
+     */
     public boolean isPassword(String password) {
         return this.password.equals(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString());
     }
 
+    /**
+     * Recursive User Tree
+     */
     @Getter
     public static class UserTree extends RecursiveTreeObject<UserTree> {
         private final StringProperty id;
@@ -60,6 +78,16 @@ public class User extends Person {
         private final StringProperty storeName;
         private final StringProperty status;
 
+        /**
+         * Constructor
+         *
+         * @param id        the ID
+         * @param lastName  the Last Name
+         * @param firstName the First Name
+         * @param role      the Role
+         * @param storeName the Name of the Store
+         * @param status    the User Status
+         */
         public UserTree(String id, String lastName, String firstName, Role role, Store storeName, PersonState status) {
             this.id = new SimpleStringProperty(id);
             this.lastName = new SimpleStringProperty(lastName);
@@ -68,5 +96,21 @@ public class User extends Person {
             this.storeName = new SimpleStringProperty(storeName != null ? storeName.getId() : "");
             this.status = new SimpleStringProperty(status != null ? status.toString() : "");
         }
+    }
+
+    /**
+     * Converts this object into a tree table object representing it's information
+     *
+     * @return A tree table object representing this object's information
+     */
+    public UserTree toUserTree() {
+        return new UserTree(
+                this.getCredentials(),
+                this.getSurname(),
+                this.getName(),
+                this.getRole(),
+                this.getWorkingStore(),
+                this.getStatus()
+        );
     }
 }

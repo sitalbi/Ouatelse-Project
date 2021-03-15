@@ -9,6 +9,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The Product table contains an identifier, a barcode, a name, a selling price, a purchase price,
+ * a reference, a brand, a product status, a category, a vendor and a store
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -53,6 +57,28 @@ public class Product {
     private Store store;
     // ###########################################################
 
+    /**
+     * Allows you to get the selling price of a product
+     *
+     * @return the Selling Price
+     */
+    public double getSellingPrice() {
+        double priceWithMargin = (purchasePrice + (margin * purchasePrice));
+        return priceWithMargin + (taxes * priceWithMargin);
+    }
+
+    /**
+     * Allows you to get the tax-free price of a product
+     *
+     * @return the Tax-free Price
+     */
+    public double getPriceWithoutTaxes() {
+        return purchasePrice + (margin * purchasePrice);
+    }
+
+    /**
+     * Recursive Product Tree
+     */
     @Getter
     public static class ProductTree extends RecursiveTreeObject<ProductTree> {
         private final LongProperty reference;
@@ -66,6 +92,19 @@ public class Product {
         private final DoubleProperty margin;
         private final DoubleProperty taxes;
 
+        /**
+         * Constructor
+         *
+         * @param reference     the Reference
+         * @param name          the Name
+         * @param margin        the Margin
+         * @param purchasePrice the Purchase Price
+         * @param brand         the Brand
+         * @param state         the State
+         * @param category      the Category
+         * @param soldByName    the Name
+         * @param taxes         the Taxes
+         */
         public ProductTree(Long reference, String name, Double margin, Double purchasePrice, String brand, String state, String category, String soldByName, Double taxes) {
             this.reference = new SimpleLongProperty(reference);
             this.name = new SimpleStringProperty(name);
@@ -79,14 +118,105 @@ public class Product {
 
             this.sellingPrice = new SimpleDoubleProperty();
 
-            this.sellingPrice.bind(
-                    this.purchasePrice.add(
-                            this.purchasePrice.multiply(this.margin)
-                    ).add(
-                            this.purchasePrice.add(
-                                    this.purchasePrice.multiply(this.margin)
-                            ).multiply(this.taxes)
-                    ));
+            this.sellingPrice.bind(this.purchasePrice
+                    .add(this.purchasePrice.multiply(this.margin))
+                    .add(this.purchasePrice.add(this.purchasePrice.multiply(this.margin)).multiply(this.taxes))
+            );
         }
+    }
+
+    /**
+     * Converts this object into a tree table object representing it's information
+     *
+     * @return A tree table object representing this object's information
+     */
+    public ProductTree toProductTree() {
+        return new ProductTree(
+                this.getReference(),
+                this.getName(),
+                this.getMargin(),
+                this.getPurchasePrice(),
+                this.getBrand(),
+                this.getState().toString(),
+                this.getCategory(),
+                (this.getSoldBy() != null) ? this.getSoldBy().getName() : "",
+                this.getTaxes()
+        );
+    }
+
+    /**
+     * Recursive Product Prices Tree
+     */
+    @Getter
+    public static class ProductPricesTree extends RecursiveTreeObject<ProductPricesTree> {
+        private DoubleProperty buyingPrice;
+        private DoubleProperty margin;
+        private final DoubleProperty priceWithoutTaxes;
+        private DoubleProperty taxes;
+        private final DoubleProperty priceWithTaxes;
+
+        /**
+         * Constructor
+         *
+         * @param buyingPrice the Buying Price
+         * @param margin      the Margin
+         * @param taxes       the Taxes
+         */
+        public ProductPricesTree(Double buyingPrice, Double margin, Double taxes) {
+            this.buyingPrice = new SimpleDoubleProperty(buyingPrice);
+            this.margin = new SimpleDoubleProperty(margin);
+            this.priceWithoutTaxes = new SimpleDoubleProperty();
+            this.taxes = new SimpleDoubleProperty(taxes);
+            this.priceWithTaxes = new SimpleDoubleProperty();
+
+            this.loadValues();
+        }
+
+        /**
+         * Sets the buying price
+         *
+         * @param buyingPrice the Buying Price
+         */
+        public void setBuyingPrice(double buyingPrice) {
+            this.buyingPrice = new SimpleDoubleProperty(buyingPrice);
+            this.loadValues();
+        }
+
+        /**
+         * Sets the margin
+         *
+         * @param margin the Margin
+         */
+        public void setMargin(double margin) {
+            this.margin = new SimpleDoubleProperty(margin);
+            this.loadValues();
+        }
+
+        /**
+         * Sets the tax
+         *
+         * @param taxes the Taxes
+         */
+        public void setTaxes(double taxes) {
+            this.taxes = new SimpleDoubleProperty(taxes);
+            this.loadValues();
+        }
+
+        private void loadValues() {
+            this.priceWithTaxes.bind(this.buyingPrice
+                    .add(this.buyingPrice.multiply(this.margin))
+                    .add(this.buyingPrice.add(this.buyingPrice.multiply(this.margin)).multiply(this.taxes))
+            );
+            this.priceWithoutTaxes.bind(this.priceWithTaxes.subtract(this.priceWithTaxes.multiply(this.taxes)));
+        }
+    }
+
+    /**
+     * Converts this object into a tree table object representing it's prices
+     *
+     * @return A tree table object representing this object's prices
+     */
+    public ProductPricesTree toProductPricesTree() {
+        return new ProductPricesTree(this.getPurchasePrice(), this.getMargin(), this.getTaxes());
     }
 }

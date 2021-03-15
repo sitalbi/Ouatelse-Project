@@ -6,7 +6,6 @@ import fr.s4e2.ouatelse.managers.EntityManagerRole;
 import fr.s4e2.ouatelse.objects.Permission;
 import fr.s4e2.ouatelse.objects.Role;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -18,11 +17,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
+/**
+ * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementRoleScreen}
+ */
 public class ManagementRoleController extends BaseController {
 
     private static final String TEXT_FIELD_HINT = "Veuillez saisir un nom";
     private static final String ROLE_ALREADY_EXISTS = "Ce rôle existe déjà!";
-
+    private final EntityManagerRole entityManagerRole = Main.getDatabaseManager().getEntityManagerRole();
     @FXML
     private ListView<Permission> permissionsRoleHas;
     @FXML
@@ -35,17 +37,15 @@ public class ManagementRoleController extends BaseController {
     private Button deletePermissionButton;
     @FXML
     private ListView<Role> rolesListView;
-
-    private final EntityManagerRole entityManagerRole = Main.getDatabaseManager().getEntityManagerRole();
     private Role currentRole = null;
 
     /**
-     * Called to initialize a controller after its root element has been
-     * completely processed.
+     * Initializes the controller
      *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  <tt>null</tt> if the location is not known.
-     * @param resources The resources used to localize the root object, or <tt>null</tt> if
+     * @param location  The location used to resolve relative paths for the root object,
+     *                  or null if the location is not known.
+     * @param resources The resources used to localize the root object,
+     *                  or null if the location is not known.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -59,38 +59,24 @@ public class ManagementRoleController extends BaseController {
         this.newRoleNameField.setPromptText(TEXT_FIELD_HINT);
 
         // Enables or disables button on select and unselect
-        this.rolesListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Role>() {
-            /**
-             * This method needs to be provided by an implementation of
-             * {@code ChangeListener}. It is called if the value of an
-             * {@link ObservableValue} changes.
-             * <p>
-             * In general is is considered bad practice to modify the observed value in
-             * this method.
-             *
-             * @param observable The {@code ObservableValue} which value changed
-             * @param oldValue   The old value
-             * @param newValue   The new value
-             */
-            @Override
-            public void changed(ObservableValue<? extends Role> observable, Role oldValue, Role newValue) {
-                if (newValue != null) {
-                    currentRole = newValue;
+        this.rolesListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                currentRole = newValue;
 
-                    permissionsRoleHas.setDisable(false);
-                    permissionsRoleHasnt.setDisable(false);
+                permissionsRoleHas.setDisable(false);
+                permissionsRoleHasnt.setDisable(false);
 
-                    loadPermissionLists(newValue);
-                } else {
-                    currentRole = null;
+                loadPermissionLists(newValue);
+            } else {
+                currentRole = null;
 
-                    permissionsRoleHas.setDisable(true);
-                    permissionsRoleHasnt.setDisable(true);
-                }
+                permissionsRoleHas.setDisable(true);
+                permissionsRoleHasnt.setDisable(true);
             }
         });
 
-        this.rolesListView.setOnKeyReleased(event -> {
+        // deselect an item in the roles list view
+        this.getBaseBorderPane().setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
 
             Role role = rolesListView.getSelectionModel().getSelectedItem();
@@ -104,43 +90,14 @@ public class ManagementRoleController extends BaseController {
             permissionsRoleHas.setDisable(true);
             permissionsRoleHasnt.setDisable(true);
         });
-        this.permissionsRoleHas.setOnKeyReleased(event -> {
-            if (event.getCode() != KeyCode.ESCAPE) return;
 
-            Permission permission = permissionsRoleHas.getSelectionModel().getSelectedItem();
-            if (permission == null) return;
-            permissionsRoleHas.getSelectionModel().clearSelection();
-        });
-        this.permissionsRoleHasnt.setOnKeyReleased(event -> {
-            if (event.getCode() != KeyCode.ESCAPE) return;
-
-            Permission permission = permissionsRoleHasnt.getSelectionModel().getSelectedItem();
-            if (permission == null) return;
-            permissionsRoleHasnt.getSelectionModel().clearSelection();
-        });
-
-        ChangeListener<Permission> changeListener = new ChangeListener<Permission>() {
-            /**
-             * This method needs to be provided by an implementation of
-             * {@code ChangeListener}. It is called if the value of an
-             * {@link ObservableValue} changes.
-             * <p>
-             * In general is is considered bad practice to modify the observed value in
-             * this method.
-             *
-             * @param observable The {@code ObservableValue} which value changed
-             * @param oldValue   The old value
-             * @param newValue   The new value
-             */
-            @Override
-            public void changed(ObservableValue<? extends Permission> observable, Permission oldValue, Permission newValue) {
-                if (newValue != null) {
-                    addPermissionButton.setDisable(false);
-                    deletePermissionButton.setDisable(false);
-                } else {
-                    addPermissionButton.setDisable(true);
-                    deletePermissionButton.setDisable(true);
-                }
+        ChangeListener<Permission> changeListener = (observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                addPermissionButton.setDisable(false);
+                deletePermissionButton.setDisable(false);
+            } else {
+                addPermissionButton.setDisable(true);
+                deletePermissionButton.setDisable(true);
             }
         };
 
@@ -176,7 +133,7 @@ public class ManagementRoleController extends BaseController {
         Role newRole = entityManagerRole.create(newRoleNameField.getText().trim());
 
         this.newRoleNameField.setText("");
-        this.newRoleNameField.setPromptText("Veuillez saisir un nom");
+        this.newRoleNameField.setPromptText(TEXT_FIELD_HINT);
 
         this.rolesListView.getItems().add(newRole);
         this.rolesListView.getSelectionModel().select(newRole);
@@ -222,7 +179,7 @@ public class ManagementRoleController extends BaseController {
     }
 
     /**
-     * Deletes a role
+     * Deletes a Role
      *
      * @param mouseEvent The mouse click event
      */
@@ -245,10 +202,10 @@ public class ManagementRoleController extends BaseController {
     }
 
     /**
-     * Loads the permissions the role has in the ListView permissionsRoleHas and the permissions the role hasn't in
+     * Loads the permissions the Role has in the ListView permissionsRoleHas and the permissions the Role hasn't in
      * the ListView permissionsRoleHasnt
      *
-     * @param role The selected role
+     * @param role The selected Role
      */
     private void loadPermissionLists(Role role) {
         this.clearPermissionLists();
@@ -269,9 +226,9 @@ public class ManagementRoleController extends BaseController {
     }
 
     /**
-     * Saves changes on the role entity
+     * Saves changes on the Role entity
      *
-     * @param role a chosen role
+     * @param role a chosen Role
      */
     private void saveRole(Role role) {
         entityManagerRole.update(role);

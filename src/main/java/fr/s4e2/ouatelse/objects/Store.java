@@ -11,6 +11,9 @@ import lombok.Setter;
 
 import java.nio.charset.StandardCharsets;
 
+/**
+ * The Store table contains a username, an encrypted password, an address, a manager and a list of products
+ */
 @SuppressWarnings("ALL")
 @Getter
 @Setter
@@ -24,12 +27,22 @@ public class Store {
     @DatabaseField(canBeNull = false)
     private String password;
 
-    public void setPassword(String password) {
-        this.password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
+    /**
+     * Constructor
+     *
+     * @param id the ID
+     */
+    public Store(String id) {
+        this.id = id;
     }
 
-    public boolean isPassword(String password) {
-        return this.password.equals(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString());
+    /**
+     * Creates an encrypted password from a String
+     *
+     * @param password the Password before encryption
+     */
+    public void setPassword(String password) {
+        this.password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
     }
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
@@ -41,10 +54,21 @@ public class Store {
     @ForeignCollectionField(eager = true)
     private ForeignCollection<Product> products;
 
-    public Store(String id) {
-        this.id = id;
+    /**
+     * Checks if the provided String is a Password
+     *
+     * @param password the provided Password
+     * @return True or False
+     */
+    public boolean isPassword(String password) {
+        return this.password.equals(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString());
     }
 
+    /**
+     * Gets the ID
+     *
+     * @return the ID
+     */
     @Override
     public String toString() {
         return this.getId();

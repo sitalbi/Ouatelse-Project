@@ -18,6 +18,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import lombok.Setter;
 
+/**
+ * Controller for the {@link fr.s4e2.ouatelse.screens.HomeScreen}
+ */
 public class HomeController extends BaseController {
 
     private static final double DEFAULT_BUTTON_SIZE = 1000;
@@ -38,6 +41,11 @@ public class HomeController extends BaseController {
     @FXML
     private Label homeAdminEmail;
 
+    /**
+     * Sets the current user for this Screen
+     *
+     * @param user the {@link User} to set
+     */
     public void setCurrentUser(User user) {
         this.currentUser = user;
 
@@ -58,6 +66,11 @@ public class HomeController extends BaseController {
         this.buildButtonsFromPermissions();
     }
 
+    /**
+     * Handles the button click event for the disconnect button
+     * <p>
+     * Disconnects from the Ouatelse application
+     */
     public void onDisconnectClick() {
         this.currentUser = null;
         Stage stage = (Stage) this.homeAdminName.getScene().getWindow();
@@ -66,72 +79,127 @@ public class HomeController extends BaseController {
         new AuthUserScreen().open();
     }
 
+    /**
+     * Handles the button click event for the user management button
+     * <p>
+     * Opens the User Management Screen
+     */
     private void onUserManagementButtonClick() {
         new ManagementUserScreen().open();
     }
 
+    /**
+     * Handles the button click event for the role management button
+     * <p>
+     * Opens the Role Management Screen
+     */
     private void onRoleManagementButtonClick() {
         new ManagementRoleScreen().open();
     }
 
+    /**
+     * Handles the button click event for the store management button
+     * <p>
+     * Opens the Store Management Screen
+     */
     private void onStoresButtonClick() {
         new ManagementStoreScreen().open();
     }
 
+    /**
+     * Handles the button click event for the monitoring button
+     * <p>
+     * Opens the Monitoring Screen
+     */
     private void onMonitoringButtonClick() {
         //todo : open monitoring screen
 
         System.out.println("Open monitoring screen");
     }
 
-    private void onEmployeeManagementButtonClick() {
-        //todo : open employee management screen
-
-        System.out.println("Open employee management screen");
-    }
-
+    /**
+     * Handles the button click event for the planning button
+     * <p>
+     * Opens the Planning Management Screen
+     */
     private void onPlanningButtonClick() {
         //todo : open planning screen
 
         System.out.println("Open planning screen");
     }
 
+    /**
+     * Handles the button click event for the salaray management button
+     * <p>
+     * Opens the Salary Management Screen
+     */
     private void onSalaryManagementButtonClick() {
         //todo : open salaray management screen
 
         System.out.println("open salaray management screen");
     }
 
+    /**
+     * Handles the button click event for the statistics button
+     * <p>
+     * Opens the Statistics Screen
+     */
     private void onStatisticsButtonClick() {
         //todo : open statistics screen
 
         System.out.println("Open statistics screen");
     }
 
+    /**
+     * Handles the button click event for the stocks button
+     * <p>
+     * Opens the Stock Management Screen
+     */
     private void onStocksButtonClick() {
-        //todo : open stocks screen
-
-        System.out.println("Open stocks screen");
+        new ManagementStockScreen().open();
     }
 
+    /**
+     * Handles the button click event for the sales button
+     * <p>
+     * Opens the Sales Screen
+     */
     private void onSalesButtonClick() {
         //todo : open sales screen
 
         System.out.println("Open sales screen");
     }
 
+    /**
+     * Handles the button click event for the clients button
+     * <p>
+     * Opens the Client Management Screen
+     */
     private void onClientsButtonClick() {
         new ManagementClientScreen().open();
     }
 
+    /**
+     * Handles the button click event for the vendor button
+     * <p>
+     * Opens the Vendor Management Screen
+     */
     private void onVendorButtonClick() {
         new ManagementVendorScreen().open();
     }
 
+    /**
+     * Handles the button click event for the products button
+     * <p>
+     * Opens the Product Management Screen
+     */
     private void onProductsButtonClick() {
         new ManagementProductScreen().open();
     }
 
+    /**
+     * Builds the Home Screen with buttons according to the user's permissions
+     */
     public void buildButtonsFromPermissions() {
         if (this.currentUser != null) {
             this.currentUser.getRole().getPermissions().forEach(permission -> {
@@ -183,11 +251,6 @@ public class HomeController extends BaseController {
                         newButton.setText("Gestion des clients");
                         newButton.setOnMouseClicked(event -> onClientsButtonClick());
                         fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.USERS);
-                        break;
-                    case EMPLOYEES_MANAGEMENT:
-                        newButton.setText("Gestion des employés");
-                        newButton.setOnMouseClicked(event -> onEmployeeManagementButtonClick());
-                        fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.WRENCH);
                         break;
                     case SALARY_MANAGEMENT:
                         newButton.setText("Gestion des salaires");
