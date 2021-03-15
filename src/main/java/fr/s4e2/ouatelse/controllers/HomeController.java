@@ -244,9 +244,9 @@ public class HomeController extends BaseController {
                         break;
                     // Same as statistics ? ##########################################################
                     case SALES_MANAGEMENT:
-                        newButton.setText("TODO");
+                        newButton.setText("Gestion des ventes");
                         newButton.setOnMouseClicked(event -> onSalesButtonClick());
-                        fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.USER_MD);
+                        fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.SELLSY);
                         break;
                     // ###############################################################################
                     case CLIENTS_MANAGEMENT:
