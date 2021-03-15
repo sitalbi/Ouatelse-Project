@@ -2,7 +2,7 @@
 
 <?import com.jfoenix.controls.*?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.*?>
@@ -78,12 +78,15 @@
                 </GridPane>
             </center>
             <left>
-                <GridPane hgap="10.0" prefHeight="499.0" prefWidth="277.0" vgap="5.0" BorderPane.alignment="CENTER">
+                <GridPane hgap="10.0" prefHeight="432.0" prefWidth="330.0" style="-fx-background-color: #2f3b52;"
+                          vgap="5.0" BorderPane.alignment="CENTER">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0" minWidth="10.0" prefWidth="175.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="200.0"/>
                     </columnConstraints>
                     <rowConstraints>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
@@ -95,31 +98,66 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                     </rowConstraints>
                     <padding>
-                        <Insets bottom="10.0" left="5.0" top="10.0"/>
+                        <Insets bottom="15.0"/>
                     </padding>
-                    <JFXComboBox fx:id="clientCivilityDropdown" focusColor="RED" promptText="Civilité"
-                                 unFocusColor="WHITE"
-                                 GridPane.rowIndex="1"/>
+                    <JFXComboBox fx:id="clientCivilityDropdown" focusColor="RED" prefHeight="25.0" prefWidth="141.0"
+                                 promptText="Civilité" unFocusColor="WHITE" GridPane.rowIndex="1">
+                        <GridPane.margin>
+                            <Insets left="15.0"/>
+                        </GridPane.margin>
+                    </JFXComboBox>
                     <JFXTextField fx:id="clientLastNameInput" focusColor="RED" promptText="Nom" unFocusColor="WHITE"
-                                  GridPane.rowIndex="2"/>
+                                  GridPane.rowIndex="2">
+                        <GridPane.margin>
+                            <Insets left="15.0"/>
+                        </GridPane.margin>
+                    </JFXTextField>
                     <JFXTextField fx:id="clientFirstNameInput" focusColor="RED" promptText="Prénom" unFocusColor="WHITE"
-                                  GridPane.rowIndex="3"/>
+                                  GridPane.rowIndex="3">
+                        <GridPane.margin>
+                            <Insets left="15.0"/>
+                        </GridPane.margin>
+                    </JFXTextField>
                     <JFXTextField fx:id="clientEmailInput" focusColor="RED" promptText="Email" unFocusColor="WHITE"
-                                  GridPane.rowIndex="4"/>
+                                  GridPane.rowIndex="4">
+                        <GridPane.margin>
+                            <Insets left="15.0"/>
+                        </GridPane.margin>
+                    </JFXTextField>
                     <JFXTextField fx:id="clientPhoneInput" focusColor="RED" promptText="Téléphone" unFocusColor="WHITE"
-                                  GridPane.rowIndex="5"/>
+                                  GridPane.rowIndex="5">
+                        <GridPane.margin>
+                            <Insets left="15.0"/>
+                        </GridPane.margin>
+                    </JFXTextField>
                     <JFXTextField fx:id="clientAddressInput" focusColor="RED" promptText="Adresse" unFocusColor="WHITE"
-                                  GridPane.rowIndex="6"/>
+                                  GridPane.rowIndex="6">
+                        <GridPane.margin>
+                            <Insets left="15.0"/>
+                        </GridPane.margin>
+                    </JFXTextField>
                     <JFXTextField fx:id="clientCityInput" focusColor="RED" promptText="Ville" unFocusColor="WHITE"
-                                  GridPane.rowIndex="7"/>
+                                  GridPane.rowIndex="7">
+                        <GridPane.margin>
+                            <Insets left="15.0"/>
+                        </GridPane.margin>
+                    </JFXTextField>
                     <JFXTextField fx:id="clientZipInput" focusColor="RED" promptText="Code Postal" unFocusColor="WHITE"
-                                  GridPane.rowIndex="8"/>
+                                  GridPane.rowIndex="8">
+                        <GridPane.margin>
+                            <Insets left="15.0"/>
+                        </GridPane.margin>
+                    </JFXTextField>
                     <JFXDatePicker fx:id="clientBirthDate" defaultColor="RED" promptText="Date de naissance"
-                                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                    <JFXButton onMouseClicked="#onConfirmButtonClick" style="-fx-background-color: red;"
-                               text="Confirmer"
-                               textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="1"
-                               GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                                   GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <GridPane.margin>
+                            <Insets/>
+                        </GridPane.margin>
+                    </JFXDatePicker>
+                    <JFXButton onMouseClicked="#onConfirmButtonClick" prefHeight="25.0" prefWidth="110.0"
+                               style="-fx-background-color: red;" text="Confirmer" textAlignment="CENTER"
+                               textFill="WHITE" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                               GridPane.rowIndex="10">
                         <graphic>
                             <FontAwesomeIconView fill="WHITE" glyphName="CHECK"/>
                         </graphic>
@@ -127,9 +165,9 @@
                             <Cursor fx:constant="HAND"/>
                         </cursor>
                     </JFXButton>
-                    <JFXButton onMouseClicked="#onDeleteButtonClick" style="-fx-background-color: red;" text="Supprimer"
-                               textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="1"
-                               GridPane.halignment="CENTER" GridPane.rowIndex="5">
+                    <JFXButton onMouseClicked="#onDeleteButtonClick" prefHeight="25.0" prefWidth="110.0"
+                               style="-fx-background-color: red;" text="Supprimer" textAlignment="CENTER"
+                               textFill="WHITE" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="10">
                         <graphic>
                             <FontAwesomeIconView fill="WHITE" glyphName="REMOVE"/>
                         </graphic>
@@ -138,9 +176,11 @@
                         </cursor>
                     </JFXButton>
                     <JFXTextField fx:id="clientFaxInput" focusColor="RED" promptText="Fax" unFocusColor="WHITE"
-                                  GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                    <JFXTextArea fx:id="clientDetailsInput" promptText="Details" GridPane.columnIndex="1"
-                                 GridPane.rowIndex="3"/>
+                                  GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <GridPane.margin>
+                            <Insets right="20.0"/>
+                        </GridPane.margin>
+                    </JFXTextField>
                     <Label fx:id="errorMessage" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0"
                            prefWidth="221.0" text=" " textAlignment="CENTER" textFill="RED" wrapText="true"
                            GridPane.columnSpan="2" GridPane.halignment="CENTER">
@@ -148,6 +188,16 @@
                             <Font size="14.0"/>
                         </font>
                     </Label>
+                    <JFXTextArea fx:id="clientDetailsInput" focusColor="RED" promptText="Détails" unFocusColor="WHITE"
+                                 wrapText="true" GridPane.columnSpan="2" GridPane.halignment="CENTER"
+                                 GridPane.rowIndex="9">
+                        <GridPane.margin>
+                            <Insets left="15.0" right="15.0"/>
+                        </GridPane.margin>
+                    </JFXTextArea>
+                    <BorderPane.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="20.0"/>
+                    </BorderPane.margin>
                 </GridPane>
             </left>
         </BorderPane>
