@@ -22,13 +22,18 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementClientScreen}
+ */
 public class ManagementClientController extends BaseController {
 
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
     private static final String CLIENT_ALREADY_EXISTS = "Ce client existe déjà!";
     private static final String NOT_A_ZIPCODE = "Le code postal est incorrect!";
+
     private final EntityManagerClient entityManagerClient = Main.getDatabaseManager().getEntityManagerClient();
     private final EntityManagerAddress entityManagerAddress = Main.getDatabaseManager().getEntityManagerAddress();
+
     @FXML
     private Label errorMessage;
     @FXML
@@ -101,12 +106,12 @@ public class ManagementClientController extends BaseController {
             this.loadClientInformation();
 
         });
-
-
     }
 
     /**
-     * Handles the confirm button event
+     * Handles the button click event for the confirm button
+     * <p>
+     * Confirms the creation or edit of a client
      *
      * @throws SQLException if the client couldn't be created
      */
@@ -175,7 +180,9 @@ public class ManagementClientController extends BaseController {
     }
 
     /**
-     * Handles the delete button click event
+     * Handles the button click event for the delete button
+     * <p>
+     * Deletes the selected client
      */
     public void onDeleteButtonClick() {
         if (currentClient == null) return;
@@ -223,6 +230,7 @@ public class ManagementClientController extends BaseController {
         this.clientCivilityDropdown.getSelectionModel().select(currentClient.getCivility());
         this.clientBirthDate.setValue(Utils.dateToLocalDate(currentClient.getBirthDate()));
         this.clientBirthDate.getEditor().setText(clientBirthDate.getConverter().toString(clientBirthDate.getValue()));
+        this.clientDetailsInput.setText(currentClient.getDetails());
     }
 
     /**
@@ -232,26 +240,20 @@ public class ManagementClientController extends BaseController {
         JFXTreeTableColumn<Client.ClientTree, String> id = new JFXTreeTableColumn<>("Identifiant");
         JFXTreeTableColumn<Client.ClientTree, String> lastName = new JFXTreeTableColumn<>("Nom");
         JFXTreeTableColumn<Client.ClientTree, String> firstName = new JFXTreeTableColumn<>("Prénom");
+        JFXTreeTableColumn<Client.ClientTree, String> email = new JFXTreeTableColumn<>("Email");
         id.setSortNode(id.getSortNode());
 
         id.setCellValueFactory(param -> param.getValue().getValue().getId().asString());
         lastName.setCellValueFactory(param -> param.getValue().getValue().getSurname());
         firstName.setCellValueFactory(param -> param.getValue().getValue().getName());
-        firstName.setContextMenu(null);
+        email.setCellValueFactory(param -> param.getValue().getValue().getEmail());
 
         ObservableList<Client.ClientTree> clients = FXCollections.observableArrayList();
-        this.entityManagerClient.getQueryForAll().forEach(client -> clients.add(new Client.ClientTree(
-                client.getId(),
-                client.getName(),
-                client.getName(),
-                client.getMobilePhoneNumber(),
-                client.getAddress().getCity(),
-                client.getAddress().getZipCode()
-        )));
+        this.entityManagerClient.getQueryForAll().forEach(client -> clients.add(client.toClientTree()));
 
         TreeItem<Client.ClientTree> root = new RecursiveTreeItem<>(clients, RecursiveTreeObject::getChildren);
         //noinspection unchecked
-        this.clientTreeTableView.getColumns().setAll(id, lastName, firstName);
+        this.clientTreeTableView.getColumns().setAll(id, lastName, firstName, email);
         this.clientTreeTableView.getColumns().forEach(c -> c.setContextMenu(null));
         this.clientTreeTableView.setRoot(root);
         this.clientTreeTableView.setShowRoot(false);
@@ -269,8 +271,10 @@ public class ManagementClientController extends BaseController {
         client.setMobilePhoneNumber(clientPhoneInput.getText().trim());
         client.setHomePhoneNumber(clientPhoneInput.getText().trim());
         client.setWorkPhoneNumber(clientPhoneInput.getText().trim());
+        client.setFax(clientFaxInput.getText().trim());
         client.setBirthDate(Utils.localDateToDate(clientBirthDate.getValue()));
         client.setCivility(clientCivilityDropdown.getValue());
+        client.setDetails(clientDetailsInput.getText().trim());
     }
 
     /**
@@ -279,14 +283,7 @@ public class ManagementClientController extends BaseController {
      * @param client a Client to add in the tree table
      */
     private void addClientToTreeTable(Client client) {
-        this.clientTreeTableView.getRoot().getChildren().add(new TreeItem<>(new Client.ClientTree(
-                client.getId(),
-                client.getName(),
-                client.getSurname(),
-                client.getMobilePhoneNumber(),
-                client.getAddress().getCity(),
-                client.getAddress().getZipCode()
-        )));
+        this.clientTreeTableView.getRoot().getChildren().add(new TreeItem<>(client.toClientTree()));
     }
 
     /**

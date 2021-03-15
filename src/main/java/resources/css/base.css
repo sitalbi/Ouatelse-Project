@@ -54,12 +54,22 @@
     -fx-border-color: transparent #242e41 transparent transparent;
 }
 
-.text-field, .password-field {
-    -fx-text-fill: white;
+.text-field, .password-field, .text-area {
+    -fx-text-fill: #ffbfbf;
     -fx-prompt-text-fill: #d3d3d3;
 }
 
-.text-field:focused, .password-field:focused {
+.text-area .content {
+    -fx-background-color: transparent;
+    -fx-border-width: 0px;
+}
+
+.text-area *.text {
+    -fx-text-alignment: center;
+    -fx-text-fill: white;
+}
+
+.text-field:focused, .password-field:focused, .text-area:focused {
     -fx-prompt-text-fill: transparent;
 }
 
@@ -69,4 +79,8 @@
 
 .jfx-combo-box {
     -fx-prompt-text-fill: white;
+}
+
+.combo-box {
+    -fx-background-color: #242e41;
 }
