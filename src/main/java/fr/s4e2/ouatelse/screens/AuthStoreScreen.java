@@ -3,7 +3,7 @@ package fr.s4e2.ouatelse.screens;
 import fr.s4e2.ouatelse.objects.User;
 
 /**
- * Software authentication screen for Stores
+ * Store Authentication Screen
  */
 public class AuthStoreScreen extends BaseScreen {
 
@@ -13,6 +13,6 @@ public class AuthStoreScreen extends BaseScreen {
      * @param user The user who logs in
      */
     public AuthStoreScreen(User user) {
-        super("auth_store.fxml", "Ouatelse - Authentification Magasin", user);
+        super("auth_store.fxml", "Authentification Magasin", user);
     }
 }

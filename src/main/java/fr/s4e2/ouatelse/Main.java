@@ -21,7 +21,7 @@ public class Main extends Application {
     /**
      * Software's main function
      *
-     * @param args
+     * @param args arguments
      */
     public static void main(String[] args) {
         launch(args);

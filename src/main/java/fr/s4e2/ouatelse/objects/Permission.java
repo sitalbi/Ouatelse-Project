@@ -13,19 +13,19 @@ public enum Permission {
     STORE_MANAGEMENT,
     USER_MANAGEMENT,
     MONITORING,
-    EMPLOYEES_MANAGEMENT,
     SALARY_MANAGEMENT,
     STATISTICS,
     PRODUCTS_MANAGEMENT,
     STOCKS_MANAGEMENT,
     SALES_MANAGEMENT,
     CLIENTS_MANAGEMENT,
-    PLANNING_MANAGEMENT;
+    PLANNING_MANAGEMENT,
+    VENDORS_MANAGEMENT;
 
     /**
-     * Allows to capitalize the first letter of the first name and last name and replace "_" by blanks
+     * Allows to capitalize the Permission and replace "_" by blanks
      *
-     * @return the converted name
+     * @return the Converted Name
      */
     @Override
     public String toString() {

@@ -6,6 +6,7 @@ import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.managers.EntityManagerUser;
 import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.screens.AuthStoreScreen;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -14,22 +15,24 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * The controller of the authentification of the user
+ * Controller for the {@link fr.s4e2.ouatelse.screens.AuthUserScreen}
  */
 public class AuthUserController extends BaseController {
-
-    public JFXPasswordField passwordField;
-    public JFXTextField idField;
-    public Label errorMessageField;
+    @FXML
+    private JFXPasswordField passwordField;
+    @FXML
+    private JFXTextField idField;
+    @FXML
+    private Label errorMessageField;
     private final EntityManagerUser entityManagerUser = Main.getDatabaseManager().getEntityManagerUser();
 
     /**
-     * Initializes the controller
+     * Called to initialize a controller after its root element has been
+     * completely processed.
      *
-     * @param location  The location used to resolve relative paths for the root object,
-     *                  or null if the location is not known.
-     * @param resources The resources used to localize the root object,
-     *                  or null if the location is not known.
+     * @param location  The location used to resolve relative paths for the root object, or
+     *                  <tt>null</tt> if the location is not known.
+     * @param resources The resources used to localize the root object, or <tt>null</tt> if
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,7 +48,9 @@ public class AuthUserController extends BaseController {
     }
 
     /**
-     * Handles the connection of a user on his account
+     * Handles the button click event for the connection button
+     * <p>
+     * Connects as a user (User Authentication)
      */
     public void onConnectionButtonClick() {
         if (idField.getText().trim().isEmpty() && passwordField.getText().trim().isEmpty()) {

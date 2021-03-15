@@ -28,10 +28,10 @@ class UtilsTest {
         assertNull(result);
 
         result = Utils.getNumber("1337");
-        assertEquals(result, 1337);
+        assertEquals(1337, result);
 
         result = Utils.getNumber("2147483647");
-        assertEquals(result, 2147483647);
+        assertEquals(2147483647, result);
 
         result = Utils.getNumber("2147483648");
         assertNull(result);
@@ -57,7 +57,7 @@ class UtilsTest {
         assertThrows(NullPointerException.class, () -> Utils.dateToLocalDate(null));
 
         LocalDate localDate = Utils.dateToLocalDate(new Date(15));
-        assertEquals(localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), "01/01/1970");
+        assertEquals("01/01/1970", localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
     /*
@@ -74,6 +74,6 @@ class UtilsTest {
         assertThrows(NullPointerException.class, () -> Utils.localDateToDate(null));
 
         date = Utils.localDateToDate(localDate);
-        assertEquals(date.toString(), "Thu Jan 01 00:00:00 CET 1970");
+        assertEquals("Thu Jan 01 00:00:00 CET 1970", date.toString());
     }
 }

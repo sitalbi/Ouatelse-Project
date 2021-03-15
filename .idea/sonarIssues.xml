@@ -18,6 +18,31 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/java/fr/iut/HelloServlet.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/java/fr/iut/HomeServlet.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/java/resources/templates/home.ftl">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/webapp/index.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/.gitignore">
           <value>
             <set />
@@ -48,6 +73,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/AuthStoreController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/BaseController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/HomeAdaptative.java">
           <value>
             <set />
@@ -64,6 +99,36 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/MainController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/ManagementProductController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/ManagementRoleController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/ManagementStockController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/ManagementStoreController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/ManagementUserController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/ManagementVendorController.java">
           <value>
             <set />
           </value>
@@ -103,6 +168,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/managers/DatabaseManager.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/managers/EntityManagerVendor.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/objects/Address.java">
           <value>
             <set />
@@ -138,6 +213,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/objects/Product.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/objects/ProductStock.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/objects/Right.java">
           <value>
             <set />
@@ -154,6 +239,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/objects/User.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/objects/Vendor.java">
           <value>
             <set />
           </value>
@@ -188,6 +278,21 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/screens/AuthStoreScreen.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/screens/AuthUserScreen.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/screens/BaseScreen.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/screens/HomeScreen.java">
           <value>
             <set />
@@ -198,7 +303,47 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/screens/ManagementStockScreen.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/screens/ManagementUserScreen.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/screens/ManagementVendorScreen.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/utils/DatabaseManager.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/utils/Utils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/resources/auth_store.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/resources/auth_user.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/resources/base.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/resources/fxml/management_stocks.fxml">
           <value>
             <set />
           </value>
@@ -219,6 +364,31 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/resources/mainWindow.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/resources/management_products.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/resources/management_roles.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/resources/management_stores.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/resources/management_users.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/resources/management_vendors.fxml">
           <value>
             <set />
           </value>
@@ -244,6 +414,41 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/sample/sample.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/fr/s4e2/ouatelse/managers/EntityManagerAddressTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/fr/s4e2/ouatelse/managers/EntityManagerProductTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/fr/s4e2/ouatelse/managers/EntityManagerRoleTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/fr/s4e2/ouatelse/managers/EntityManagerStoreTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/fr/s4e2/ouatelse/managers/EntityManagerUserTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/fr/s4e2/ouatelse/managers/EntityManagerVendorTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/fr/s4e2/ouatelse/utils/UtilsTest.java">
           <value>
             <set />
           </value>

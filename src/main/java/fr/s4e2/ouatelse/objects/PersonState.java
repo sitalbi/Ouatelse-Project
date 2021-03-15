@@ -10,7 +10,11 @@ public enum PersonState {
     UNEMPLOYED;
 
     /**
+<<<<<<< HEAD
      * Allows to capitalize the first letter of the first name and last name and replace "_" by blanks
+=======
+     * Allows to capitalize the Person State and replace "_" by blanks
+>>>>>>> productsManagement
      *
      * @return the converted name
      */

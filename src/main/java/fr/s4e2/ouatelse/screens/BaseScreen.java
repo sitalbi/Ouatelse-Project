@@ -18,26 +18,23 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Base screen of the software
+ * Base Screen for all screens
  */
 @Getter
 @Setter
 public abstract class BaseScreen {
 
-    public static Image OUATELSE_ICON = new Image(Objects.requireNonNull(Main.class.getClassLoader().getResource("images/ouatelse_icon.png")).toExternalForm());
+    public static final Image OUATELSE_ICON = new Image(Objects.requireNonNull(Main.class.getClassLoader().getResource("images/ouatelse_icon.png")).toExternalForm());
+    private static final String FXML_PATH = "fxml/";
+    private static final String CSS_PATH = "css/";
+    private static final String PREFIX = "Ouatelse - ";
 
     private Stage stage;
 
-    /**
-     * Constructor
-     *
-     * @param fxml  the Scene
-     * @param title the Title
-     */
-    public BaseScreen(String fxml, String title) {
+    protected BaseScreen(String fxml, String title) {
         this.stage = new Stage();
 
-        FXMLLoader loader = new FXMLLoader(Main.class.getClassLoader().getResource(fxml));
+        FXMLLoader loader = new FXMLLoader(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
         stage.getIcons().add(OUATELSE_ICON);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinHeight(650);
@@ -53,23 +50,16 @@ public abstract class BaseScreen {
         }
     }
 
-    /**
-     * Constructor
-     *
-     * @param fxml  the Scene
-     * @param title the Title
-     * @param user  the User
-     */
-    public BaseScreen(String fxml, String title, User user) {
+    protected BaseScreen(String fxml, String title, User user, Store store) {
         this.stage = new Stage();
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getClassLoader().getResource(fxml));
+        loader.setLocation(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
         stage.getIcons().add(OUATELSE_ICON);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinHeight(650);
         stage.setMinWidth(825);
-        stage.setTitle(title);
+        stage.setTitle(PREFIX + title);
 
         try {
             Parent parent = loader.load();
@@ -84,19 +74,11 @@ public abstract class BaseScreen {
         }
     }
 
-    /**
-     * Constructor
-     *
-     * @param fxml  the Scene
-     * @param title the Title
-     * @param user  the User
-     * @param store the Store
-     */
-    public BaseScreen(String fxml, String title, User user, Store store) {
+    protected BaseScreen(String fxml, String title, User user) {
         this.stage = new Stage();
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getClassLoader().getResource(fxml));
+        loader.setLocation(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
         stage.getIcons().add(OUATELSE_ICON);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinHeight(650);
@@ -124,7 +106,7 @@ public abstract class BaseScreen {
      * @param cssFile the CSS file to be added
      */
     public void addStyleSheet(String cssFile) {
-        this.getStage().getScene().getStylesheets().add(cssFile);
+        this.getStage().getScene().getStylesheets().add(CSS_PATH + cssFile);
     }
 
     /**

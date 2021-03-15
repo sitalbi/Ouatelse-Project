@@ -28,22 +28,21 @@ public class Store {
     private String password;
 
     /**
+     * Constructor
+     *
+     * @param id the ID
+     */
+    public Store(String id) {
+        this.id = id;
+    }
+
+    /**
      * Creates an encrypted password from a String
      *
      * @param password the Password before encryption
      */
     public void setPassword(String password) {
         this.password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
-    }
-
-    /**
-     * Checks if the provided String is a Password
-     *
-     * @param password the provided Password
-     * @return True or False
-     */
-    public boolean isPassword(String password) {
-        return this.password.equals(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString());
     }
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
@@ -56,12 +55,13 @@ public class Store {
     private ForeignCollection<Product> products;
 
     /**
-     * Constructor
+     * Checks if the provided String is a Password
      *
-     * @param id the ID
+     * @param password the provided Password
+     * @return True or False
      */
-    public Store(String id) {
-        this.id = id;
+    public boolean isPassword(String password) {
+        return this.password.equals(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString());
     }
 
     /**

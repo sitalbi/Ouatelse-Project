@@ -32,14 +32,14 @@ public class User extends Person {
     @DatabaseField(canBeNull = false)
     private String password;
 
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, canBeNull = true)
     private Role role;
 
     @DatabaseField(canBeNull = false)
     private Date hiringDate;
 
     @DatabaseField(canBeNull = false)
-    private int hoursPerWeek;
+    private int hoursPerWeek = 0;
 
     @ForeignCollectionField(eager = true)
     private ForeignCollection<Salary> salarySheets;
@@ -67,7 +67,7 @@ public class User extends Person {
     }
 
     /**
-     * Recursive User tree
+     * Recursive User Tree
      */
     @Getter
     public static class UserTree extends RecursiveTreeObject<UserTree> {
@@ -86,7 +86,7 @@ public class User extends Person {
          * @param firstName the First Name
          * @param role      the Role
          * @param storeName the Name of the Store
-         * @param status    the Status
+         * @param status    the User Status
          */
         public UserTree(String id, String lastName, String firstName, Role role, Store storeName, PersonState status) {
             this.id = new SimpleStringProperty(id);
@@ -96,5 +96,21 @@ public class User extends Person {
             this.storeName = new SimpleStringProperty(storeName != null ? storeName.getId() : "");
             this.status = new SimpleStringProperty(status != null ? status.toString() : "");
         }
+    }
+
+    /**
+     * Converts this object into a tree table object representing it's information
+     *
+     * @return A tree table object representing this object's information
+     */
+    public UserTree toUserTree() {
+        return new UserTree(
+                this.getCredentials(),
+                this.getSurname(),
+                this.getName(),
+                this.getRole(),
+                this.getWorkingStore(),
+                this.getStatus()
+        );
     }
 }

@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.util.Date;
 
 /**
- * The Availability table contains an identifier, start time, end time, and user status (sick, vacations, etc)
+ * The Availability table contains an identifier, a start time, an end time, and a user state
  */
 @Getter
 @Setter
