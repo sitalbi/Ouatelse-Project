@@ -57,8 +57,8 @@
     <right>
         <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="552.0" prefWidth="300.0"
               BorderPane.alignment="CENTER">
-            <Pane prefHeight="10000.0" prefWidth="175.0" styleClass="right-container"/>
-            <JFXButton onMouseClicked="#onDisconnectClick" prefWidth="1000.0"
+            <Pane fx:id="leftPane" prefHeight="10000.0" prefWidth="175.0" styleClass="right-container"/>
+            <JFXButton fx:id="disconnectionButton" onMouseClicked="#onDisconnectClick" prefWidth="1000.0"
                        style="-fx-background-color: red; -fx-border-color: red;" text="Déconnexion"
                        textAlignment="CENTER" textFill="WHITE" wrapText="true">
                 <graphic>
