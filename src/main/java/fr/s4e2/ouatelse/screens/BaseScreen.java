@@ -78,8 +78,8 @@ public abstract class BaseScreen {
             Parent parent = loader.load();
 
             HomeController homeController = loader.getController();
-            homeController.setCurrentUser(user);
             homeController.setCurrentStore(store);
+            homeController.setCurrentUser(user);
 
             Scene scene = new Scene(parent);
             stage.setScene(scene);
