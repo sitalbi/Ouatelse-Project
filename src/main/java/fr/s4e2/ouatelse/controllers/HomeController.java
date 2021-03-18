@@ -1,22 +1,32 @@
 package fr.s4e2.ouatelse.controllers;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import fr.s4e2.ouatelse.Main;
+import fr.s4e2.ouatelse.managers.EntityManagerProductStock;
+import fr.s4e2.ouatelse.objects.ProductStock;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.screens.*;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import lombok.Setter;
+
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller for the {@link fr.s4e2.ouatelse.screens.HomeScreen}
@@ -26,8 +36,9 @@ public class HomeController extends BaseController {
     private static final double DEFAULT_BUTTON_SIZE = 1000;
     private static final double MINIMUM_BUTTON_HEIGHT = 74;
 
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private final EntityManagerProductStock entityManagerProductStock = Main.getDatabaseManager().getEntityManagerProductStock();
     private User currentUser;
-    @Setter
     private Store currentStore;
 
     @FXML
@@ -40,6 +51,10 @@ public class HomeController extends BaseController {
     private Label homeAdminName;
     @FXML
     private Label homeAdminEmail;
+    @FXML
+    private Pane leftPane;
+    @FXML
+    private JFXButton disconnectionButton;
 
     /**
      * Sets the current user for this Screen
@@ -64,6 +79,10 @@ public class HomeController extends BaseController {
         });
 
         this.buildButtonsFromPermissions();
+    }
+
+    public void setCurrentStore(Store store) {
+        this.currentStore = store;
     }
 
     /**
@@ -197,6 +216,46 @@ public class HomeController extends BaseController {
         new ManagementProductScreen().open();
     }
 
+    private void displayStocks() {
+        JFXTreeTableView<ProductStock.ProductStockInfoTree> tree = new JFXTreeTableView<>();
+        tree.prefWidthProperty().bind(this.leftPane.widthProperty());
+        tree.prefHeightProperty().bind(this.leftPane.heightProperty());
+
+        JFXTreeTableColumn<ProductStock.ProductStockInfoTree, Long> reference = new JFXTreeTableColumn<>("Référence");
+        JFXTreeTableColumn<ProductStock.ProductStockInfoTree, Integer> stockQuantity = new JFXTreeTableColumn<>("Quantité");
+        JFXTreeTableColumn<ProductStock.ProductStockInfoTree, String> order = new JFXTreeTableColumn<>("ID");
+
+        reference.setSortNode(reference.getSortNode());
+
+        reference.setCellValueFactory(param -> param.getValue().getValue().getReference().asObject());
+        stockQuantity.setCellValueFactory(param -> param.getValue().getValue().getStockQuantity().asObject());
+        order.setCellValueFactory(param -> param.getValue().getValue().getOrder());
+
+        //noinspection unchecked
+        tree.getColumns().setAll(reference, stockQuantity, order);
+        tree.setRoot(new RecursiveTreeItem<ProductStock.ProductStockInfoTree>(FXCollections.observableArrayList(), RecursiveTreeObject::getChildren));
+        tree.getColumns().forEach(c -> c.setContextMenu(null));
+        tree.setShowRoot(false);
+        tree.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);
+
+        this.leftPane.getChildren().add(tree);
+        this.loadStocksFromCurrentStore(tree);
+    }
+
+    private void loadStocksFromCurrentStore(JFXTreeTableView<ProductStock.ProductStockInfoTree> tree) {
+        try {
+            this.entityManagerProductStock.executeQuery(this.entityManagerProductStock.getQueryBuilder()
+                    .where().eq("store_id", this.currentStore.getId())
+                    .and().eq("quantity", 0).prepare()).forEach(productStock -> {
+                if (productStock.getProduct() != null) {
+                    tree.getRoot().getChildren().add(new TreeItem<>(productStock.toProductStockInfoTree()));
+                }
+            });
+        } catch (SQLException exception) {
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+        }
+    }
+
     /**
      * Builds the Home Screen with buttons according to the user's permissions
      */
@@ -261,6 +320,7 @@ public class HomeController extends BaseController {
                         newButton.setText("Gestion des stocks");
                         newButton.setOnMouseClicked(event -> onStocksButtonClick());
                         fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.CUBE);
+                        this.displayStocks();
                         break;
                     case PRODUCTS_MANAGEMENT:
                         newButton.setText("Gestion des produits");
