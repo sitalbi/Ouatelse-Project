@@ -3,6 +3,7 @@ package fr.s4e2.ouatelse.screens;
 import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.controllers.AuthStoreController;
 import fr.s4e2.ouatelse.controllers.HomeController;
+import fr.s4e2.ouatelse.controllers.PlannedOrdersController;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import javafx.fxml.FXMLLoader;
@@ -111,6 +112,37 @@ public abstract class BaseScreen {
 
             AuthStoreController authStoreController = loader.getController();
             authStoreController.setCurrentUser(user);
+
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Creates a Base Screen (Used for the {@link fr.s4e2.ouatelse.controllers.PlannedOrdersController})
+     *
+     * @param fxml  name of the fxml file to load from (must be in the fxml folder in resources)
+     * @param title the title of the window (the title suffixes the set prefix)
+     * @param store the current store
+     */
+    protected BaseScreen(String fxml, String title, Store store) {
+        this.stage = new Stage();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
+        stage.getIcons().add(OUATELSE_ICON);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setMinHeight(650);
+        stage.setMinWidth(825);
+        stage.setTitle(title);
+
+        try {
+            Parent parent = loader.load();
+
+            PlannedOrdersController plannedOrdersController = loader.getController();
+            plannedOrdersController.setCurrentStore(store);
 
             Scene scene = new Scene(parent);
             stage.setScene(scene);
