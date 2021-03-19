@@ -67,6 +67,36 @@ public class User extends Person {
     }
 
     /**
+     * Converts this object into a tree table object representing it's information
+     *
+     * @return A tree table object representing this object's information
+     */
+    public UserTree toUserTree() {
+        return new UserTree(
+                this.getCredentials(),
+                this.getSurname(),
+                this.getName(),
+                this.getRole(),
+                this.getWorkingStore(),
+                this.getStatus()
+        );
+    }
+
+    /**
+     * Converts this object into a tree table object representing it's information (used for the salary management screen)
+     *
+     * @return A tree table object representing this object's information
+     */
+    public UserSalaryTree toUserSalaryTree() {
+        return new UserSalaryTree(
+                this.getCredentials(),
+                this.getSurname(),
+                this.getName(),
+                this.getRole()
+        );
+    }
+
+    /**
      * Recursive User Tree
      */
     @Getter
@@ -99,18 +129,20 @@ public class User extends Person {
     }
 
     /**
-     * Converts this object into a tree table object representing it's information
-     *
-     * @return A tree table object representing this object's information
+     * Recursive User Salary Tree
      */
-    public UserTree toUserTree() {
-        return new UserTree(
-                this.getCredentials(),
-                this.getSurname(),
-                this.getName(),
-                this.getRole(),
-                this.getWorkingStore(),
-                this.getStatus()
-        );
+    @Getter
+    public static class UserSalaryTree extends RecursiveTreeObject<UserSalaryTree> {
+        private final StringProperty id;
+        private final StringProperty lastName;
+        private final StringProperty firstName;
+        private final StringProperty role;
+
+        public UserSalaryTree(String id, String lastName, String firstName, Role role) {
+            this.id = new SimpleStringProperty(id);
+            this.lastName = new SimpleStringProperty(lastName);
+            this.firstName = new SimpleStringProperty(firstName);
+            this.role = new SimpleStringProperty(role != null ? role.getName() : "");
+        }
     }
 }
