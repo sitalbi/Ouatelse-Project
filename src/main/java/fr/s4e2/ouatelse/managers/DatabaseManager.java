@@ -35,6 +35,7 @@ public class DatabaseManager {
     private EntityManagerUser entityManagerUser;
     private EntityManagerProduct entityManagerProduct;
     private EntityManagerVendor entityManagerVendor;
+    private EntityManagerScheduledOrder entityManagerScheduledOrder;
     private EntityManagerClient entityManagerClient;
 
     /**
@@ -106,6 +107,7 @@ public class DatabaseManager {
         this.entityManagerProduct = new EntityManagerProduct(connectionSource);
         this.entityManagerVendor = new EntityManagerVendor(connectionSource);
         this.entityManagerProductStock = new EntityManagerProductStock(connectionSource);
+        this.entityManagerScheduledOrder = new EntityManagerScheduledOrder(connectionSource);
         this.entityManagerClient = new EntityManagerClient(connectionSource);
     }
 

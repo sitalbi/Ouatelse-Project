@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="baseBorderPane" maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/base.css"
-            xmlns="http://javafx.com/javafx/15.0.1" fx:controller="fr.s4e2.ouatelse.controllers.BaseController">
+            xmlns="http://javafx.com/javafx/15.0.1"
+            fx:controller="fr.s4e2.ouatelse.controllers.PlannedOrdersController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="Fichier">
@@ -48,13 +50,14 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES"/>
+                <RowConstraints prefHeight="50.0" vgrow="SOMETIMES"/>
+                <RowConstraints vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <VBox prefHeight="200.0" prefWidth="100.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER"
-                      GridPane.vgrow="ALWAYS">
+                <VBox maxHeight="200.0" prefHeight="200.0" prefWidth="100.0" GridPane.halignment="CENTER"
+                      GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                     <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" text="Programmation des commandes"
                                textAlignment="CENTER" textFill="WHITE" wrapText="true">
@@ -65,37 +68,17 @@
                                 <Insets bottom="5.0"/>
                             </padding>
                         </Label>
-                        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="498.0">
-                            <children>
-                                <JFXTextField alignment="CENTER" focusColor="RED" promptText="Rechercher"
-                                              unFocusColor="WHITE">
-                                    <padding>
-                                        <Insets bottom="5.0"/>
-                                    </padding>
-                                </JFXTextField>
-                                <JFXButton text=" ">
-                                    <graphic>
-                                        <FontAwesomeIconView fill="RED" glyphName="SEARCH" size="14.0"
-                                                             textAlignment="CENTER"/>
-                                    </graphic>
-                                    <cursor>
-                                        <Cursor fx:constant="HAND"/>
-                                    </cursor>
-                                </JFXButton>
-                            </children>
-                            <padding>
-                                <Insets bottom="5.0"/>
-                            </padding>
-                        </HBox>
-                        <JFXTreeTableView prefHeight="130.0" prefWidth="498.0" VBox.vgrow="ALWAYS"/>
+                        <JFXTreeTableView fx:id="orderTreeTableView" prefHeight="130.0" prefWidth="498.0"
+                                          VBox.vgrow="ALWAYS"/>
                     </children>
                     <GridPane.margin>
                         <Insets left="50.0" right="50.0"/>
                     </GridPane.margin>
                 </VBox>
-                <GridPane style="-fx-background-color: #2f3b52;" GridPane.rowIndex="1">
+                <GridPane maxHeight="1.7976931348623157E308" style="-fx-background-color: #2f3b52;"
+                          GridPane.rowIndex="1">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                     </columnConstraints>
@@ -116,8 +99,9 @@
                                 <Insets left="25.0" right="10.0"/>
                             </GridPane.margin>
                         </Label>
-                        <JFXTextField disable="true" focusColor="RED" promptText="N/A" unFocusColor="WHITE"
-                                      GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS">
+                        <JFXTextField fx:id="articleReferenceField" disable="true" focusColor="RED" promptText="N/A"
+                                      unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT"
+                                      GridPane.hgrow="ALWAYS">
                             <GridPane.margin>
                                 <Insets right="25.0"/>
                             </GridPane.margin>
@@ -134,16 +118,16 @@
                                 <Insets left="25.0" right="10.0"/>
                             </GridPane.margin>
                         </Label>
-                        <JFXTextField disable="true" focusColor="RED" promptText="N/A" unFocusColor="WHITE"
-                                      GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS"
-                                      GridPane.rowIndex="1">
+                        <JFXDatePicker fx:id="orderDate" defaultColor="RED" maxWidth="1.7976931348623157E308"
+                                       promptText="N/A" GridPane.columnIndex="1" GridPane.halignment="LEFT"
+                                       GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
                             <GridPane.margin>
                                 <Insets right="25.0"/>
                             </GridPane.margin>
                             <padding>
                                 <Insets bottom="5.0"/>
                             </padding>
-                        </JFXTextField>
+                        </JFXDatePicker>
                         <Label text="Quantité" textAlignment="CENTER" textFill="WHITE" wrapText="true"
                                GridPane.rowIndex="2">
                             <font>
@@ -153,9 +137,9 @@
                                 <Insets left="25.0" right="10.0"/>
                             </GridPane.margin>
                         </Label>
-                        <JFXTextField disable="true" focusColor="RED" promptText="N/A" unFocusColor="WHITE"
-                                      GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS"
-                                      GridPane.rowIndex="2">
+                        <JFXTextField fx:id="quantityReferenceField" disable="true" focusColor="RED" promptText="N/A"
+                                      unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT"
+                                      GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                             <GridPane.margin>
                                 <Insets right="25.0"/>
                             </GridPane.margin>
@@ -168,8 +152,9 @@
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.halignment="CENTER"
                       GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                     <children>
-                        <Button mnemonicParsing="false" style="-fx-background-color: red;" text="Valider la commande"
-                                textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                        <Button fx:id="confirmButton" mnemonicParsing="false" onMouseClicked="#onConfirmButtonClick"
+                                style="-fx-background-color: red;" text="Valider la commande" textAlignment="CENTER"
+                                textFill="WHITE" wrapText="true">
                             <graphic>
                                 <FontAwesomeIconView fill="WHITE" glyphName="PLUS"/>
                             </graphic>
@@ -180,11 +165,8 @@
                                 <Font size="14.0"/>
                             </font>
                         </Button>
-                        <Button mnemonicParsing="false" style="-fx-background-color: red;" text="Supprimer commande"
+                        <Button mnemonicParsing="false" style="-fx-background-color: red;" text="Bouton"
                                 textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                            <graphic>
-                                <FontAwesomeIconView fill="WHITE" glyphName="REMOVE"/>
-                            </graphic>
                             <HBox.margin>
                                 <Insets left="15.0"/>
                             </HBox.margin>
@@ -200,6 +182,8 @@
                         <Insets left="5.0" right="5.0"/>
                     </padding>
                 </HBox>
+                <Label fx:id="errorMessage" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308"
+                       text=" " textAlignment="CENTER" textFill="RED" wrapText="true" GridPane.rowIndex="3"/>
             </children>
             <stylesheets>
                 <URL value="@../css/base.css"/>

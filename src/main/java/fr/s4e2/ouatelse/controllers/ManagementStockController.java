@@ -11,6 +11,7 @@ import fr.s4e2.ouatelse.objects.Product;
 import fr.s4e2.ouatelse.objects.ProductStock;
 import fr.s4e2.ouatelse.objects.ProductStock.ProductStockTree;
 import fr.s4e2.ouatelse.objects.Store;
+import fr.s4e2.ouatelse.screens.PlannedOrdersScreen;
 import fr.s4e2.ouatelse.utils.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -115,10 +116,7 @@ public class ManagementStockController extends BaseController {
      * Prepares an order for a selected product
      */
     public void onScheduleOrderButtonClick() {
-        if (!this.isStockEditing()) return;
-
-        // todo : implement this
-        throw new UnsupportedOperationException("Not implemented yet.");
+        new PlannedOrdersScreen(this.currentStore).open();
     }
 
     /**
@@ -210,7 +208,7 @@ public class ManagementStockController extends BaseController {
      */
     private void loadProductStockTreeTable() {
         JFXTreeTableColumn<ProductStockTree, Long> reference = new JFXTreeTableColumn<>("Référence");
-        JFXTreeTableColumn<ProductStockTree, String> product = new JFXTreeTableColumn<>("Product");
+        JFXTreeTableColumn<ProductStockTree, String> product = new JFXTreeTableColumn<>("Produit");
         JFXTreeTableColumn<ProductStockTree, Double> unitValue = new JFXTreeTableColumn<>("Val. Unitaire");
         JFXTreeTableColumn<ProductStockTree, Integer> stockQuantity = new JFXTreeTableColumn<>("Inventaire");
         JFXTreeTableColumn<ProductStockTree, String> state = new JFXTreeTableColumn<>("État");
