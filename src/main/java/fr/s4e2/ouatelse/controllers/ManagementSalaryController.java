@@ -1,14 +1,17 @@
 package fr.s4e2.ouatelse.controllers;
 
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.*;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.managers.EntityManagerStore;
 import fr.s4e2.ouatelse.managers.EntityManagerUser;
+import fr.s4e2.ouatelse.objects.ProductStock;
+import fr.s4e2.ouatelse.objects.Salary;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import fr.s4e2.ouatelse.objects.User.UserSalaryTree;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
@@ -66,6 +69,12 @@ public class ManagementSalaryController extends BaseController {
 
         this.errorLabel.setText("");
 
+        try {
+            this.loadEmployeeTreeTable();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
         // selected element in the list box
         this.employeeTreeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
@@ -94,6 +103,8 @@ public class ManagementSalaryController extends BaseController {
         });
 
         this.entityManagerStore.getQueryForAll().forEach(store -> salaryStoreComboBox.getItems().add(store));
+
+
     }
 
     /**
@@ -106,6 +117,7 @@ public class ManagementSalaryController extends BaseController {
             this.errorLabel.setText(TEXT_FIELD_EMPTY_HINT);
             return;
         }
+
     }
 
     /**
@@ -119,7 +131,7 @@ public class ManagementSalaryController extends BaseController {
         this.errorLabel.setText("");
 
         // tab history
-        //this.salaryHistoryTreeTableView.getRoot().getChildren().clear();
+        //this.salaryHistoryTreeTableView.getRoot().getChildren().remove(0, salaryHistoryTreeTableView.getRoot().getChildren().size());
     }
 
     /**
@@ -131,6 +143,59 @@ public class ManagementSalaryController extends BaseController {
         if (!this.isSelected()) return;
 
         // todo : load information
+    }
+
+    /**
+     * Loads the list of employees into the table
+     */
+    private void loadEmployeeTreeTable() throws SQLException {
+        JFXTreeTableColumn<User.UserSalaryTree, String> id = new JFXTreeTableColumn<>("Identifiant");
+        JFXTreeTableColumn<User.UserSalaryTree, String> lastName = new JFXTreeTableColumn<>("Nom");
+        JFXTreeTableColumn<User.UserSalaryTree, String> firstName = new JFXTreeTableColumn<>("Prénom");
+        JFXTreeTableColumn<User.UserSalaryTree, String> role = new JFXTreeTableColumn<>("Rôle");
+        id.setSortNode(id.getSortNode());
+
+        id.setCellValueFactory(param -> param.getValue().getValue().getId());
+        lastName.setCellValueFactory(param -> param.getValue().getValue().getLastName());
+        firstName.setCellValueFactory(param -> param.getValue().getValue().getFirstName());
+        role.setCellValueFactory(param -> param.getValue().getValue().getRole());
+
+        id.setContextMenu(null);
+        lastName.setContextMenu(null);
+        firstName.setContextMenu(null);
+        role.setContextMenu(null);
+
+
+        ObservableList<User.UserSalaryTree> users = FXCollections.observableArrayList();
+        this.salaryStoreComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            //remove all the user when changing the store selected
+            employeeTreeTableView.getRoot().getChildren().remove(0, employeeTreeTableView.getRoot().getChildren().size());
+            try {
+                this.clearInformation();
+                if (salaryStoreComboBox.getValue() != null) {
+                    this.entityManagerUser.executeQuery(this.entityManagerUser.getQueryBuilder()
+                            .where().eq("workingStore_id", salaryStoreComboBox.getValue().getId())
+                            .prepare()
+                    ).forEach(user -> users.add(user.toUserSalaryTree()));
+                }
+            } catch (SQLException exception) {
+                this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+            }
+            loadInformation();
+        });
+
+        TreeItem<User.UserSalaryTree> root = new RecursiveTreeItem<>(users, RecursiveTreeObject::getChildren);
+        //noinspection unchecked
+        this.employeeTreeTableView.getColumns().setAll(id, lastName, firstName, role);
+        this.employeeTreeTableView.setRoot(root);
+        this.employeeTreeTableView.setShowRoot(false);
+    }
+
+    /**
+     * Loads the history of salary of the selected employee into the table
+     */
+    private void loadHistorySalaryTreeTable() {
+
     }
 
     /**
