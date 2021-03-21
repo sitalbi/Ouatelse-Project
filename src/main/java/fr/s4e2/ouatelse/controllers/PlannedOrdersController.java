@@ -7,7 +7,6 @@ import fr.s4e2.ouatelse.managers.EntityManagerProduct;
 import fr.s4e2.ouatelse.managers.EntityManagerScheduledOrder;
 import fr.s4e2.ouatelse.objects.Product;
 import fr.s4e2.ouatelse.objects.ScheduledOrder;
-import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.utils.JFXUtils;
 import fr.s4e2.ouatelse.utils.Utils;
 import javafx.collections.FXCollections;
@@ -19,6 +18,7 @@ import javafx.scene.control.TreeItem;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,7 +39,6 @@ public class PlannedOrdersController extends BaseController {
     private JFXDatePicker orderDate;
     @FXML
     private JFXTextField quantityReferenceField;
-    private Store currentStore;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -47,6 +46,12 @@ public class PlannedOrdersController extends BaseController {
         this.orderDate.setConverter(JFXUtils.getDateConverter());
 
         this.loadOrdersTreeTable();
+        this.loadOrdersTreeTableContent();
+    }
+
+    private void loadOrdersTreeTableContent() {
+        this.orderTreeTableView.getRoot().getChildren().clear();
+        this.entityManagerScheduledOrder.getAll().forEachRemaining(this::addProductStockToTreeTable);
     }
 
     private void loadOrdersTreeTable() {
@@ -79,6 +84,13 @@ public class PlannedOrdersController extends BaseController {
 
         long productReference;
         int quantity;
+        Date date = Utils.localDateToDate(this.orderDate.getValue());
+
+        if (date.before(new Date())) {
+            this.errorMessage.setText("Date passée");
+            this.orderDate.getParent().requestFocus();
+            return;
+        }
 
         try {
             productReference = Long.parseLong(this.articleReferenceField.getText().trim());
@@ -86,6 +98,12 @@ public class PlannedOrdersController extends BaseController {
         } catch (NumberFormatException exception) {
             logger.log(Level.WARNING, exception.getMessage(), exception);
             this.errorMessage.setText("Veuillez entrer des caractères numériques");
+            return;
+        }
+
+        if (quantity <= 0) {
+            this.errorMessage.setText("Veuillez entrer un nombre correct de produits à commander");
+            this.quantityReferenceField.getParent().requestFocus();
             return;
         }
 
@@ -100,7 +118,7 @@ public class PlannedOrdersController extends BaseController {
             return;
         }
 
-        ScheduledOrder order = new ScheduledOrder(product, this.currentStore, Utils.localDateToDate(this.orderDate.getValue()), quantity);
+        ScheduledOrder order = new ScheduledOrder(product, this.getAuthentificationStore(), date, quantity);
         this.entityManagerScheduledOrder.create(order);
         addProductStockToTreeTable(order);
         this.clearInformation();
@@ -121,9 +139,5 @@ public class PlannedOrdersController extends BaseController {
         this.quantityReferenceField.setText("");
         this.articleReferenceField.setText("");
         this.orderDate.getEditor().clear();
-    }
-
-    public void setCurrentStore(Store store) {
-        this.currentStore = store;
     }
 }

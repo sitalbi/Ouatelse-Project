@@ -116,7 +116,7 @@ public class ManagementStockController extends BaseController {
      * Prepares an order for a selected product
      */
     public void onScheduleOrderButtonClick() {
-        new PlannedOrdersScreen(this.currentStore).open();
+        new PlannedOrdersScreen(this.getAuthentificationStore()).open();
     }
 
     /**

@@ -52,7 +52,7 @@
             <rowConstraints>
                 <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES"/>
                 <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES"/>
-                <RowConstraints prefHeight="50.0" vgrow="SOMETIMES"/>
+                <RowConstraints prefHeight="40.0" vgrow="SOMETIMES"/>
                 <RowConstraints vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
@@ -99,7 +99,7 @@
                                 <Insets left="25.0" right="10.0"/>
                             </GridPane.margin>
                         </Label>
-                        <JFXTextField fx:id="articleReferenceField" disable="true" focusColor="RED" promptText="N/A"
+                        <JFXTextField fx:id="articleReferenceField" focusColor="RED" promptText="N/A"
                                       unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT"
                                       GridPane.hgrow="ALWAYS">
                             <GridPane.margin>
@@ -137,7 +137,7 @@
                                 <Insets left="25.0" right="10.0"/>
                             </GridPane.margin>
                         </Label>
-                        <JFXTextField fx:id="quantityReferenceField" disable="true" focusColor="RED" promptText="N/A"
+                        <JFXTextField fx:id="quantityReferenceField" focusColor="RED" promptText="N/A"
                                       unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT"
                                       GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                             <GridPane.margin>
@@ -148,6 +148,9 @@
                             </padding>
                         </JFXTextField>
                     </children>
+                    <padding>
+                        <Insets bottom="10.0" top="10.0"/>
+                    </padding>
                 </GridPane>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.halignment="CENTER"
                       GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">

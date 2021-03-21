@@ -1,11 +1,13 @@
 package fr.s4e2.ouatelse.controllers;
 
+import fr.s4e2.ouatelse.objects.Store;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.net.URL;
@@ -23,6 +25,10 @@ public class BaseController implements Initializable {
     @FXML
     @Getter
     private BorderPane baseBorderPane;
+
+    @Setter
+    @Getter
+    private Store authentificationStore;
 
     /**
      * Called to initialize a controller after its root element has been
