@@ -10,7 +10,7 @@
 <?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="baseBorderPane" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" styleClass="content"
+            minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" styleClass="content"
             xmlns="http://javafx.com/javafx/15.0.1"
             fx:controller="fr.s4e2.ouatelse.controllers.ManagementSalaryController">
     <top>
@@ -50,7 +50,7 @@
     <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <top>
-                <VBox alignment="CENTER" prefHeight="170.0" prefWidth="498.0" BorderPane.alignment="CENTER">
+                <VBox alignment="CENTER" prefHeight="250.0" prefWidth="698.0" BorderPane.alignment="CENTER">
                     <BorderPane.margin>
                         <Insets bottom="5.0" left="50.0" right="50.0"/>
                     </BorderPane.margin>
@@ -87,7 +87,8 @@
                             </cursor>
                         </JFXButton>
                     </HBox>
-                    <JFXTreeTableView fx:id="employeeTreeTableView" prefHeight="250.0" VBox.vgrow="ALWAYS">
+                    <JFXTreeTableView fx:id="employeeTreeTableView" prefHeight="300.0" prefWidth="498.0"
+                                      VBox.vgrow="ALWAYS">
                         <VBox.margin>
                             <Insets bottom="5.0"/>
                         </VBox.margin>
@@ -108,6 +109,28 @@
             </top>
             <center>
                 <JFXTabPane BorderPane.alignment="CENTER">
+                    <Tab text="Historique">
+                        <graphic>
+                            <FontAwesomeIconView fill="WHITE" glyphName="HISTORY"/>
+                        </graphic>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <GridPane layoutX="130.0" layoutY="20.0" AnchorPane.bottomAnchor="15.0"
+                                      AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="130.0"
+                                      AnchorPane.topAnchor="15.0">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints vgrow="SOMETIMES"/>
+                                </rowConstraints>
+                                <JFXTreeTableView fx:id="salaryHistoryTreeTableView">
+                                    <columnResizePolicy>
+                                        <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                    </columnResizePolicy>
+                                </JFXTreeTableView>
+                            </GridPane>
+                        </AnchorPane>
+                    </Tab>
                     <Tab text="Salaire">
                         <graphic>
                             <FontAwesomeIconView fill="WHITE" glyphName="MONEY"/>
@@ -125,7 +148,8 @@
                                     <RowConstraints vgrow="SOMETIMES"/>
                                     <RowConstraints vgrow="SOMETIMES"/>
                                     <RowConstraints vgrow="SOMETIMES"/>
-                                    <RowConstraints valignment="CENTER" vgrow="NEVER"/>
+                                    <RowConstraints valignment="CENTER" vgrow="SOMETIMES"/>
+                                    <RowConstraints valignment="CENTER" vgrow="SOMETIMES"/>
                                     <RowConstraints vgrow="SOMETIMES"/>
                                 </rowConstraints>
                                 <padding>
@@ -151,51 +175,62 @@
                                         <Font size="14.0"/>
                                     </font>
                                 </Label>
-                                <HBox alignment="CENTER" prefHeight="25.0" prefWidth="200.0" spacing="10.0"
+                                <Label layoutX="90.0" layoutY="40.0" text="Date de paye" textAlignment="CENTER"
+                                       textFill="WHITE" wrapText="true" GridPane.halignment="CENTER"
+                                       GridPane.rowIndex="3">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <HBox alignment="CENTER" prefHeight="20.0" prefWidth="200.0" spacing="10.0"
                                       GridPane.columnIndex="1" GridPane.vgrow="ALWAYS">
-                                    <JFXTextField fx:id="netSalaryInput" alignment="CENTER" focusColor="RED"
-                                                  prefWidth="500.0" unFocusColor="WHITE"/>
+                                    <JFXTextField fx:id="netSalaryInput" focusColor="RED" prefWidth="500.0"
+                                                  promptText="N/A" unFocusColor="WHITE"/>
                                     <Label text="€" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                                         <font>
                                             <Font size="16.0"/>
                                         </font>
                                     </Label>
                                 </HBox>
-                                <HBox alignment="CENTER" prefHeight="25.0" prefWidth="200.0" spacing="10.0"
+                                <HBox alignment="CENTER" prefHeight="20.0" prefWidth="200.0" spacing="10.0"
                                       GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
-                                    <JFXTextField fx:id="grossSalaryInput" alignment="CENTER" focusColor="RED"
-                                                  prefWidth="500.0" unFocusColor="WHITE"/>
+                                    <JFXTextField fx:id="grossSalaryInput" focusColor="RED" prefWidth="500.0"
+                                                  promptText="N/A" unFocusColor="WHITE"/>
                                     <Label text="€" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                                         <font>
                                             <Font size="16.0"/>
                                         </font>
                                     </Label>
                                 </HBox>
-                                <HBox alignment="CENTER" layoutX="129.0" layoutY="47.0" prefHeight="25.0"
+                                <HBox alignment="CENTER" layoutX="129.0" layoutY="47.0" prefHeight="20.0"
                                       prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2"
                                       GridPane.vgrow="ALWAYS">
-                                    <JFXTextField fx:id="hoursPerWeekInput" alignment="CENTER" focusColor="RED"
-                                                  prefWidth="500.0" unFocusColor="WHITE"/>
+                                    <JFXTextField fx:id="hoursPerWeekInput" focusColor="RED" prefWidth="500.0"
+                                                  promptText="N/A" unFocusColor="WHITE"/>
                                     <Label text="h" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                                         <font>
                                             <Font size="16.0"/>
                                         </font>
                                     </Label>
                                 </HBox>
-                                <GridPane alignment="CENTER" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                                <HBox alignment="CENTER" prefHeight="20.0" prefWidth="200.0" GridPane.columnIndex="1"
+                                      GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+                                    <JFXDatePicker fx:id="salaryDateInput" defaultColor="RED" prefWidth="510.0"/>
+                                </HBox>
+                                <GridPane alignment="CENTER" GridPane.columnSpan="2" GridPane.rowIndex="4">
                                     <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints vgrow="SOMETIMES"/>
                                     </rowConstraints>
                                     <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER"
-                                           prefWidth="10000.0" text="{{error}}" textAlignment="CENTER"
-                                           textFill="RED" wrapText="true"/>
-                                    <JFXButton accessibleHelp="r" onMouseClicked="#onValidButtonClick"
-                                               prefWidth="100.0" style="-fx-background-color: red;" text="Valider"
-                                               textFill="WHITE" GridPane.columnIndex="1"
+                                           prefWidth="10000.0" text="{{error}}" textAlignment="CENTER" textFill="RED"
+                                           wrapText="true"/>
+                                    <JFXButton accessibleHelp="r" onMouseClicked="#onValidButtonClick" prefHeight="25.0"
+                                               prefWidth="181.0" style="-fx-background-color: red;"
+                                               text="Confirmer Fiche de Paye" textFill="WHITE" GridPane.columnIndex="1"
                                                GridPane.halignment="CENTER">
                                         <cursor>
                                             <Cursor fx:constant="HAND"/>
@@ -203,30 +238,11 @@
                                         <graphic>
                                             <FontAwesomeIconView fill="WHITE" glyphName="CHECK"/>
                                         </graphic>
+                                        <GridPane.margin>
+                                            <Insets/>
+                                        </GridPane.margin>
                                     </JFXButton>
                                 </GridPane>
-                            </GridPane>
-                        </AnchorPane>
-                    </Tab>
-                    <Tab text="Historique">
-                        <graphic>
-                            <FontAwesomeIconView fill="WHITE" glyphName="HISTORY"/>
-                        </graphic>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <GridPane layoutX="130.0" layoutY="20.0" AnchorPane.bottomAnchor="15.0"
-                                      AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="130.0"
-                                      AnchorPane.topAnchor="15.0">
-                                <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                                </columnConstraints>
-                                <rowConstraints>
-                                    <RowConstraints vgrow="SOMETIMES"/>
-                                </rowConstraints>
-                                <JFXTreeTableView fx:id="salaryHistoryTreeTableView">
-                                    <columnResizePolicy>
-                                        <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                                    </columnResizePolicy>
-                                </JFXTreeTableView>
                             </GridPane>
                         </AnchorPane>
                     </Tab>

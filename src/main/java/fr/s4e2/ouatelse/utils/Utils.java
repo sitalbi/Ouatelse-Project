@@ -30,6 +30,20 @@ public class Utils {
     }
 
     /**
+     * Returns a double from a string
+     *
+     * @param s the String to be changed
+     * @return the double value or null in the case of failure
+     */
+    public static Double getDouble(String s) {
+        try {
+            return Double.parseDouble(s);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    /**
      * Allows you to convert a Date to a LocalDate
      *
      * @param dateToConvert the Date to be converted
