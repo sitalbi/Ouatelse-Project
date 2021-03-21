@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -43,22 +44,25 @@ public class ScheduledOrder {
 
     public ScheduledOrder.ScheduledOrderInfoTree toScheduledOrderInfoTree() {
         return new ScheduledOrder.ScheduledOrderInfoTree(
+                this.id,
                 this.getProduct().getReference(),
                 this.getQuantity(),
-                this.scheduledOrderDate.toString()
+                this.scheduledOrderDate
         );
     }
 
     @Getter
     public static class ScheduledOrderInfoTree extends RecursiveTreeObject<ScheduledOrderInfoTree> {
+        private final LongProperty id;
         private final LongProperty productReference;
         private final IntegerProperty quantity;
         private final StringProperty scheduledOrderDate;
 
-        public ScheduledOrderInfoTree(Long productReference, Integer quantity, String scheduledOrderDate) {
+        public ScheduledOrderInfoTree(long id, long productReference, Integer quantity, Date scheduledOrderDate) {
+            this.id = new SimpleLongProperty(id);
             this.productReference = new SimpleLongProperty(productReference);
             this.quantity = new SimpleIntegerProperty(quantity);
-            this.scheduledOrderDate = new SimpleStringProperty(scheduledOrderDate);
+            this.scheduledOrderDate = new SimpleStringProperty(new SimpleDateFormat("yyyy-MM-dd").format(scheduledOrderDate));
         }
     }
 }
