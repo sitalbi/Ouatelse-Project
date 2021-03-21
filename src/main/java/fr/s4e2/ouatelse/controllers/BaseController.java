@@ -7,7 +7,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.swing.*;
 import java.net.URL;
@@ -26,7 +25,6 @@ public class BaseController implements Initializable {
     @Getter
     private BorderPane baseBorderPane;
 
-    @Setter
     @Getter
     private Store authentificationStore;
 
@@ -70,5 +68,14 @@ public class BaseController implements Initializable {
      */
     public void onPreferences() {
         throw new UnsupportedOperationException("Not implemented yet!");
+    }
+
+    /**
+     * Set the store in which the user has logged in
+     *
+     * @param authentificationStore The store in which the user has logged in
+     */
+    public void setAuthentificationStore(Store authentificationStore) {
+        this.authentificationStore = authentificationStore;
     }
 }
