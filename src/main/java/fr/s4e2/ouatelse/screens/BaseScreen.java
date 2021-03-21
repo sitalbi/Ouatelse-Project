@@ -2,8 +2,8 @@ package fr.s4e2.ouatelse.screens;
 
 import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.controllers.AuthStoreController;
+import fr.s4e2.ouatelse.controllers.BaseController;
 import fr.s4e2.ouatelse.controllers.HomeController;
-import fr.s4e2.ouatelse.controllers.PlannedOrdersController;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import javafx.fxml.FXMLLoader;
@@ -37,15 +37,47 @@ public abstract class BaseScreen {
      * @param fxml  name of the fxml file to load from (must be in the fxml folder in resources)
      * @param title the title of the window (the title suffixes the set prefix)
      */
-    protected BaseScreen(String fxml, String title) {
+    protected BaseScreen(String fxml, String title, Store authentificationStore) {
         this.stage = new Stage();
 
-        FXMLLoader loader = new FXMLLoader(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
         stage.getIcons().add(OUATELSE_ICON);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinHeight(650);
         stage.setMinWidth(825);
-        stage.setTitle(title);
+        stage.setTitle(PREFIX + title);
+
+        try {
+            Parent parent = loader.load();
+
+            BaseController controller = loader.getController();
+            controller.setAuthentificationStore(authentificationStore);
+
+            Scene scene = new Scene(parent);
+            scene.getStylesheets().add("css/base.css");
+            stage.setScene(scene);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Creates a Base Screen (Used for the {@link fr.s4e2.ouatelse.controllers.AuthUserController})
+     *
+     * @param fxml  name of the fxml file to load from (must be in the fxml folder in resources)
+     * @param title the title of the window (the title suffixes the set prefix)
+     */
+    protected BaseScreen(String fxml, String title) {
+        this.stage = new Stage();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
+        stage.getIcons().add(OUATELSE_ICON);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setMinHeight(650);
+        stage.setMinWidth(825);
+        stage.setTitle(PREFIX + title);
 
         try {
             Scene scene = new Scene(loader.load());
@@ -64,7 +96,7 @@ public abstract class BaseScreen {
      * @param user  the authentified user
      * @param store the authentified store
      */
-    protected BaseScreen(String fxml, String title, User user, Store store) {
+    protected BaseScreen(String fxml, String title, Store store, User user) {
         this.stage = new Stage();
 
         FXMLLoader loader = new FXMLLoader();
@@ -79,8 +111,8 @@ public abstract class BaseScreen {
             Parent parent = loader.load();
 
             HomeController homeController = loader.getController();
-            homeController.setCurrentStore(store);
-            homeController.setCurrentUser(user);
+            homeController.setAuthentificationStore(store);
+            homeController.setAuthentificationUser(user);
 
             Scene scene = new Scene(parent);
             stage.setScene(scene);
@@ -112,37 +144,6 @@ public abstract class BaseScreen {
 
             AuthStoreController authStoreController = loader.getController();
             authStoreController.setCurrentUser(user);
-
-            Scene scene = new Scene(parent);
-            stage.setScene(scene);
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    /**
-     * Creates a Base Screen (Used for the {@link fr.s4e2.ouatelse.controllers.PlannedOrdersController})
-     *
-     * @param fxml  name of the fxml file to load from (must be in the fxml folder in resources)
-     * @param title the title of the window (the title suffixes the set prefix)
-     * @param store the current store
-     */
-    protected BaseScreen(String fxml, String title, Store store) {
-        this.stage = new Stage();
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
-        stage.getIcons().add(OUATELSE_ICON);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setMinHeight(650);
-        stage.setMinWidth(825);
-        stage.setTitle(title);
-
-        try {
-            Parent parent = loader.load();
-
-            PlannedOrdersController plannedOrdersController = loader.getController();
-            plannedOrdersController.setCurrentStore(store);
 
             Scene scene = new Scene(parent);
             stage.setScene(scene);

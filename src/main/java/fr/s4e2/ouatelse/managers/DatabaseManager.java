@@ -93,6 +93,7 @@ public class DatabaseManager {
         TableUtils.createTableIfNotExists(connectionSource, Store.class);
         TableUtils.createTableIfNotExists(connectionSource, User.class);
         TableUtils.createTableIfNotExists(connectionSource, Vendor.class);
+        TableUtils.createTableIfNotExists(connectionSource, ScheduledOrder.class);
     }
 
     /**
