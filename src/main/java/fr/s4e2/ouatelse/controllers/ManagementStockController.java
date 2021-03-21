@@ -11,7 +11,7 @@ import fr.s4e2.ouatelse.objects.Product;
 import fr.s4e2.ouatelse.objects.ProductStock;
 import fr.s4e2.ouatelse.objects.ProductStock.ProductStockTree;
 import fr.s4e2.ouatelse.objects.Store;
-import fr.s4e2.ouatelse.screens.PlannedOrdersScreen;
+import fr.s4e2.ouatelse.screens.ManagementPlannedOrdersScreen;
 import fr.s4e2.ouatelse.utils.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -116,7 +116,7 @@ public class ManagementStockController extends BaseController {
      * Prepares an order for a selected product
      */
     public void onScheduleOrderButtonClick() {
-        new PlannedOrdersScreen(this.getAuthentificationStore()).open();
+        new ManagementPlannedOrdersScreen(this.getAuthentificationStore()).open();
     }
 
     /**
