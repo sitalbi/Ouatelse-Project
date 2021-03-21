@@ -38,8 +38,8 @@ public class HomeController extends BaseController {
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final EntityManagerProductStock entityManagerProductStock = Main.getDatabaseManager().getEntityManagerProductStock();
-    private User currentUser;
-    private Store currentStore;
+    private User authentificationUser;
+    private Store authentificationStore;
 
     @FXML
     private VBox verticalButtonsBar;
@@ -61,12 +61,12 @@ public class HomeController extends BaseController {
      *
      * @param user the {@link User} to set
      */
-    public void setCurrentUser(User user) {
-        this.currentUser = user;
+    public void setAuthentificationUser(User user) {
+        this.authentificationUser = user;
 
-        this.homeAdminName.setText(this.currentUser.getName() + " " + this.currentUser.getSurname());
-        this.homeAdminEmail.setText(this.currentUser.getEmail());
-        this.roleField.setText(this.currentUser.getRole().toString());
+        this.homeAdminName.setText(this.authentificationUser.getName() + " " + this.authentificationUser.getSurname());
+        this.homeAdminEmail.setText(this.authentificationUser.getEmail());
+        this.roleField.setText(this.authentificationUser.getRole().toString());
 
         // Use the VBox to emulate a CSS flexbox
         this.scrollPanel.heightProperty().addListener((observable, oldValue, newValue) -> {
@@ -81,8 +81,8 @@ public class HomeController extends BaseController {
         this.buildButtonsFromPermissions();
     }
 
-    public void setCurrentStore(Store store) {
-        this.currentStore = store;
+    public void setAuthentificationStore(Store store) {
+        this.authentificationStore = store;
     }
 
     /**
@@ -91,7 +91,7 @@ public class HomeController extends BaseController {
      * Disconnects from the Ouatelse application
      */
     public void onDisconnectClick() {
-        this.currentUser = null;
+        this.authentificationUser = null;
         Stage stage = (Stage) this.homeAdminName.getScene().getWindow();
         stage.close();
 
@@ -104,7 +104,7 @@ public class HomeController extends BaseController {
      * Opens the User Management Screen
      */
     private void onUserManagementButtonClick() {
-        new ManagementUserScreen().open();
+        new ManagementUserScreen(this.authentificationStore).open();
     }
 
     /**
@@ -113,7 +113,7 @@ public class HomeController extends BaseController {
      * Opens the Role Management Screen
      */
     private void onRoleManagementButtonClick() {
-        new ManagementRoleScreen().open();
+        new ManagementRoleScreen(this.authentificationStore).open();
     }
 
     /**
@@ -122,7 +122,7 @@ public class HomeController extends BaseController {
      * Opens the Store Management Screen
      */
     private void onStoresButtonClick() {
-        new ManagementStoreScreen().open();
+        new ManagementStoreScreen(this.authentificationStore).open();
     }
 
     /**
@@ -175,7 +175,7 @@ public class HomeController extends BaseController {
      * Opens the Stock Management Screen
      */
     private void onStocksButtonClick() {
-        new ManagementStockScreen().open();
+        new ManagementStockScreen(this.authentificationStore).open();
     }
 
     /**
@@ -204,7 +204,7 @@ public class HomeController extends BaseController {
      * Opens the Vendor Management Screen
      */
     private void onVendorButtonClick() {
-        new ManagementVendorScreen().open();
+        new ManagementVendorScreen(this.authentificationStore).open();
     }
 
     /**
@@ -213,7 +213,7 @@ public class HomeController extends BaseController {
      * Opens the Product Management Screen
      */
     private void onProductsButtonClick() {
-        new ManagementProductScreen().open();
+        new ManagementProductScreen(this.authentificationStore).open();
     }
 
     private void displayStocks() {
@@ -245,7 +245,7 @@ public class HomeController extends BaseController {
     private void loadStocksFromCurrentStore(JFXTreeTableView<ProductStock.ProductStockInfoTree> tree) {
         try {
             this.entityManagerProductStock.executeQuery(this.entityManagerProductStock.getQueryBuilder()
-                    .where().eq("store_id", this.currentStore.getId())
+                    .where().eq("store_id", this.authentificationStore.getId())
                     .and().eq("quantity", 0).prepare()).forEach(productStock -> {
                 if (productStock.getProduct() != null) {
                     tree.getRoot().getChildren().add(new TreeItem<>(productStock.toProductStockInfoTree()));
@@ -260,8 +260,8 @@ public class HomeController extends BaseController {
      * Builds the Home Screen with buttons according to the user's permissions
      */
     public void buildButtonsFromPermissions() {
-        if (this.currentUser != null) {
-            this.currentUser.getRole().getPermissions().forEach(permission -> {
+        if (this.authentificationUser != null) {
+            this.authentificationUser.getRole().getPermissions().forEach(permission -> {
                 FontAwesomeIconView fontAwesomeIconView = null;
 
                 JFXButton newButton = new JFXButton();
