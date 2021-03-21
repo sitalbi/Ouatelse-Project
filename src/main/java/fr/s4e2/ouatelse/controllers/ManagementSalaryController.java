@@ -3,12 +3,10 @@ package fr.s4e2.ouatelse.controllers;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import fr.s4e2.ouatelse.Main;
+import fr.s4e2.ouatelse.managers.EntityManagerSalary;
 import fr.s4e2.ouatelse.managers.EntityManagerStore;
 import fr.s4e2.ouatelse.managers.EntityManagerUser;
-import fr.s4e2.ouatelse.objects.ProductStock;
-import fr.s4e2.ouatelse.objects.Salary;
-import fr.s4e2.ouatelse.objects.Store;
-import fr.s4e2.ouatelse.objects.User;
+import fr.s4e2.ouatelse.objects.*;
 import fr.s4e2.ouatelse.objects.User.UserSalaryTree;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,9 +27,11 @@ import java.util.logging.Logger;
 public class ManagementSalaryController extends BaseController {
 
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
+    private static final String NO_USER_SELECTED_HINT = "Aucun employé selectionné";
 
     private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
     private final EntityManagerUser entityManagerUser = Main.getDatabaseManager().getEntityManagerUser();
+    private final EntityManagerSalary entityManagerSalary = Main.getDatabaseManager().getEntityManagerSalary();
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     // TOP
@@ -54,6 +54,7 @@ public class ManagementSalaryController extends BaseController {
     @FXML
     private JFXTreeTableView salaryHistoryTreeTableView;
     private User currentUser;
+    private Salary currentUserSalary;
 
     /**
      * Called to initialize a controller after its root element has been
@@ -75,21 +76,37 @@ public class ManagementSalaryController extends BaseController {
             exception.printStackTrace();
         }
 
+
         // selected element in the list box
         this.employeeTreeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null) {
-                currentUser = null;
-                return;
+            if (newValue != null) {
+                try {
+                    this.currentUser = this.entityManagerUser.executeQuery(this.entityManagerUser.getQueryBuilder()
+                            .where().eq("credentials", newValue.getValue().getId().getValue())
+                            .prepare()
+                    ).stream().findFirst().orElse(null);
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+                try {
+                    this.currentUserSalary = this.entityManagerSalary.executeQuery(this.entityManagerSalary.getQueryBuilder()
+                            .where().eq("user_id", currentUser.getId())
+                            .prepare()
+                    ).stream().findFirst().orElse(null);
+                    if(currentUserSalary != null) {
+                        this.netSalaryInput.setText(String.valueOf(currentUserSalary.getGrossSalary() - currentUserSalary.getEmployerCharges()));
+                        this.grossSalaryInput.setText(String.valueOf(currentUserSalary.getGrossSalary()));
+                        this.hoursPerWeekInput.setText(String.valueOf(currentUser.getHoursPerWeek()));
+                    }
+
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+
+                this.loadInformation();
+            } else {
+                this.currentUser = null;
             }
-            try {
-                this.currentUser = this.entityManagerUser.executeQuery(this.entityManagerUser.getQueryBuilder()
-                        .where().eq("credentials", newValue.getValue().getId().getValue())
-                        .prepare()
-                ).stream().findFirst().orElse(null);
-            } catch (SQLException exception) {
-                this.logger.log(Level.SEVERE, exception.getMessage(), exception);
-            }
-            loadInformation();
         });
 
         // escape to unselect item in the list box
@@ -117,11 +134,36 @@ public class ManagementSalaryController extends BaseController {
             this.errorLabel.setText(TEXT_FIELD_EMPTY_HINT);
             return;
         }
+        this.errorLabel.setText("");
+
+        // If no user are selected
+        if (!this.isSelected()) { this.errorLabel.setText(NO_USER_SELECTED_HINT); }
+
+        if (currentUserSalary == null) {
+            currentUserSalary = new Salary();
+            this.currentUserSalary.setUser(currentUser);
+            this.currentUserSalary.setGrossSalary(Double.parseDouble(grossSalaryInput.getText().trim()));
+            this.currentUserSalary.setEmployerCharges(Double.parseDouble(grossSalaryInput.getText().trim()) - Double.parseDouble(netSalaryInput.getText().trim()));
+            this.currentUser.setHoursPerWeek(Integer.parseInt(hoursPerWeekInput.getText().trim()));
+
+            // update product
+            this.entityManagerSalary.create(currentUserSalary);
+            this.entityManagerUser.update(currentUser);
+        } else {
+            this.currentUserSalary.setUser(currentUser);
+            this.currentUserSalary.setGrossSalary(Double.parseDouble(grossSalaryInput.getText().trim()));
+            this.currentUserSalary.setEmployerCharges(Double.parseDouble(netSalaryInput.getText().trim())-Double.parseDouble(grossSalaryInput.getText().trim()));
+            this.currentUser.setHoursPerWeek(Integer.parseInt(hoursPerWeekInput.getText().trim()));
+
+            // update user and salary
+            this.entityManagerSalary.update(this.currentUserSalary);
+            this.entityManagerUser.update(this.currentUser);
+        }
 
     }
 
     /**
-     * Clears the products' information from the differents fields for all tabs
+     * Clears the salary' information from the differents fields for all tabs
      */
     private void clearInformation() {
         // tab salary
@@ -135,14 +177,16 @@ public class ManagementSalaryController extends BaseController {
     }
 
     /**
-     * Loads the product's information into the fields
+     * Loads the salary's information into the fields
      */
     private void loadInformation() {
         this.clearInformation();
-
         if (!this.isSelected()) return;
-
-        // todo : load information
+        if(this.currentUserSalary != null) {
+            this.netSalaryInput.setText(String.valueOf(currentUserSalary.getGrossSalary() - currentUserSalary.getEmployerCharges()));
+            this.grossSalaryInput.setText(String.valueOf(currentUserSalary.getGrossSalary()));
+            this.hoursPerWeekInput.setText(String.valueOf(currentUser.getHoursPerWeek()));
+        }
     }
 
     /**
