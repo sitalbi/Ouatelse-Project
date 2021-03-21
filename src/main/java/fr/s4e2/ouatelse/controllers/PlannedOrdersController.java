@@ -7,6 +7,7 @@ import fr.s4e2.ouatelse.managers.EntityManagerProduct;
 import fr.s4e2.ouatelse.managers.EntityManagerScheduledOrder;
 import fr.s4e2.ouatelse.objects.Product;
 import fr.s4e2.ouatelse.objects.ScheduledOrder;
+import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.utils.JFXUtils;
 import fr.s4e2.ouatelse.utils.Utils;
 import javafx.collections.FXCollections;
@@ -46,14 +47,27 @@ public class PlannedOrdersController extends BaseController {
         this.orderDate.setConverter(JFXUtils.getDateConverter());
 
         this.loadOrdersTreeTable();
-        this.loadOrdersTreeTableContent();
     }
 
+    /**
+     * Load the order of the store in which the user is logged
+     */
     private void loadOrdersTreeTableContent() {
         this.orderTreeTableView.getRoot().getChildren().clear();
-        this.entityManagerScheduledOrder.getAll().forEachRemaining(this::addProductStockToTreeTable);
+        try {
+            this.entityManagerScheduledOrder.executeQuery(
+                    this.entityManagerScheduledOrder.getQueryBuilder()
+                            .where().eq("store_id", this.getAuthentificationStore().getId())
+                            .prepare()
+            ).forEach(this::addScheduledOrderToTreeTable);
+        } catch (SQLException exception) {
+            logger.log(Level.SEVERE, exception.getMessage(), exception);
+        }
     }
 
+    /**
+     * Builds the TreeTableView and its columns
+     */
     private void loadOrdersTreeTable() {
         JFXTreeTableColumn<ScheduledOrder.ScheduledOrderInfoTree, Long> reference = new JFXTreeTableColumn<>("Référence");
         JFXTreeTableColumn<ScheduledOrder.ScheduledOrderInfoTree, Integer> quantity = new JFXTreeTableColumn<>("Produit");
@@ -74,6 +88,11 @@ public class PlannedOrdersController extends BaseController {
         this.orderTreeTableView.setShowRoot(false);
     }
 
+    /**
+     * On confirmation button, check if fields are corrects, then insert the order in the database
+     *
+     * @throws SQLException
+     */
     public void onConfirmButtonClick() throws SQLException {
         if (this.articleReferenceField.getText().trim().isEmpty()
                 || this.quantityReferenceField.getText().trim().isEmpty()
@@ -120,11 +139,16 @@ public class PlannedOrdersController extends BaseController {
 
         ScheduledOrder order = new ScheduledOrder(product, this.getAuthentificationStore(), date, quantity);
         this.entityManagerScheduledOrder.create(order);
-        addProductStockToTreeTable(order);
+        addScheduledOrderToTreeTable(order);
         this.clearInformation();
     }
 
-    private void addProductStockToTreeTable(ScheduledOrder scheduledOrder) {
+    /**
+     * Add an order to the TreeTable
+     *
+     * @param scheduledOrder The ScheduledOrder object to add
+     */
+    private void addScheduledOrderToTreeTable(ScheduledOrder scheduledOrder) {
         TreeItem<ScheduledOrder.ScheduledOrderInfoTree> scheduledOrderRow = new TreeItem<>(scheduledOrder.toScheduledOrderInfoTree());
 
         this.orderTreeTableView.getRoot().getChildren().remove(this.orderTreeTableView.getSelectionModel().getSelectedItem());
@@ -139,5 +163,16 @@ public class PlannedOrdersController extends BaseController {
         this.quantityReferenceField.setText("");
         this.articleReferenceField.setText("");
         this.orderDate.getEditor().clear();
+    }
+
+    /**
+     * Set the store in which the user has logged in
+     *
+     * @param authentificationStore The store in which the user has logged in
+     */
+    @Override
+    public void setAuthentificationStore(Store authentificationStore) {
+        super.setAuthentificationStore(authentificationStore);
+        this.loadOrdersTreeTableContent();
     }
 }
