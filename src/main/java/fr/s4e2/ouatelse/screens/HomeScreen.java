@@ -15,6 +15,6 @@ public class HomeScreen extends BaseScreen {
      * @param store the Store to be displayed
      */
     public HomeScreen(User user, Store store) {
-        super("home.fxml", "Accueil", user, store);
+        super("home.fxml", "Accueil", store, user);
     }
 }
