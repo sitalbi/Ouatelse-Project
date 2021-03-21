@@ -24,10 +24,11 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PlannedOrdersController extends BaseController {
+public class ManagementOrdersController extends BaseController {
     private final EntityManagerProduct entityManagerProduct = Main.getDatabaseManager().getEntityManagerProduct();
     private final EntityManagerScheduledOrder entityManagerScheduledOrder = Main.getDatabaseManager().getEntityManagerScheduledOrder();
     private final Logger logger = Logger.getLogger(this.getClass().getName());
+
     @FXML
     private Label errorMessage;
     @FXML
@@ -41,6 +42,14 @@ public class PlannedOrdersController extends BaseController {
     @FXML
     private JFXTextField quantityReferenceField;
 
+    /**
+     * Called to initialize a controller after its root element has been
+     * completely processed.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or
+     *                  <tt>null</tt> if the location is not known.
+     * @param resources The resources used to localize the root object, or <tt>null</tt> if
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
@@ -151,7 +160,6 @@ public class PlannedOrdersController extends BaseController {
     private void addScheduledOrderToTreeTable(ScheduledOrder scheduledOrder) {
         TreeItem<ScheduledOrder.ScheduledOrderInfoTree> scheduledOrderRow = new TreeItem<>(scheduledOrder.toScheduledOrderInfoTree());
 
-        this.orderTreeTableView.getRoot().getChildren().remove(this.orderTreeTableView.getSelectionModel().getSelectedItem());
         this.orderTreeTableView.getRoot().getChildren().add(scheduledOrderRow);
         this.orderTreeTableView.getSelectionModel().select(scheduledOrderRow);
     }
