@@ -151,9 +151,9 @@ public class EntityManagerClient {
     }
 
     /**
-     * Check if an client exists in the database
+     * Check if a client exists in the database
      *
-     * @param client the user to be checked
+     * @param client the client to be checked
      * @return true if it exists, else false
      */
     public boolean exists(Client client) {
