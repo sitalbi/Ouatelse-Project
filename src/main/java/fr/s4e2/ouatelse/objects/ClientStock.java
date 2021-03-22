@@ -31,8 +31,8 @@ public class ClientStock {
      *
      * @return A tree table object representing this object's information
      */
-    public ClientStockInfoTree toClientStockInfoTree() {
-        return new ClientStockInfoTree(
+    public ClientStockTree toClientStockTree() {
+        return new ClientStockTree(
                 this.getProduct().getReference(),
                 this.product.getName(),
                 this.getQuantity()
@@ -43,7 +43,7 @@ public class ClientStock {
      * Recursive Client Stock Info Tree
      */
     @Getter
-    public static class ClientStockInfoTree extends RecursiveTreeObject<ClientStockInfoTree> {
+    public static class ClientStockTree extends RecursiveTreeObject<ClientStockTree> {
         private final LongProperty reference;
         private final StringProperty productName;
         private final IntegerProperty stockQuantity;
@@ -55,7 +55,7 @@ public class ClientStock {
          * @param productName   the Product's name
          * @param stockQuantity the Quantity of Stock remaining
          */
-        public ClientStockInfoTree(Long reference, String productName, Integer stockQuantity) {
+        public ClientStockTree(Long reference, String productName, Integer stockQuantity) {
             this.reference = new SimpleLongProperty(reference);
             this.stockQuantity = new SimpleIntegerProperty(stockQuantity);
             this.productName = new SimpleStringProperty(productName);
