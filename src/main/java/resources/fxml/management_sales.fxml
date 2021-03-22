@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="baseBorderPane" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/base.css"
+<?import java.net.URL?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="baseBorderPane" minHeight="650.0" minWidth="825.0"
             xmlns="http://javafx.com/javafx/15.0.1"
             fx:controller="fr.s4e2.ouatelse.controllers.ManagementSalesController">
     <top>
@@ -39,4 +44,67 @@
             <Label font="$x3" text="Version ${project.version}" textFill="$x4" HBox.hgrow="NEVER"/>
         </HBox>
     </bottom>
+    <stylesheets>
+        <URL value="@../css/base.css"/>
+        <URL value="@../css/management.css"/>
+    </stylesheets>
+    <center>
+        <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="content" BorderPane.alignment="CENTER">
+            <top>
+                <HBox prefHeight="260.0" prefWidth="798.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <VBox alignment="CENTER">
+                            <children>
+                                <Label alignment="CENTER" prefHeight="17.0" prefWidth="1000.0" text="Gestion des ventes"
+                                       textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                                    <font>
+                                        <Font size="32.0"/>
+                                    </font>
+                                </Label>
+                                <HBox alignment="CENTER">
+                                    <children>
+                                        <JFXTextField fx:id="clientSearchBar" alignment="CENTER" focusColor="RED"
+                                                      promptText="Rechercher" unFocusColor="WHITE" HBox.hgrow="ALWAYS"/>
+                                        <JFXButton text=" ">
+                                            <graphic>
+                                                <FontAwesomeIconView fill="RED" glyphName="SEARCH"
+                                                                     textAlignment="CENTER"/>
+                                            </graphic>
+                                        </JFXButton>
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="50.0" right="50.0" top="10.0"/>
+                                    </VBox.margin>
+                                </HBox>
+                                <JFXTreeTableView prefWidth="10000.0" VBox.vgrow="ALWAYS">
+                                    <columnResizePolicy>
+                                        <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                    </columnResizePolicy>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="50.0" right="50.0"/>
+                                    </VBox.margin>
+                                </JFXTreeTableView>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </top>
+            <center>
+                <JFXTabPane BorderPane.alignment="CENTER">
+                    <tabs>
+                        <Tab text="Untitled Tab">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </JFXTabPane>
+            </center>
+            <bottom>
+                <Label fx:id="errorMessageField" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                       maxWidth="1.7976931348623157E308" textAlignment="CENTER" textFill="RED"
+                       BorderPane.alignment="CENTER"/>
+            </bottom>
+        </BorderPane>
+    </center>
 </BorderPane>

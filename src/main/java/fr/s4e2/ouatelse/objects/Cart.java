@@ -1,6 +1,8 @@
 package fr.s4e2.ouatelse.objects;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.LongProperty;
@@ -29,8 +31,8 @@ public class Cart {
     @DatabaseField(canBeNull = false)
     private Date date;
 
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private Product product;
+    @ForeignCollectionField(eager = true)
+    private ForeignCollection<Product> products;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Client client;
@@ -44,7 +46,7 @@ public class Cart {
         return new CartTree(
                 this.getId(),
                 this.getDate(),
-                this.getProduct(),
+                this.getProducts(),
                 this.getClient()
         );
     }
@@ -68,11 +70,14 @@ public class Cart {
          * @param product the First product
          * @param client  the client
          */
-        public CartTree(long id, Date date, Product product, Client client) {
+        public CartTree(long id, Date date, ForeignCollection<Product> products, Client client) {
+            StringBuilder productListStringBuilder = new StringBuilder();
+            products.forEach(product -> productListStringBuilder.append(product.getName()).append("\n"));
+
             this.id = new SimpleLongProperty(id);
             this.date = new SimpleStringProperty(date != null ? new SimpleDateFormat("yyyy-MM-dd").format(date) : "");
             this.hour = new SimpleStringProperty(date != null ? new SimpleDateFormat("hh:mm:ss").format(date) : "");
-            this.productName = new SimpleStringProperty(product != null ? product.getName() : "");
+            this.productName = new SimpleStringProperty(productListStringBuilder.toString().trim());
             this.clientEmail = new SimpleStringProperty(client != null ? client.getEmail() : "");
         }
     }
