@@ -1,5 +1,6 @@
 package fr.s4e2.ouatelse.controllers;
 
+import fr.s4e2.ouatelse.objects.Store;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
@@ -23,6 +24,9 @@ public class BaseController implements Initializable {
     @FXML
     @Getter
     private BorderPane baseBorderPane;
+
+    @Getter
+    private Store authentificationStore;
 
     /**
      * Called to initialize a controller after its root element has been
@@ -64,5 +68,14 @@ public class BaseController implements Initializable {
      */
     public void onPreferences() {
         throw new UnsupportedOperationException("Not implemented yet!");
+    }
+
+    /**
+     * Set the store in which the user has logged in
+     *
+     * @param authentificationStore The store in which the user has logged in
+     */
+    public void setAuthentificationStore(Store authentificationStore) {
+        this.authentificationStore = authentificationStore;
     }
 }

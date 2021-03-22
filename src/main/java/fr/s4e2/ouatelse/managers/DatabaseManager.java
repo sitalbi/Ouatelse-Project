@@ -35,6 +35,7 @@ public class DatabaseManager {
     private EntityManagerUser entityManagerUser;
     private EntityManagerProduct entityManagerProduct;
     private EntityManagerVendor entityManagerVendor;
+    private EntityManagerScheduledOrder entityManagerScheduledOrder;
     private EntityManagerClient entityManagerClient;
 
     /**
@@ -93,6 +94,7 @@ public class DatabaseManager {
         TableUtils.createTableIfNotExists(connectionSource, Store.class);
         TableUtils.createTableIfNotExists(connectionSource, User.class);
         TableUtils.createTableIfNotExists(connectionSource, Vendor.class);
+        TableUtils.createTableIfNotExists(connectionSource, ScheduledOrder.class);
     }
 
     /**
@@ -106,6 +108,7 @@ public class DatabaseManager {
         this.entityManagerProduct = new EntityManagerProduct(connectionSource);
         this.entityManagerVendor = new EntityManagerVendor(connectionSource);
         this.entityManagerProductStock = new EntityManagerProductStock(connectionSource);
+        this.entityManagerScheduledOrder = new EntityManagerScheduledOrder(connectionSource);
         this.entityManagerClient = new EntityManagerClient(connectionSource);
     }
 
