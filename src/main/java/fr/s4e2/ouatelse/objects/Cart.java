@@ -45,9 +45,7 @@ public class Cart {
     public CartTree toCartTree() {
         return new CartTree(
                 this.getId(),
-                this.getDate(),
-                this.getProducts(),
-                this.getClient()
+                this.getDate()
         );
     }
 
@@ -59,26 +57,17 @@ public class Cart {
         private final LongProperty id;
         private final StringProperty date;
         private final StringProperty hour;
-        private final StringProperty productName;
-        private final StringProperty clientEmail;
 
         /**
          * Constructor
          *
-         * @param id      the ID
-         * @param date    the date
-         * @param product the First product
-         * @param client  the client
+         * @param id   the ID
+         * @param date the date
          */
-        public CartTree(long id, Date date, ForeignCollection<Product> products, Client client) {
-            StringBuilder productListStringBuilder = new StringBuilder();
-            products.forEach(product -> productListStringBuilder.append(product.getName()).append("\n"));
-
+        public CartTree(long id, Date date) {
             this.id = new SimpleLongProperty(id);
             this.date = new SimpleStringProperty(date != null ? new SimpleDateFormat("yyyy-MM-dd").format(date) : "");
             this.hour = new SimpleStringProperty(date != null ? new SimpleDateFormat("hh:mm:ss").format(date) : "");
-            this.productName = new SimpleStringProperty(productListStringBuilder.toString().trim());
-            this.clientEmail = new SimpleStringProperty(client != null ? client.getEmail() : "");
         }
     }
 }
