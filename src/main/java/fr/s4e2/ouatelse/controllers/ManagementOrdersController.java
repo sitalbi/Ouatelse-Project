@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.managers.EntityManagerProduct;
+import fr.s4e2.ouatelse.managers.EntityManagerProductStock;
 import fr.s4e2.ouatelse.managers.EntityManagerScheduledOrder;
 import fr.s4e2.ouatelse.objects.Product;
 import fr.s4e2.ouatelse.objects.ScheduledOrder;
@@ -27,7 +28,15 @@ import java.util.logging.Logger;
 public class ManagementOrdersController extends BaseController {
     private final EntityManagerProduct entityManagerProduct = Main.getDatabaseManager().getEntityManagerProduct();
     private final EntityManagerScheduledOrder entityManagerScheduledOrder = Main.getDatabaseManager().getEntityManagerScheduledOrder();
+    // Error messages
+    private static final String FIELDS_NOT_SET = "Veuillez remplir tous les champs";
     private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private static final String DATE_NOT_FUTURE = "Date passée";
+    private static final String NONNUMERICAL_CHARACTERS = "Veuillez entrer des caractères numériques";
+    private static final String NON_VALID_QUANTITY = "Veuillez entrer un nombre correct de produits à commander";
+    private static final String PRODUCT_DOES_NOT_EXIST = "Produit inexistant";
+    private static final String VENDOR_NOT_SET = "Fournisseur du produit non défini";
+    private final EntityManagerProductStock entityManagerProductStock = Main.getDatabaseManager().getEntityManagerProductStock();
 
     @FXML
     private Label errorMessage;
@@ -106,7 +115,7 @@ public class ManagementOrdersController extends BaseController {
         if (this.articleReferenceField.getText().trim().isEmpty()
                 || this.quantityReferenceField.getText().trim().isEmpty()
                 || this.orderDate.getValue() == null) {
-            this.errorMessage.setText("Veuillez remplir tous les champs");
+            this.errorMessage.setText(FIELDS_NOT_SET);
             return;
         }
 
@@ -115,7 +124,7 @@ public class ManagementOrdersController extends BaseController {
         Date date = Utils.localDateToDate(this.orderDate.getValue());
 
         if (date.before(new Date())) {
-            this.errorMessage.setText("Date passée");
+            this.errorMessage.setText(DATE_NOT_FUTURE);
             this.orderDate.getParent().requestFocus();
             return;
         }
@@ -125,12 +134,12 @@ public class ManagementOrdersController extends BaseController {
             quantity = Integer.parseInt(this.quantityReferenceField.getText().trim());
         } catch (NumberFormatException exception) {
             logger.log(Level.WARNING, exception.getMessage(), exception);
-            this.errorMessage.setText("Veuillez entrer des caractères numériques");
+            this.errorMessage.setText(NONNUMERICAL_CHARACTERS);
             return;
         }
 
         if (quantity <= 0) {
-            this.errorMessage.setText("Veuillez entrer un nombre correct de produits à commander");
+            this.errorMessage.setText(NON_VALID_QUANTITY);
             this.quantityReferenceField.getParent().requestFocus();
             return;
         }
@@ -141,7 +150,13 @@ public class ManagementOrdersController extends BaseController {
                         .prepare()
         ).stream().findFirst().orElse(null);
         if (product == null) {
-            this.errorMessage.setText("Produit inexistant");
+            this.errorMessage.setText(PRODUCT_DOES_NOT_EXIST);
+            this.articleReferenceField.getParent().requestFocus();
+            return;
+        }
+
+        if (product.getSoldBy() == null) {
+            this.errorMessage.setText(VENDOR_NOT_SET);
             this.articleReferenceField.getParent().requestFocus();
             return;
         }
