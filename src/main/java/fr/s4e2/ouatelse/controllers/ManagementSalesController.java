@@ -1,5 +1,21 @@
 package fr.s4e2.ouatelse.controllers;
 
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import fr.s4e2.ouatelse.objects.Cart;
+import fr.s4e2.ouatelse.objects.Client;
+import fr.s4e2.ouatelse.objects.ClientStock;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
+import javafx.scene.input.MouseEvent;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -7,6 +23,27 @@ import java.util.ResourceBundle;
  * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementSalesScreen}
  */
 public class ManagementSalesController extends BaseController {
+
+    @FXML
+    private JFXTextField clientSearchBar;
+    @FXML
+    private JFXTreeTableView<Client.ClientTree> clientsTreeTableView;
+    @FXML
+    private Label errorMessageField;
+    @FXML
+    private JFXTreeTableView<Cart.CartTree> currentClientsCartTreeTableView;
+    @FXML
+    private Button productCatalogButton;
+    @FXML
+    private JFXTreeTableView<ClientStock.ClientStockInfoTree> currentCartProductsTreetableView;
+    @FXML
+    private Button newSaleButton;
+    @FXML
+    private Button saveCurrentSaleButton;
+    @FXML
+    private Button createBillButton;
+    @FXML
+    private Button cancelSaleButton;
 
     /**
      * Initializes the controller
@@ -19,5 +56,95 @@ public class ManagementSalesController extends BaseController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+
+        this.buildClientsTreeTableView();
+        this.buildCurrentClientsCartTreeTableView();
+        this.buildCurrentCartProductsTreetableView();
+    }
+
+    /**
+     * Builds the clients' table
+     */
+    private void buildClientsTreeTableView() {
+        JFXTreeTableColumn<Client.ClientTree, Long> id = new JFXTreeTableColumn<>("ID");
+        JFXTreeTableColumn<Client.ClientTree, String> name = new JFXTreeTableColumn<>("Nom");
+        JFXTreeTableColumn<Client.ClientTree, String> surname = new JFXTreeTableColumn<>("Prénom");
+        JFXTreeTableColumn<Client.ClientTree, String> email = new JFXTreeTableColumn<>("Email");
+        id.setSortNode(id.getSortNode());
+
+        id.setCellValueFactory(param -> param.getValue().getValue().getId().asObject());
+        name.setCellValueFactory(param -> param.getValue().getValue().getName());
+        surname.setCellValueFactory(param -> param.getValue().getValue().getSurname());
+        email.setCellValueFactory(param -> param.getValue().getValue().getEmail());
+
+        ObservableList<Client.ClientTree> clients = FXCollections.observableArrayList();
+        TreeItem<Client.ClientTree> root = new RecursiveTreeItem<>(clients, RecursiveTreeObject::getChildren);
+
+        //noinspection unchecked
+        this.clientsTreeTableView.getColumns().setAll(id, name, surname, email);
+        this.clientsTreeTableView.getColumns().forEach(c -> c.setContextMenu(null));
+        this.clientsTreeTableView.setRoot(root);
+        this.clientsTreeTableView.setShowRoot(false);
+    }
+
+    /**
+     * Build the current client's cart table
+     */
+    private void buildCurrentClientsCartTreeTableView() {
+        JFXTreeTableColumn<Cart.CartTree, Long> id = new JFXTreeTableColumn<>("ID");
+        JFXTreeTableColumn<Cart.CartTree, String> date = new JFXTreeTableColumn<>("Nom");
+        JFXTreeTableColumn<Cart.CartTree, String> hour = new JFXTreeTableColumn<>("Prénom");
+        id.setSortNode(id.getSortNode());
+
+        id.setCellValueFactory(param -> param.getValue().getValue().getId().asObject());
+        date.setCellValueFactory(param -> param.getValue().getValue().getDate());
+        hour.setCellValueFactory(param -> param.getValue().getValue().getHour());
+
+        ObservableList<Cart.CartTree> carts = FXCollections.observableArrayList();
+        TreeItem<Cart.CartTree> root = new RecursiveTreeItem<>(carts, RecursiveTreeObject::getChildren);
+
+        //noinspection unchecked
+        this.currentClientsCartTreeTableView.getColumns().setAll(id, date, hour);
+        this.currentClientsCartTreeTableView.getColumns().forEach(c -> c.setContextMenu(null));
+        this.currentClientsCartTreeTableView.setRoot(root);
+        this.currentClientsCartTreeTableView.setShowRoot(false);
+    }
+
+    /**
+     * Build the current cart's products table
+     */
+    private void buildCurrentCartProductsTreetableView() {
+        JFXTreeTableColumn<ClientStock.ClientStockInfoTree, Long> reference = new JFXTreeTableColumn<>("Référence");
+        JFXTreeTableColumn<ClientStock.ClientStockInfoTree, String> productName = new JFXTreeTableColumn<>("Produit");
+        JFXTreeTableColumn<ClientStock.ClientStockInfoTree, Integer> quantity = new JFXTreeTableColumn<>("Quantité");
+        reference.setSortNode(reference.getSortNode());
+
+        reference.setCellValueFactory(param -> param.getValue().getValue().getReference().asObject());
+        productName.setCellValueFactory(param -> param.getValue().getValue().getProductName());
+        quantity.setCellValueFactory(param -> param.getValue().getValue().getStockQuantity().asObject());
+
+        ObservableList<ClientStock.ClientStockInfoTree> clientStocks = FXCollections.observableArrayList();
+        TreeItem<ClientStock.ClientStockInfoTree> root = new RecursiveTreeItem<>(clientStocks, RecursiveTreeObject::getChildren);
+
+        //noinspection unchecked
+        this.currentCartProductsTreetableView.getColumns().setAll(reference, productName, quantity);
+        this.currentCartProductsTreetableView.getColumns().forEach(c -> c.setContextMenu(null));
+        this.currentCartProductsTreetableView.setRoot(root);
+        this.currentCartProductsTreetableView.setShowRoot(false);
+    }
+
+    public void onProductCatalogButtonClick(MouseEvent mouseEvent) {
+    }
+
+    public void onNewSaleButtonClick(MouseEvent mouseEvent) {
+    }
+
+    public void onSaveCurrentSaleButtonClick(MouseEvent mouseEvent) {
+    }
+
+    public void onCreateBillButtonClick(MouseEvent mouseEvent) {
+    }
+
+    public void onCancelSaleButtonClick(MouseEvent mouseEvent) {
     }
 }
