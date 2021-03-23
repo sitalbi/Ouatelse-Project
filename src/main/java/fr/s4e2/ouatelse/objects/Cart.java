@@ -29,13 +29,16 @@ public class Cart {
     private long id;
 
     @DatabaseField(canBeNull = false)
-    private Date date;
+    private Date date = new Date();
 
     @ForeignCollectionField(eager = true)
     private ForeignCollection<ClientStock> clientStocks;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Client client;
+
+    @DatabaseField(canBeNull = false)
+    private boolean closed = false;
 
     /**
      * Converts this object into a tree table object representing it's information
@@ -45,7 +48,8 @@ public class Cart {
     public CartTree toCartTree() {
         return new CartTree(
                 this.getId(),
-                this.getDate()
+                this.getDate(),
+                this.isClosed()
         );
     }
 
@@ -57,17 +61,20 @@ public class Cart {
         private final LongProperty id;
         private final StringProperty date;
         private final StringProperty hour;
+        private final StringProperty closed;
 
         /**
          * Constructor
          *
-         * @param id   the ID
-         * @param date the date
+         * @param id     the ID
+         * @param date   the date
+         * @param closed the car being closed
          */
-        public CartTree(long id, Date date) {
+        public CartTree(long id, Date date, boolean closed) {
             this.id = new SimpleLongProperty(id);
             this.date = new SimpleStringProperty(date != null ? new SimpleDateFormat("yyyy-MM-dd").format(date) : "");
             this.hour = new SimpleStringProperty(date != null ? new SimpleDateFormat("hh:mm:ss").format(date) : "");
+            this.closed = new SimpleStringProperty(closed ? "\u2713" : "\u274c");
         }
     }
 }
