@@ -18,10 +18,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -55,6 +59,9 @@ public class ManagementSalesController extends BaseController {
     @FXML
     private Button cancelSaleButton;
 
+    // left -> all the carts of the client
+    // right -> client stock
+
     private Client currentClient;
     private Cart currentCart;
     private ClientStock currentClientStock;
@@ -75,14 +82,65 @@ public class ManagementSalesController extends BaseController {
         this.buildCurrentClientsCartTreeTableView();
         this.buildCurrentCartProductsTreetableView();
 
-        // TODO : Finish here
-        // On the window's top sheet click, load the selected client's carts
+        this.entityManagerClient.getQueryForAll().forEach(client -> clientsTreeTableView.getRoot().getChildren().add(new TreeItem<>(client.toClientTree())));
+
+        // deselect an item in the stock tree table
+        this.getBaseBorderPane().setOnKeyReleased(event -> {
+            if (event.getCode() != KeyCode.ESCAPE) return;
+            if (clientsTreeTableView.getSelectionModel().getSelectedItem() == null) return;
+
+            clientsTreeTableView.getSelectionModel().clearSelection();
+            currentClient = null;
+            this.clearInformation();
+        });
+
+        // On the window's top table select client
         this.clientsTreeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
                 this.currentClient = null;
                 return;
             }
+
+            try {
+                this.currentClient = entityManagerClient.executeQuery(entityManagerClient.getQueryBuilder()
+                        .where().eq("id", newValue.getValue().getId().getValue()).prepare())
+                        .stream().findFirst().orElse(null);
+            } catch (SQLException exception) {
+                this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+            }
+
+            this.loadInformation();
         });
+
+        // handles search bar for clients
+        this.clientSearchBar.textProperty().addListener((observable, oldValue, newValue) -> searchProductFromText(newValue.trim()));
+    }
+
+
+    /**
+     * Searches a client in the database from its name or email
+     *
+     * @param input the searched client name or email
+     */
+    private void searchProductFromText(String input) {
+        this.clientsTreeTableView.getRoot().getChildren().clear();
+
+        if (input.isEmpty()) {
+            this.entityManagerClient.getQueryForAll().forEach(client -> clientsTreeTableView.getRoot().getChildren().add(new TreeItem<>(client.toClientTree())));
+            return;
+        }
+
+        try {
+            List<Client> searchResults = entityManagerClient.executeQuery(
+                    entityManagerClient.getQueryBuilder()
+                            .where().like("name", "%" + input + "%")
+                            .or().like("email", "%" + input + "%")
+                            .prepare()
+            );
+            searchResults.forEach(this::addClientToTreeTable);
+        } catch (SQLException exception) {
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+        }
     }
 
     /**
@@ -164,7 +222,6 @@ public class ManagementSalesController extends BaseController {
     private void addClientToTreeTable(Client client) {
         TreeItem<Client.ClientTree> clientRow = new TreeItem<>(client.toClientTree());
 
-        this.clientsTreeTableView.getRoot().getChildren().remove(clientsTreeTableView.getSelectionModel().getSelectedItem());
         this.clientsTreeTableView.getRoot().getChildren().add(clientRow);
         this.clientsTreeTableView.getSelectionModel().select(clientRow);
         this.currentClient = client;
@@ -178,7 +235,6 @@ public class ManagementSalesController extends BaseController {
     private void addCartToTreeTable(Cart cart) {
         TreeItem<Cart.CartTree> cartrow = new TreeItem<>(cart.toCartTree());
 
-        this.currentClientsCartTreeTableView.getRoot().getChildren().remove(currentClientsCartTreeTableView.getSelectionModel().getSelectedItem());
         this.currentClientsCartTreeTableView.getRoot().getChildren().add(cartrow);
         this.currentClientsCartTreeTableView.getSelectionModel().select(cartrow);
         this.currentCart = cart;
@@ -192,10 +248,47 @@ public class ManagementSalesController extends BaseController {
     private void addClientStockToTreeTable(ClientStock clientStock) {
         TreeItem<ClientStock.ClientStockTree> clientStockrow = new TreeItem<>(clientStock.toClientStockTree());
 
-        this.currentCartProductsTreetableView.getRoot().getChildren().remove(currentCartProductsTreetableView.getSelectionModel().getSelectedItem());
         this.currentCartProductsTreetableView.getRoot().getChildren().add(clientStockrow);
         this.currentCartProductsTreetableView.getSelectionModel().select(clientStockrow);
         this.currentClientStock = clientStock;
+    }
+
+
+    /**
+     * Clears the client sales information from the different tables
+     */
+    private void clearInformation() {
+        this.currentClientsCartTreeTableView.getRoot().getChildren().clear();
+        this.currentCartProductsTreetableView.getRoot().getChildren().clear();
+    }
+
+    /**
+     * Loads the information of client sales into the table
+     */
+    private void loadInformation() {
+        if (!this.isClientSelected()) return;
+
+        // loads client carts
+        try {
+            List<Cart> clientCarts = entityManagerCart.executeQuery(entityManagerCart.getQueryBuilder()
+                    .where().eq("client_id", currentClient.getId())
+                    .prepare()
+            );
+            clientCarts.forEach(this::addCartToTreeTable);
+        } catch (SQLException exception) {
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+        }
+
+        // loads client stock
+        try {
+            List<ClientStock> clientStocks = entityManagerClientStock.executeQuery(entityManagerClientStock.getQueryBuilder()
+                    .where().eq("client_id", currentClient.getId())
+                    .prepare()
+            );
+            clientStocks.forEach(this::addClientStockToTreeTable);
+        } catch (SQLException exception) {
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+        }
     }
 
     public void onProductCatalogButtonClick(MouseEvent mouseEvent) {
@@ -211,5 +304,15 @@ public class ManagementSalesController extends BaseController {
     }
 
     public void onCancelSaleButtonClick(MouseEvent mouseEvent) {
+    }
+
+
+    /**
+     * Checks if a client is selected in the table at the top of the window
+     *
+     * @return true if a client is selected, else false
+     */
+    private boolean isClientSelected() {
+        return this.currentClient != null;
     }
 }
