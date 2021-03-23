@@ -68,7 +68,7 @@ class EntityManagerClientTest {
      */
     @Test
     void create() {
-        // Cliant is not compliant
+        // Client is not compliant
         Client notCompliantClient = new Client();
         assertDoesNotThrow(() -> this.entityManagerClient.create(null));
         // Inserted objects have an ID > 0
@@ -104,6 +104,12 @@ class EntityManagerClientTest {
         assertFalse(this.entityManagerClient.exists(existingClient));
     }
 
+    /*
+        Use cases :
+            - Client does not exist in the database, so it shouldn't change
+            - Client exists in the database, so its attributes should change
+        In both cases, no exception should be thrown as they should be caught by the code
+    */
     @Test
     void update() {
         final String CLIENT_SURNAME_BEFORE_MODIFICATION = "Some surname";
@@ -181,7 +187,7 @@ class EntityManagerClientTest {
     /*
         Use cases :
             - There are no clients in the database, so the list should be empty
-            - There are clients in the database, so inserted addresses should be in the list
+            - There are clients in the database, so inserted clients should be in the list
     */
     @Test
     void getQueryForAll() {
