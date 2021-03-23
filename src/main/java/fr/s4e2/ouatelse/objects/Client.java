@@ -29,7 +29,7 @@ public class Client extends Person {
     @DatabaseField
     private String fax;
 
-    @DatabaseField()
+    @DatabaseField
     private String details;
 
     /**
