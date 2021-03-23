@@ -1,6 +1,8 @@
 package fr.s4e2.ouatelse.objects;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.LongProperty;
@@ -31,6 +33,9 @@ public class Client extends Person {
 
     @DatabaseField
     private String details;
+
+    @ForeignCollectionField(eager = true)
+    private ForeignCollection<Cart> carts;
 
     /**
      * Converts this object into a tree table object representing it's information
