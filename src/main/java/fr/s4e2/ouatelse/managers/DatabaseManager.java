@@ -198,7 +198,7 @@ public class DatabaseManager {
     private void setupTestClient() {
         if (this.connectionSource == null || this.entityManagerStore == null) return;
 
-        if (this.entityManagerClient.getClientIfExists(0, "test", "client") != null) return;
+        if (this.entityManagerClient.getClientIfExists(1, "test", "client") != null) return;
 
         Client client = new Client();
         client.setName("test");
