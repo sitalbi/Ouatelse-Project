@@ -26,10 +26,9 @@ class EntityManagerSalaryTest {
     private Salary createCompliantSalary() {
         Salary compliantSalary = new Salary();
 
+        compliantSalary.setDate(new Date());
         compliantSalary.setGrossSalary(2000);
-        compliantSalary.setEmployerCharges(200);
-        compliantSalary.setEmployeeCharges(50);
-        compliantSalary.setImposable(true);
+        compliantSalary.setNetSalary(50);
         compliantSalary.setUser(createCompliantUser());
 
         return compliantSalary;
