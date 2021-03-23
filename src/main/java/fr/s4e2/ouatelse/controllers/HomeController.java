@@ -153,9 +153,7 @@ public class HomeController extends BaseController {
      * Opens the Salary Management Screen
      */
     private void onSalaryManagementButtonClick() {
-        //todo : open salaray management screen
-
-        System.out.println("open salaray management screen");
+        new ManagementSalaryScreen().open();
     }
 
     /**
