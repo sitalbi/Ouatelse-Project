@@ -32,7 +32,7 @@ public class Cart {
     private Date date;
 
     @ForeignCollectionField(eager = true)
-    private ForeignCollection<Product> products;
+    private ForeignCollection<ClientStock> clientStocks;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Client client;
