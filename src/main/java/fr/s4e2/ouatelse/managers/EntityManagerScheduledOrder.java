@@ -135,6 +135,7 @@ public class EntityManagerScheduledOrder {
      * @return true if it exists, false if not
      */
     public boolean exists(ScheduledOrder scheduledOrder) {
+        if (scheduledOrder == null) return false;
         try {
             return this.instance.queryForId(scheduledOrder.getId()) != null;
         } catch (SQLException exception) {
