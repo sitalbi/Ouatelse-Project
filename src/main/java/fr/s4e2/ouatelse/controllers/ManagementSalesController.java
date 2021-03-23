@@ -95,7 +95,7 @@ public class ManagementSalesController extends BaseController {
             this.clearInformation();
         });
 
-        // On the window's top table select client
+        // Handles the client selection event
         this.clientsTreeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
                 this.currentClient = null;
@@ -111,6 +111,22 @@ public class ManagementSalesController extends BaseController {
             }
 
             this.loadInformation();
+        });
+
+        // Handles the cart selection event
+        this.currentClientsCartTreeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                this.currentCart = null;
+                return;
+            }
+
+            try {
+                this.currentCart = entityManagerCart.executeQuery(entityManagerCart.getQueryBuilder()
+                        .where().eq("id", newValue.getValue().getId().getValue()).prepare())
+                        .stream().findFirst().orElse(null);
+            } catch (SQLException exception) {
+                this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+            }
         });
 
         // handles search bar for clients
@@ -305,13 +321,20 @@ public class ManagementSalesController extends BaseController {
      */
     public void onNewSaleButtonClick() {
         if (!this.isClientSelected()) return;
-        if (currentClient.getCarts().stream().anyMatch(c -> !c.isClosed())) return;
+
+        // KEEP THIS BECAUSE WITH A STREAM THERE IS A BUG
+        for (Cart c : currentClient.getCarts()) {
+            if (!c.isClosed()) return;
+        }
 
         Cart cart = new Cart();
         cart.setClient(currentClient);
 
-        this.entityManagerCart.create(cart);
+        this.currentClient.getCarts().add(cart);
+        this.entityManagerClient.update(currentClient);
+
         this.addCartToTreeTable(cart);
+
     }
 
     public void onSaveCurrentSaleButtonClick(MouseEvent mouseEvent) {
@@ -320,7 +343,21 @@ public class ManagementSalesController extends BaseController {
     public void onCreateBillButtonClick(MouseEvent mouseEvent) {
     }
 
-    public void onCancelSaleButtonClick(MouseEvent mouseEvent) {
+    /**
+     * Handles the button click event for the delete sales button
+     * <p>
+     * Deletes cart for a selected user
+     */
+    public void onCancelSaleButtonClick() {
+        if (!this.isClientSelected()) return;
+        if (!this.isCartSelected()) return;
+
+        this.currentClient.getCarts().remove(currentCart);
+        this.entityManagerClient.update(currentClient);
+        this.entityManagerCart.delete(currentCart);
+
+        this.currentClientsCartTreeTableView.getRoot().getChildren().remove(currentClientsCartTreeTableView.getSelectionModel().getSelectedItem());
+        this.currentCart = null;
     }
 
 
@@ -331,5 +368,14 @@ public class ManagementSalesController extends BaseController {
      */
     private boolean isClientSelected() {
         return this.currentClient != null;
+    }
+
+    /**
+     * Checks if a client is selected in the table at the top of the window
+     *
+     * @return true if a client is selected, else false
+     */
+    private boolean isCartSelected() {
+        return this.currentCart != null;
     }
 }
