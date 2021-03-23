@@ -19,12 +19,20 @@ public class ClientStock {
 
     @DatabaseField(canBeNull = false)
     int quantity = 0;
+
     @DatabaseField(generatedId = true)
     private long id;
+
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Product product;
+
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Client client;
+
+    // Obligatory due to database mapping ########################
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private Cart cart;
+    // ###########################################################
 
     /**
      * Converts this object into a tree table object representing its information

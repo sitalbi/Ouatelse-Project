@@ -81,6 +81,7 @@ public class HomeController extends BaseController {
         this.buildButtonsFromPermissions();
     }
 
+    @Override
     public void setAuthentificationStore(Store store) {
         this.authentificationStore = store;
     }
@@ -182,9 +183,7 @@ public class HomeController extends BaseController {
      * Opens the Sales Screen
      */
     private void onSalesButtonClick() {
-        //todo : open sales screen
-
-        System.out.println("Open sales screen");
+        new ManagementSalesScreen(this.authentificationStore).open();
     }
 
     /**
