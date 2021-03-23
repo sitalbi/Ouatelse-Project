@@ -326,7 +326,7 @@ public class ManagementProductController extends BaseController {
         JFXTreeTableColumn<ProductTree, String> brand = new JFXTreeTableColumn<>("Marque");
         JFXTreeTableColumn<ProductTree, String> state = new JFXTreeTableColumn<>("Etat");
         JFXTreeTableColumn<ProductTree, String> category = new JFXTreeTableColumn<>("Catégorie");
-        JFXTreeTableColumn<ProductTree, String> soldByName = new JFXTreeTableColumn<>("Vendeur");
+        JFXTreeTableColumn<ProductTree, String> soldByName = new JFXTreeTableColumn<>("Fournisseur");
         reference.setSortNode(reference.getSortNode());
 
         reference.setCellValueFactory(param -> param.getValue().getValue().getReference().asObject());
