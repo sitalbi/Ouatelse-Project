@@ -342,6 +342,22 @@ public class ManagementSalesController extends BaseController {
 
     }
 
+    /**
+     * Handles the button click event for the new sales button
+     * <p>
+     * Creates a new cart for a selected user
+     */
+    public void onNewSaleButtonClick() {
+        if (!this.isClientSelected()) return;
+        if (currentClient.getCarts().stream().anyMatch(c -> !c.isClosed())) return;
+
+        Cart cart = new Cart();
+        cart.setClient(currentClient);
+
+        this.entityManagerCart.create(cart);
+        this.addCartToTreeTable(cart);
+    }
+
     public void onSaveCurrentSaleButtonClick(MouseEvent mouseEvent) {
     }
 
