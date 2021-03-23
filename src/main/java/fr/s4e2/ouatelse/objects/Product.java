@@ -55,6 +55,9 @@ public class Product {
     // Obligatory due to database mapping ########################
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Store store;
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private Cart cart;
     // ###########################################################
 
     /**
