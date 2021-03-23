@@ -173,19 +173,21 @@ public class ManagementSalesController extends BaseController {
      */
     private void buildCurrentClientsCartTreeTableView() {
         JFXTreeTableColumn<Cart.CartTree, Long> id = new JFXTreeTableColumn<>("ID");
-        JFXTreeTableColumn<Cart.CartTree, String> date = new JFXTreeTableColumn<>("Nom");
-        JFXTreeTableColumn<Cart.CartTree, String> hour = new JFXTreeTableColumn<>("Prénom");
+        JFXTreeTableColumn<Cart.CartTree, String> date = new JFXTreeTableColumn<>("Date");
+        JFXTreeTableColumn<Cart.CartTree, String> hour = new JFXTreeTableColumn<>("Hour");
+        JFXTreeTableColumn<Cart.CartTree, String> closed = new JFXTreeTableColumn<>("Fermer");
         id.setSortNode(id.getSortNode());
 
         id.setCellValueFactory(param -> param.getValue().getValue().getId().asObject());
         date.setCellValueFactory(param -> param.getValue().getValue().getDate());
         hour.setCellValueFactory(param -> param.getValue().getValue().getHour());
+        closed.setCellValueFactory(param -> param.getValue().getValue().getClosed());
 
         ObservableList<Cart.CartTree> carts = FXCollections.observableArrayList();
         TreeItem<Cart.CartTree> root = new RecursiveTreeItem<>(carts, RecursiveTreeObject::getChildren);
 
         //noinspection unchecked
-        this.currentClientsCartTreeTableView.getColumns().setAll(id, date, hour);
+        this.currentClientsCartTreeTableView.getColumns().setAll(id, date, hour, closed);
         this.currentClientsCartTreeTableView.getColumns().forEach(c -> c.setContextMenu(null));
         this.currentClientsCartTreeTableView.setRoot(root);
         this.currentClientsCartTreeTableView.setShowRoot(false);
@@ -294,7 +296,20 @@ public class ManagementSalesController extends BaseController {
     public void onProductCatalogButtonClick(MouseEvent mouseEvent) {
     }
 
-    public void onNewSaleButtonClick(MouseEvent mouseEvent) {
+    /**
+     * Handles the button click event for the new sales button
+     * <p>
+     * Creates a new cart for a selected user
+     */
+    public void onNewSaleButtonClick() {
+        if (!this.isClientSelected()) return;
+        if (currentClient.getCarts().stream().anyMatch(c -> !c.isClosed())) return;
+
+        Cart cart = new Cart();
+        cart.setClient(currentClient);
+
+        this.entityManagerCart.create(cart);
+        this.addCartToTreeTable(cart);
     }
 
     public void onSaveCurrentSaleButtonClick(MouseEvent mouseEvent) {
