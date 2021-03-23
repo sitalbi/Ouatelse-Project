@@ -7,7 +7,6 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import fr.s4e2.ouatelse.exceptions.DatabaseInitialisationException;
-import fr.s4e2.ouatelse.objects.Client;
 import fr.s4e2.ouatelse.objects.Salary;
 import fr.s4e2.ouatelse.objects.User;
 
@@ -143,7 +142,6 @@ public class EntityManagerSalary {
         Salary salary = null;
 
         try {
-            //noinspection UnstableApiUsage
             salary = this.instance.query(this.instance.queryBuilder().where().eq("id", id)
                     .and().eq("user_id", user.getId()).prepare()).stream().findFirst().orElse(null);
         } catch (SQLException exception) {
