@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import java.net.URL?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="baseBorderPane" minHeight="650.0" minWidth="825.0"
+            xmlns="http://javafx.com/javafx/15.0.1"
+            fx:controller="fr.s4e2.ouatelse.controllers.ProductsCatalogController">
+    <top>
+        <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+            <Menu mnemonicParsing="false" text="Fichier">
+                <MenuItem id="menuBarFilePreferences" mnemonicParsing="false" onAction="#onPreferences"
+                          text="Préférences"/>
+                <MenuItem id="menuBarFileQuit" mnemonicParsing="false" onAction="#onQuit" text="Quitter"/>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Aide">
+                <MenuItem id="menuBarHelpAbout" mnemonicParsing="false" onAction="#onAbout" text="À propos"/>
+            </Menu>
+        </MenuBar>
+    </top>
+    <bottom>
+        <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" styleClass="footer">
+            <padding>
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>
+            </padding>
+            <Label maxHeight="1.7976931348623157E308" text="Copyright © Ouatelse. All rights reserved."
+                   HBox.hgrow="ALWAYS">
+                <font>
+                    <Font size="11.0" fx:id="x3"/>
+                </font>
+                <textFill>
+                    <Color red="0.625" green="0.625" blue="0.625" fx:id="x4"/>
+                </textFill>
+            </Label>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Label font="$x3" text="Version ${project.version}" textFill="$x4" HBox.hgrow="NEVER"/>
+        </HBox>
+    </bottom>
+    <center>
+        <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+              styleClass="content" BorderPane.alignment="CENTER">
+            <children>
+                <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <JFXTextField fx:id="notInCartSearchBar" focusColor="RED"
+                                              maxWidth="1.7976931348623157E308" promptText="Rechercher"
+                                              unFocusColor="WHITE" HBox.hgrow="ALWAYS"/>
+                                <JFXButton text=" ">
+                                    <graphic>
+                                        <FontAwesomeIconView fill="RED" glyphName="SEARCH"/>
+                                    </graphic>
+                                </JFXButton>
+                            </children>
+                        </HBox>
+                        <JFXTreeTableView fx:id="notInCartTableView" maxHeight="1.7976931348623157E308"
+                                          maxWidth="1.7976931348623157E308">
+                            <columnResizePolicy>
+                                <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                            </columnResizePolicy>
+                        </JFXTreeTableView>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                    <children>
+                        <Button fx:id="putInCartButton" maxHeight="1.7976931348623157E308"
+                                maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                onMouseClicked="#onPutInCartButton" style="-fx-background-color: red;" text="&gt;&gt;"
+                                textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                            <VBox.margin>
+                                <Insets bottom="10.0"/>
+                            </VBox.margin>
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                        </Button>
+                        <Button fx:id="removeFromCartButton" maxHeight="1.7976931348623157E308"
+                                maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                onMouseClicked="#onRemoveFromCartButton" style="-fx-background-color: red;"
+                                text="&lt;&lt;" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                            <VBox.margin>
+                                <Insets top="10.0"/>
+                            </VBox.margin>
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                            <cursor>
+                                <Cursor fx:constant="HAND"/>
+                            </cursor>
+                        </Button>
+                    </children>
+                    <HBox.margin>
+                        <Insets left="30.0" right="30.0"/>
+                    </HBox.margin>
+                </VBox>
+                <VBox>
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <JFXTextField fx:id="inCartSearchBar" focusColor="RED" maxHeight="-Infinity"
+                                              maxWidth="1.7976931348623157E308" promptText="Rechercher"
+                                              unFocusColor="WHITE" HBox.hgrow="ALWAYS"/>
+                                <JFXButton text=" ">
+                                    <graphic>
+                                        <FontAwesomeIconView fill="RED" glyphName="SEARCH"/>
+                                    </graphic>
+                                </JFXButton>
+                            </children>
+                        </HBox>
+                        <JFXTreeTableView fx:id="inCartTreeTableView" maxHeight="1.7976931348623157E308"
+                                          maxWidth="1.7976931348623157E308">
+                            <columnResizePolicy>
+                                <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                            </columnResizePolicy>
+                        </JFXTreeTableView>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </center>
+    <stylesheets>
+        <URL value="@../css/base.css"/>
+        <URL value="@../css/management.css"/>
+    </stylesheets>
+</BorderPane>
