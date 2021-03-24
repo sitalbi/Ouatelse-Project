@@ -12,6 +12,7 @@ import fr.s4e2.ouatelse.managers.EntityManagerClientStock;
 import fr.s4e2.ouatelse.objects.Cart;
 import fr.s4e2.ouatelse.objects.Client;
 import fr.s4e2.ouatelse.objects.ClientStock;
+import fr.s4e2.ouatelse.screens.ProductsCatalogScreen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -291,7 +292,8 @@ public class ManagementSalesController extends BaseController {
         }
     }
 
-    public void onProductCatalogButtonClick(MouseEvent mouseEvent) {
+    public void onProductCatalogButtonClick() {
+        new ProductsCatalogScreen(this.getAuthentificationStore(), this.currentCart).open();
     }
 
     public void onNewSaleButtonClick(MouseEvent mouseEvent) {
