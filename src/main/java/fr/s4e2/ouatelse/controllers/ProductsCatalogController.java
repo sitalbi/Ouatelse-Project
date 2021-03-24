@@ -122,76 +122,9 @@ public class ProductsCatalogController extends BaseController {
     }
 
     /**
-     * Loads the items in notInCartTableView
+     * Loads the list of products into the table
      */
-    private void loadNotInCartTableView() {
-        try {
-            List<ProductStock> productStocks = this.entityManagerProductStock.executeQuery(
-                    this.entityManagerProductStock.getQueryBuilder().where()
-                            .eq("store_id", this.getAuthentificationStore().getId()).prepare()
-            );
-
-            productStocks.forEach(productStock -> {
-                if (
-                        productStock.getQuantity() > 0
-                                && !isInClientsCart(productStock.getProduct())
-                ) {
-                    this.addProductToTreeTable(productStock.getProduct(), this.notInCartTableView);
-                }
-            });
-        } catch (SQLException exception) {
-            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
-        }
-    }
-
-    /**
-     * Loads the items in inCartTableView
-     */
-    private void loadInCartTableView() {
-        this.getClientStocks().forEach(clientStock -> this.addProductToTreeTable(clientStock.getProduct(), this.inCartTreeTableView));
-    }
-
-    /**
-     * Check if a product is already in the client's cart
-     *
-     * @param product The product to be checked
-     * @return true if the items is present, else false
-     */
-    private boolean isInClientsCart(Product product) {
-        for (ClientStock clientStock : this.getClientStocks()) {
-            if (clientStock.getProduct().getId() == product.getId()) return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Gets the clientStocks from a cart because ORMLite is buggy
-     *
-     * @return A List<ClientStocks> of the cart's ClientStock
-     */
-    private List<ClientStock> getClientStocks() {
-        if (this.currentCart == null) return new ArrayList<>();
-
-        List<ClientStock> result = new ArrayList<>();
-
-        try {
-            result = this.entityManagerClientStock.executeQuery(
-                    this.entityManagerClientStock.getQueryBuilder()
-                            .where().eq("cart_id", this.currentCart.getId())
-                            .prepare()
-            );
-        } catch (SQLException exception) {
-            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
-        }
-
-        return result;
-    }
-
-    /**
-     * Builds the list of products into the table
-     */
-    private void buildInCartTreeTableView() {
+    private void loadInCartTreeTableView() {
         JFXTreeTableColumn<Product.ProductTree, Long> reference = new JFXTreeTableColumn<>("Référence");
         JFXTreeTableColumn<Product.ProductTree, String> name = new JFXTreeTableColumn<>("Nom");
         JFXTreeTableColumn<Product.ProductTree, Double> sellingPrice = new JFXTreeTableColumn<>("Prix de vente");
@@ -205,6 +138,8 @@ public class ProductsCatalogController extends BaseController {
         brand.setCellValueFactory(param -> param.getValue().getValue().getBrand());
 
         ObservableList<Product.ProductTree> products = FXCollections.observableArrayList();
+        this.entityManagerProduct.getQueryForAll().forEach(product -> products.add(product.toProductTree()));
+
         TreeItem<Product.ProductTree> root = new RecursiveTreeItem<>(products, RecursiveTreeObject::getChildren);
 
         //noinspection unchecked
@@ -220,7 +155,7 @@ public class ProductsCatalogController extends BaseController {
     public void onRemoveFromCartButton() {
         ClientStock clientStockToBeRemoved = null;
 
-        for (ClientStock clientStock : this.getClientStocks()) {
+        for (ClientStock clientStock : this.currentCart.getClientStocks()) {
             if (clientStock.getProduct().getId() == this.currentProduct.getId()) {
                 clientStockToBeRemoved = clientStock;
             }
@@ -228,11 +163,59 @@ public class ProductsCatalogController extends BaseController {
 
         if (clientStockToBeRemoved == null) return;
 
-        inCartTreeTableView.getRoot().getChildren().remove(inCartTreeTableView.getSelectionModel().getSelectedItem());
-        addProductToTreeTable(clientStockToBeRemoved.getProduct(), notInCartTableView);
-        this.getClientStocks().remove(clientStockToBeRemoved);
+        this.currentCart.getClientStocks().remove(clientStockToBeRemoved);
         this.entityManagerCart.update(this.currentCart);
         this.entityManagerClientStock.delete(clientStockToBeRemoved);
+    }
+
+    /**
+     * Add the selected item to the client's cart
+     */
+    public void onPutInCartButton() {
+        ClientStock clientStock = new ClientStock();
+        clientStock.setProduct(this.currentProduct);
+        clientStock.setQuantity(1);
+        clientStock.setClient(this.currentCart.getClient());
+        clientStock.setCart(this.currentCart);
+
+        this.entityManagerClientStock.create(clientStock);
+        this.currentCart.getClientStocks().add(clientStock);
+        this.entityManagerCart.update(this.currentCart);
+    }
+
+    /**
+     * Searches a product in the database from its name
+     *
+     * @param input the searched product name
+     */
+    private void searchProductFromText(String input, TreeTableView<Product.ProductTree> productsTreeView) {
+        productsTreeView.getRoot().getChildren().clear();
+
+        if (input.isEmpty()) return;
+
+        try {
+            productsTreeView.getRoot().getChildren().clear();
+            List<Product> searchResults = entityManagerProduct.executeQuery(
+                    entityManagerProduct.getQueryBuilder().where().like("name", "%" + input + "%").prepare()
+            );
+            searchResults.forEach(product -> this.addProductToTreeTable(product, productsTreeView));
+        } catch (SQLException exception) {
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+        }
+    }
+
+    /**
+     * Adds a product to the selected sheet
+     *
+     * @param product The product to add to the sheet
+     */
+    private void addProductToTreeTable(Product product, TreeTableView<Product.ProductTree> productsTreeView) {
+        TreeItem<Product.ProductTree> productRow = new TreeItem<>(product.toProductTree());
+
+        productsTreeView.getRoot().getChildren().remove(productsTreeView.getSelectionModel().getSelectedItem());
+        productsTreeView.getRoot().getChildren().add(productRow);
+        productsTreeView.getSelectionModel().select(productRow);
+        this.currentProduct = product;
     }
 
     /**
