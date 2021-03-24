@@ -34,7 +34,7 @@ public class Client extends Person {
     @DatabaseField
     private String details;
 
-    @ForeignCollectionField(eager = true)
+    @ForeignCollectionField(eager = true, maxEagerLevel = 3)
     private ForeignCollection<Cart> carts;
 
     /**
