@@ -322,11 +322,14 @@ public class ManagementSalesController extends BaseController {
      */
     public void onNewSaleButtonClick() {
         if (!this.isClientSelected()) return;
+        int numberOfClosedCarts = 0;
 
         // KEEP THIS BECAUSE WITH A STREAM THERE IS A BUG
         for (Cart c : currentClient.getCarts()) {
-            if (!c.isClosed()) return;
+            if (c.isClosed()) numberOfClosedCarts++;
         }
+
+        if (numberOfClosedCarts != currentClient.getCarts().size()) return;
 
         Cart cart = new Cart();
         cart.setClient(currentClient);
@@ -355,7 +358,12 @@ public class ManagementSalesController extends BaseController {
 
         this.currentClient.getCarts().remove(currentCart);
         this.entityManagerClient.update(currentClient);
-        currentCart.getClientStocks().forEach(this.entityManagerClientStock::delete);
+
+        try {
+            currentCart.getClientStocks().forEach(this.entityManagerClientStock::delete);
+        } catch (NullPointerException ignored) {
+        }
+
         this.entityManagerCart.delete(currentCart);
 
         this.currentClientsCartTreeTableView.getRoot().getChildren().remove(currentClientsCartTreeTableView.getSelectionModel().getSelectedItem());
