@@ -31,7 +31,7 @@ public class Cart {
     @DatabaseField(canBeNull = false)
     private Date date = new Date();
 
-    @ForeignCollectionField(eager = true)
+    @ForeignCollectionField(eager = true, maxEagerLevel = 2)
     private ForeignCollection<ClientStock> clientStocks;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
