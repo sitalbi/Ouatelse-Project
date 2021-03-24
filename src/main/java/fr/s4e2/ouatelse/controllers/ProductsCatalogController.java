@@ -10,7 +10,10 @@ import fr.s4e2.ouatelse.managers.EntityManagerCart;
 import fr.s4e2.ouatelse.managers.EntityManagerClientStock;
 import fr.s4e2.ouatelse.managers.EntityManagerProduct;
 import fr.s4e2.ouatelse.managers.EntityManagerProductStock;
-import fr.s4e2.ouatelse.objects.*;
+import fr.s4e2.ouatelse.objects.Cart;
+import fr.s4e2.ouatelse.objects.ClientStock;
+import fr.s4e2.ouatelse.objects.Product;
+import fr.s4e2.ouatelse.objects.ProductStock;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -144,6 +147,9 @@ public class ProductsCatalogController extends BaseController {
      * Loads the items in inCartTableView
      */
     private void loadInCartTableView() {
+        // If the cart is newly created
+        if (this.currentCart.getClientStocks() == null) return;
+
         this.currentCart.getClientStocks().forEach(clientStock -> this.addProductToTreeTable(clientStock.getProduct(), this.inCartTreeTableView));
     }
 
@@ -154,20 +160,14 @@ public class ProductsCatalogController extends BaseController {
      * @return true if the items is present, else false
      */
     private boolean isInClientsCart(Product product) {
+        // If the cart is newly created
+        if (this.currentCart.getClientStocks() == null) return false;
+
         for (ClientStock clientStock : this.currentCart.getClientStocks()) {
             if (clientStock.getProduct().getId() == product.getId()) return true;
         }
 
         return false;
-    }
-
-    /**
-     * Sets the current cart
-     *
-     * @param currentCart the cart to be set
-     */
-    public void setCurrentCart(Cart currentCart) {
-        this.currentCart = currentCart;
     }
 
     /**
@@ -210,6 +210,8 @@ public class ProductsCatalogController extends BaseController {
 
         if (clientStockToBeRemoved == null) return;
 
+        inCartTreeTableView.getRoot().getChildren().remove(inCartTreeTableView.getSelectionModel().getSelectedItem());
+        addProductToTreeTable(clientStockToBeRemoved.getProduct(), notInCartTableView);
         this.currentCart.getClientStocks().remove(clientStockToBeRemoved);
         this.entityManagerCart.update(this.currentCart);
         this.entityManagerClientStock.delete(clientStockToBeRemoved);
@@ -225,7 +227,11 @@ public class ProductsCatalogController extends BaseController {
         clientStock.setClient(this.currentCart.getClient());
         clientStock.setCart(this.currentCart);
 
+        notInCartTableView.getRoot().getChildren().remove(notInCartTableView.getSelectionModel().getSelectedItem());
+        addProductToTreeTable(clientStock.getProduct(), inCartTreeTableView);
         this.entityManagerClientStock.create(clientStock);
+
+        // TODO : Buggy, can't find why
         this.currentCart.getClientStocks().add(clientStock);
         this.entityManagerCart.update(this.currentCart);
     }
@@ -259,21 +265,21 @@ public class ProductsCatalogController extends BaseController {
     private void addProductToTreeTable(Product product, TreeTableView<Product.ProductTree> productsTreeView) {
         TreeItem<Product.ProductTree> productRow = new TreeItem<>(product.toProductTree());
 
-        productsTreeView.getRoot().getChildren().remove(productsTreeView.getSelectionModel().getSelectedItem());
         productsTreeView.getRoot().getChildren().add(productRow);
         productsTreeView.getSelectionModel().select(productRow);
         this.currentProduct = product;
     }
 
     /**
-     * Set the store in which the user has logged in
+     * Set the cart selected by the user
      *
-     * @param authentificationStore The store in which the user has logged in
+     * @param currentCart The cart selected by the user
      */
-    @Override
-    public void setAuthentificationStore(Store authentificationStore) {
-        super.setAuthentificationStore(authentificationStore);
+    public void setCurrentCart(Cart currentCart) {
+        this.currentCart = currentCart;
         this.loadNotInCartTableView();
         this.loadInCartTableView();
     }
+
+
 }

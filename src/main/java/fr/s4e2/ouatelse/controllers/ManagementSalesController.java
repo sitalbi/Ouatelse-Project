@@ -311,6 +311,7 @@ public class ManagementSalesController extends BaseController {
     }
 
     public void onProductCatalogButtonClick() {
+        if (this.currentCart == null) return;
         new ProductsCatalogScreen(this.getAuthentificationStore(), this.currentCart).open();
     }
 
@@ -354,6 +355,7 @@ public class ManagementSalesController extends BaseController {
 
         this.currentClient.getCarts().remove(currentCart);
         this.entityManagerClient.update(currentClient);
+        currentCart.getClientStocks().forEach(this.entityManagerClientStock::delete);
         this.entityManagerCart.delete(currentCart);
 
         this.currentClientsCartTreeTableView.getRoot().getChildren().remove(currentClientsCartTreeTableView.getSelectionModel().getSelectedItem());

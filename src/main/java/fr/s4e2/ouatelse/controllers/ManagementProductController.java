@@ -250,12 +250,13 @@ public class ManagementProductController extends BaseController {
             // update product
             this.entityManagerProduct.create(newProduct);
             this.currentProduct = newProduct;
+
+            // creates a product stock
+            ProductStock productStock = new ProductStock();
+            productStock.setProduct(this.currentProduct);
+            productStock.setStore(selectedStore);
+            this.entityManagerProductStock.create(productStock);
         }
-        // creates a product stock
-        ProductStock productStock = new ProductStock();
-        productStock.setProduct(this.currentProduct);
-        productStock.setStore(selectedStore);
-        this.entityManagerProductStock.create(productStock);
 
         // Updates product in the table
         this.addProductToTreeTable(this.currentProduct);
