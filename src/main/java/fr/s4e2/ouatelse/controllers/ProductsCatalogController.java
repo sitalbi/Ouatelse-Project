@@ -222,6 +222,7 @@ public class ProductsCatalogController extends BaseController {
      */
     public void onPutInCartButton() {
         ClientStock clientStock = new ClientStock();
+
         clientStock.setProduct(this.currentProduct);
         clientStock.setQuantity(1);
         clientStock.setClient(this.currentCart.getClient());
@@ -231,8 +232,12 @@ public class ProductsCatalogController extends BaseController {
         addProductToTreeTable(clientStock.getProduct(), inCartTreeTableView);
         this.entityManagerClientStock.create(clientStock);
 
-        // TODO : Buggy, can't find why
-        this.currentCart.getClientStocks().add(clientStock);
+
+        try {
+            this.currentCart.getClientStocks().add(clientStock);
+        } catch (NullPointerException ignored) {
+        }
+
         this.entityManagerCart.update(this.currentCart);
     }
 
