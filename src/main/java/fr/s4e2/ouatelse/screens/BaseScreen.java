@@ -4,6 +4,8 @@ import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.controllers.AuthStoreController;
 import fr.s4e2.ouatelse.controllers.BaseController;
 import fr.s4e2.ouatelse.controllers.HomeController;
+import fr.s4e2.ouatelse.controllers.ProductsCatalogController;
+import fr.s4e2.ouatelse.objects.Cart;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import javafx.fxml.FXMLLoader;
@@ -53,6 +55,38 @@ public abstract class BaseScreen {
 
             BaseController controller = loader.getController();
             controller.setAuthentificationStore(authentificationStore);
+
+            Scene scene = new Scene(parent);
+            scene.getStylesheets().add("css/base.css");
+            stage.setScene(scene);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Creates a Base Screen (Used for the {@link fr.s4e2.ouatelse.controllers.ProductsCatalogController})
+     *
+     * @param fxml  name of the fxml file to load from (must be in the fxml folder in resources)
+     * @param title the title of the window (the title suffixes the set prefix)
+     */
+    protected BaseScreen(String fxml, String title, Store authentificationStore, Cart currentCart) {
+        this.stage = new Stage();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
+        stage.getIcons().add(OUATELSE_ICON);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setMinHeight(650);
+        stage.setMinWidth(825);
+        stage.setTitle(PREFIX + title);
+
+        try {
+            Parent parent = loader.load();
+
+            ProductsCatalogController controller = loader.getController();
+            controller.setAuthentificationStore(authentificationStore);
+            controller.setCurrentCart(currentCart);
 
             Scene scene = new Scene(parent);
             scene.getStylesheets().add("css/base.css");
@@ -137,7 +171,7 @@ public abstract class BaseScreen {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinHeight(650);
         stage.setMinWidth(825);
-        stage.setTitle(title);
+        stage.setTitle(PREFIX + title);
 
         try {
             Parent parent = loader.load();
@@ -151,6 +185,7 @@ public abstract class BaseScreen {
             exception.printStackTrace();
         }
     }
+
 
     /**
      * Allows to open the Stage
