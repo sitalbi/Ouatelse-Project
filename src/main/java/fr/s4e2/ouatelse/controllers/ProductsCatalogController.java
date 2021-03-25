@@ -148,10 +148,7 @@ public class ProductsCatalogController extends BaseController {
      * Loads the items in inCartTableView
      */
     private void loadInCartTableView() {
-        // If the cart is newly created
-        if (this.currentCart.getClientStocks() == null) return;
-
-        this.currentCart.getClientStocks().forEach(clientStock -> this.addProductToTreeTable(clientStock.getProduct(), this.inCartTreeTableView));
+        this.getClientStocks().forEach(clientStock -> this.addProductToTreeTable(clientStock.getProduct(), this.inCartTreeTableView));
     }
 
     /**
@@ -161,14 +158,34 @@ public class ProductsCatalogController extends BaseController {
      * @return true if the items is present, else false
      */
     private boolean isInClientsCart(Product product) {
-        // If the cart is newly created
-        if (this.currentCart.getClientStocks() == null) return false;
-
-        for (ClientStock clientStock : this.currentCart.getClientStocks()) {
+        for (ClientStock clientStock : this.getClientStocks()) {
             if (clientStock.getProduct().getId() == product.getId()) return true;
         }
 
         return false;
+    }
+
+    /**
+     * Gets the clientStocks from a cart because ORMLite is buggy
+     *
+     * @return A List<ClientStocks> of the cart's ClientStock
+     */
+    private List<ClientStock> getClientStocks() {
+        if (this.currentCart == null) return new ArrayList<>();
+
+        List<ClientStock> result = new ArrayList<>();
+
+        try {
+            result = this.entityManagerClientStock.executeQuery(
+                    this.entityManagerClientStock.getQueryBuilder()
+                            .where().eq("cart_id", this.currentCart.getId())
+                            .prepare()
+            );
+        } catch (SQLException exception) {
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+        }
+
+        return result;
     }
 
     /**
@@ -205,7 +222,7 @@ public class ProductsCatalogController extends BaseController {
     public void onRemoveFromCartButton() {
         ClientStock clientStockToBeRemoved = null;
 
-        for (ClientStock clientStock : this.currentCart.getClientStocks()) {
+        for (ClientStock clientStock : this.getClientStocks()) {
             if (clientStock.getProduct().getId() == this.currentProduct.getId()) {
                 clientStockToBeRemoved = clientStock;
             }
@@ -215,7 +232,7 @@ public class ProductsCatalogController extends BaseController {
 
         inCartTreeTableView.getRoot().getChildren().remove(inCartTreeTableView.getSelectionModel().getSelectedItem());
         addProductToTreeTable(clientStockToBeRemoved.getProduct(), notInCartTableView);
-        this.currentCart.getClientStocks().remove(clientStockToBeRemoved);
+        this.getClientStocks().remove(clientStockToBeRemoved);
         this.entityManagerCart.update(this.currentCart);
         this.entityManagerClientStock.delete(clientStockToBeRemoved);
     }
@@ -237,7 +254,7 @@ public class ProductsCatalogController extends BaseController {
 
 
         try {
-            this.currentCart.getClientStocks().add(clientStock);
+            this.getClientStocks().add(clientStock);
         } catch (NullPointerException ignored) {
         }
 
