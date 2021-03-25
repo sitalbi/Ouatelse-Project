@@ -38,6 +38,7 @@ public class BaseController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Nothing to initialize
     }
 
     /**

@@ -65,14 +65,59 @@ public class ProductsCatalogController extends BaseController {
         this.buildNotInCartTableView();
         this.buildInCartTreeTableView();
 
-        this.notInCartSearchBar.textProperty().addListener((observable, oldValue, newValue) -> searchProductFromText(newValue.trim(), this.notInCartTableView));
-        this.inCartSearchBar.textProperty().addListener((observable, oldValue, newValue) -> searchProductFromText(newValue.trim(), this.inCartTreeTableView));
+        // Manages left search bar
+        this.notInCartSearchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            notInCartTableView.getRoot().getChildren().clear();
+
+            if(newValue.trim().isEmpty()) {
+                loadNotInCartTableView();
+            } else {
+                try {
+                    List<Product> searchResults = entityManagerProduct.executeQuery(
+                            entityManagerProduct.getQueryBuilder().where().like("name", "%" + newValue.trim() + "%").prepare()
+                    );
+                    searchResults.forEach(product -> {
+                        if (!isInClientsCart(product)) {
+                            this.addProductToTreeTable(product, this.notInCartTableView);
+                        }
+                    });
+                } catch (SQLException exception) {
+                    this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+                }
+            }
+        });
+
+        // Manages right search bar
+        this.inCartSearchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            inCartTreeTableView.getRoot().getChildren().clear();
+
+            if(newValue.trim().isEmpty()) {
+                loadInCartTableView();
+            } else {
+                try {
+                    List<Product> searchResults = entityManagerProduct.executeQuery(
+                            entityManagerProduct.getQueryBuilder().where().like("name", "%" + newValue.trim() + "%").prepare()
+                    );
+                    searchResults.forEach(product -> {
+                        if (isInClientsCart(product)) {
+                            this.addProductToTreeTable(product, this.inCartTreeTableView);
+                        }
+                    });
+                } catch (SQLException exception) {
+                    this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+                }
+            }
+        });
 
         // Enables or disables button on select and unselect
-        this.notInCartTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selectProductFromTable(newValue));
+        this.notInCartTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            selectProductFromTable(newValue);
+        });
 
         // Enables or disables button on select and unselect
-        this.inCartTreeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selectProductFromTable(newValue));
+        this.inCartTreeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            selectProductFromTable(newValue);
+        });
     }
 
     private void selectProductFromTable(TreeItem<Product.ProductTree> newValue) {
@@ -257,27 +302,6 @@ public class ProductsCatalogController extends BaseController {
         }
 
         this.entityManagerCart.update(this.currentCart);
-    }
-
-    /**
-     * Searches a product in the database from its name
-     *
-     * @param input the searched product name
-     */
-    private void searchProductFromText(String input, TreeTableView<Product.ProductTree> productsTreeView) {
-        productsTreeView.getRoot().getChildren().clear();
-
-        if (input.isEmpty()) return;
-
-        try {
-            productsTreeView.getRoot().getChildren().clear();
-            List<Product> searchResults = entityManagerProduct.executeQuery(
-                    entityManagerProduct.getQueryBuilder().where().like("name", "%" + input + "%").prepare()
-            );
-            searchResults.forEach(product -> this.addProductToTreeTable(product, productsTreeView));
-        } catch (SQLException exception) {
-            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
-        }
     }
 
     /**
