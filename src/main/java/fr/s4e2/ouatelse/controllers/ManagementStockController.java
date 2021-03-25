@@ -16,6 +16,7 @@ import fr.s4e2.ouatelse.utils.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
 
@@ -31,11 +32,17 @@ import java.util.logging.Logger;
  */
 public class ManagementStockController extends BaseController {
 
+    private static final String ERROR_NEGATIVE_OR_ZERO_QUANTITY = "Ajout ou suppression impossible, vérifier la valeur rentrée";
+    private static final String ERROR_NONNUMERIC_VALUE = "Caractère non valable";
+    private static final String NOT_ENOUGH_QUANTITY = "La quantité demandée n’est pas disponible en quantité suffisante dans le stock";
+
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
     private final EntityManagerProductStock entityManagerProductStock = Main.getDatabaseManager().getEntityManagerProductStock();
     private final EntityManagerProduct entityManagerProduct = Main.getDatabaseManager().getEntityManagerProduct();
 
+    @FXML
+    private Label errorField;
     @FXML
     private JFXTextField stockSearchBar;
     @FXML
@@ -93,7 +100,6 @@ public class ManagementStockController extends BaseController {
                 this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             }
             this.loadInformation();
-
         });
 
         // Handles the selection of a store
@@ -122,12 +128,26 @@ public class ManagementStockController extends BaseController {
     /**
      * Handles the button click event for the delete button
      * <p>
-     * Deletes the stock of a product
+     * Deletes from the stock of a product
      */
     public void onDeleteStockButtonClick() {
         if (!this.isStockEditing()) return;
 
-        this.currentStock.setQuantity(0);
+        Integer quantity = Utils.getNumber(stockQuantityInput.getText().trim());
+        if (quantity == null) {
+            this.errorField.setText(ERROR_NONNUMERIC_VALUE);
+            return;
+        }
+        if (quantity <= 0) {
+            this.errorField.setText(ERROR_NEGATIVE_OR_ZERO_QUANTITY);
+            return;
+        }
+        if (currentStock.getQuantity() - quantity <= 0) {
+            this.errorField.setText(NOT_ENOUGH_QUANTITY);
+            return;
+        }
+
+        this.currentStock.setQuantity(currentStock.getQuantity() - quantity);
         this.entityManagerProductStock.update(currentStock);
         this.stockQuantityInput.setText("");
         this.addProductStockToTreeTable(currentStock);
@@ -142,7 +162,14 @@ public class ManagementStockController extends BaseController {
         if (!this.isStockEditing()) return;
 
         Integer quantity = Utils.getNumber(stockQuantityInput.getText().trim());
-        if (quantity == null) return;
+        if (quantity == null) {
+            this.errorField.setText(ERROR_NONNUMERIC_VALUE);
+            return;
+        }
+        if (quantity <= 0) {
+            this.errorField.setText(ERROR_NEGATIVE_OR_ZERO_QUANTITY);
+            return;
+        }
 
         this.currentStock.setQuantity(currentStock.getQuantity() + quantity);
         this.entityManagerProductStock.update(currentStock);
