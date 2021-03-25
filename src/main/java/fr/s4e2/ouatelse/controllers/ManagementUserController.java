@@ -22,6 +22,7 @@ import javafx.scene.input.KeyCode;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 /**
@@ -34,6 +35,7 @@ public class ManagementUserController extends BaseController {
     private static final String NOT_A_ZIPCODE = "Le code postal est incorrect!";
     private static final String NOT_AN_HOUR = "Les heures par semaine sont incorrectes!";
     private static final String PASSWORD_NOT_MATCHING = "Mot de passe non concordants!";
+    private static final String NOT_A_VALID_DOB = "La date de naissance est invalide!";
 
     @FXML
     private Label errorMessage;
@@ -190,6 +192,13 @@ public class ManagementUserController extends BaseController {
         if (zipCode == null || zipCode > 99999) {
             this.errorMessage.setText(NOT_A_ZIPCODE);
             this.userZipcodeInput.getParent().requestFocus();
+            return;
+        }
+
+        // incorrect date of birth
+        Date dob = Utils.localDateToDate(userBirthDate.getValue());
+        if (dob.after(new Date())) {
+            this.errorMessage.setText(NOT_A_VALID_DOB);
             return;
         }
 

@@ -20,6 +20,7 @@ import javafx.scene.input.KeyCode;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -33,6 +34,7 @@ public class ManagementClientController extends BaseController {
     private static final String TEXT_FIELD_EMPTY_HINT = "Champ(s) Vide!";
     private static final String CLIENT_ALREADY_EXISTS = "Ce client existe déjà!";
     private static final String NOT_A_ZIPCODE = "Le code postal est incorrect!";
+    private static final String NOT_A_VALID_DOB = "La date de naissance est invalide!";
 
     private final EntityManagerClient entityManagerClient = Main.getDatabaseManager().getEntityManagerClient();
     private final EntityManagerAddress entityManagerAddress = Main.getDatabaseManager().getEntityManagerAddress();
@@ -153,6 +155,13 @@ public class ManagementClientController extends BaseController {
         if (zipCode == null || zipCode > 99999) {
             this.errorMessage.setText(NOT_A_ZIPCODE);
             this.clientZipInput.getParent().requestFocus();
+            return;
+        }
+
+        // incorrect date of birth
+        Date dob = Utils.localDateToDate(clientBirthDate.getValue());
+        if (dob.after(new Date())) {
+            this.errorMessage.setText(NOT_A_VALID_DOB);
             return;
         }
 
@@ -280,10 +289,14 @@ public class ManagementClientController extends BaseController {
         client.setMobilePhoneNumber(clientPhoneInput.getText().trim());
         client.setHomePhoneNumber(clientPhoneInput.getText().trim());
         client.setWorkPhoneNumber(clientPhoneInput.getText().trim());
-        client.setFax(clientFaxInput.getText().trim());
+        if (clientFaxInput.getText() != null) {
+            client.setFax(clientFaxInput.getText().trim());
+        }
         client.setBirthDate(Utils.localDateToDate(clientBirthDate.getValue()));
         client.setCivility(clientCivilityDropdown.getValue());
-        client.setDetails(clientDetailsInput.getText().trim());
+        if (clientDetailsInput.getText() != null) {
+            client.setDetails(clientDetailsInput.getText().trim());
+        }
     }
 
     /**
