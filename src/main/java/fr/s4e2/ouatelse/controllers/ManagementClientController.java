@@ -283,20 +283,16 @@ public class ManagementClientController extends BaseController {
      * @param client the User to update
      */
     private void updateClient(Client client) {
-        client.setSurname(clientLastNameInput.getText().trim());
-        client.setName(clientFirstNameInput.getText().trim());
-        client.setEmail(clientEmailInput.getText().trim());
-        client.setMobilePhoneNumber(clientPhoneInput.getText().trim());
-        client.setHomePhoneNumber(clientPhoneInput.getText().trim());
-        client.setWorkPhoneNumber(clientPhoneInput.getText().trim());
-        if (clientFaxInput.getText() != null) {
-            client.setFax(clientFaxInput.getText().trim());
-        }
+        client.setSurname(clientLastNameInput.getText().trim().isEmpty() ? "" : clientLastNameInput.getText().trim());
+        client.setName(clientFirstNameInput.getText().trim().isEmpty() ? "" : clientFirstNameInput.getText().trim());
+        client.setEmail(clientEmailInput.getText().trim().isEmpty() ? "" : clientEmailInput.getText().trim());
+        client.setMobilePhoneNumber(clientPhoneInput.getText().trim().isEmpty() ? "" : clientPhoneInput.getText().trim());
+        client.setHomePhoneNumber(clientPhoneInput.getText().trim().isEmpty() ? "" : clientPhoneInput.getText().trim());
+        client.setWorkPhoneNumber(clientPhoneInput.getText().trim().isEmpty() ? "" : clientPhoneInput.getText().trim());
+        client.setFax(clientFaxInput.getText() == null ? "" : clientFaxInput.getText().trim());
         client.setBirthDate(Utils.localDateToDate(clientBirthDate.getValue()));
         client.setCivility(clientCivilityDropdown.getValue());
-        if (clientDetailsInput.getText() != null) {
-            client.setDetails(clientDetailsInput.getText().trim());
-        }
+        client.setDetails(clientDetailsInput.getText() == null ? "" : clientDetailsInput.getText().trim());
     }
 
     /**

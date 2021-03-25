@@ -18,6 +18,31 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/java/fr/iut/HelloServlet.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/java/fr/iut/HomeServlet.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/java/resources/templates/home.ftl">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/webapp/index.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/.gitignore">
           <value>
             <set />
@@ -74,6 +99,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/MainController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/fr/s4e2/ouatelse/controllers/ManagementClientController.java">
           <value>
             <set />
           </value>
@@ -449,31 +479,6 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/test/java/fr/s4e2/ouatelse/utils/UtilsTest.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/pom.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/java/fr/iut/HelloServlet.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/java/fr/iut/HomeServlet.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/java/resources/templates/home.ftl">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../jee_td_CAILLAT_LEROY_TALBI/helloServlet/src/main/webapp/index.html">
           <value>
             <set />
           </value>
