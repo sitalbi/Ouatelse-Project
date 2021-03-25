@@ -205,8 +205,6 @@ public class ProductsCatalogController extends BaseController {
         brand.setCellValueFactory(param -> param.getValue().getValue().getBrand());
 
         ObservableList<Product.ProductTree> products = FXCollections.observableArrayList();
-        this.entityManagerProduct.getQueryForAll().forEach(product -> products.add(product.toProductTree()));
-
         TreeItem<Product.ProductTree> root = new RecursiveTreeItem<>(products, RecursiveTreeObject::getChildren);
 
         //noinspection unchecked
@@ -296,64 +294,6 @@ public class ProductsCatalogController extends BaseController {
     }
 
     /**
-     * Add the selected item to the client's cart
-     */
-    public void onPutInCartButton() {
-        ClientStock clientStock = new ClientStock();
-
-        clientStock.setProduct(this.currentProduct);
-        clientStock.setQuantity(1);
-        clientStock.setClient(this.currentCart.getClient());
-        clientStock.setCart(this.currentCart);
-
-        notInCartTableView.getRoot().getChildren().remove(notInCartTableView.getSelectionModel().getSelectedItem());
-        addProductToTreeTable(clientStock.getProduct(), inCartTreeTableView);
-        this.entityManagerClientStock.create(clientStock);
-
-
-        try {
-            this.getClientStocks().add(clientStock);
-        } catch (NullPointerException ignored) {
-        }
-
-        this.entityManagerCart.update(this.currentCart);
-    }
-
-    /**
-     * Searches a product in the database from its name
-     *
-     * @param input the searched product name
-     */
-    private void searchProductFromText(String input, TreeTableView<Product.ProductTree> productsTreeView) {
-        productsTreeView.getRoot().getChildren().clear();
-
-        if (input.isEmpty()) return;
-
-        try {
-            productsTreeView.getRoot().getChildren().clear();
-            List<Product> searchResults = entityManagerProduct.executeQuery(
-                    entityManagerProduct.getQueryBuilder().where().like("name", "%" + input + "%").prepare()
-            );
-            searchResults.forEach(product -> this.addProductToTreeTable(product, productsTreeView));
-        } catch (SQLException exception) {
-            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
-        }
-    }
-
-    /**
-     * Adds a product to the selected sheet
-     *
-     * @param product The product to add to the sheet
-     */
-    private void addProductToTreeTable(Product product, TreeTableView<Product.ProductTree> productsTreeView) {
-        TreeItem<Product.ProductTree> productRow = new TreeItem<>(product.toProductTree());
-
-        productsTreeView.getRoot().getChildren().add(productRow);
-        productsTreeView.getSelectionModel().select(productRow);
-        this.currentProduct = product;
-    }
-
-    /**
      * Set the cart selected by the user
      *
      * @param currentCart The cart selected by the user
@@ -363,4 +303,6 @@ public class ProductsCatalogController extends BaseController {
         this.loadNotInCartTableView();
         this.loadInCartTableView();
     }
+
+
 }
