@@ -52,6 +52,7 @@
                 <RowConstraints vgrow="SOMETIMES"/>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
                 <RowConstraints vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <stylesheets>
                 <URL value="@../css/base.css"/>
@@ -78,8 +79,8 @@
                     <padding>
                         <Insets bottom="5.0"/>
                     </padding>
-                    <JFXTextField fx:id="stockSearchBar" alignment="CENTER" focusColor="RED"
-                                  promptText="Rechercher" unFocusColor="WHITE" HBox.hgrow="ALWAYS">
+                    <JFXTextField fx:id="stockSearchBar" alignment="CENTER" focusColor="RED" promptText="Rechercher"
+                                  unFocusColor="WHITE" HBox.hgrow="ALWAYS">
                         <HBox.margin>
                             <Insets/>
                         </HBox.margin>
@@ -89,8 +90,7 @@
                     </JFXTextField>
                     <JFXButton text=" ">
                         <graphic>
-                            <FontAwesomeIconView fill="RED" glyphName="SEARCH" size="14.0"
-                                                 textAlignment="CENTER">
+                            <FontAwesomeIconView fill="RED" glyphName="SEARCH" size="14.0" textAlignment="CENTER">
                                 <cursor>
                                     <Cursor fx:constant="DEFAULT"/>
                                 </cursor>
@@ -101,8 +101,7 @@
                         </cursor>
                     </JFXButton>
                 </HBox>
-                <JFXTreeTableView fx:id="stockTreeTableView" prefHeight="130.0" prefWidth="498.0"
-                                  VBox.vgrow="ALWAYS">
+                <JFXTreeTableView fx:id="stockTreeTableView" prefHeight="130.0" prefWidth="498.0" VBox.vgrow="ALWAYS">
                     <columnResizePolicy>
                         <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                     </columnResizePolicy>
@@ -171,8 +170,8 @@
                         <Insets right="25.0"/>
                     </GridPane.margin>
                 </JFXTextField>
-                <Label text="Valeur totale (après vente)" textAlignment="CENTER" textFill="WHITE"
-                       wrapText="true" GridPane.rowIndex="2">
+                <Label text="Valeur totale (après vente)" textAlignment="CENTER" textFill="WHITE" wrapText="true"
+                       GridPane.rowIndex="2">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -228,7 +227,7 @@
                     </opaqueInsets>
                 </Button>
                 <Button mnemonicParsing="false" onMouseClicked="#onDeleteStockButtonClick"
-                        style="-fx-background-color: red;" text="Supprimer Stock" textAlignment="CENTER"
+                        style="-fx-background-color: red;" text="Supprimer du stock" textAlignment="CENTER"
                         textFill="WHITE" wrapText="true">
                     <font>
                         <Font size="14.0"/>
@@ -243,9 +242,9 @@
                         <Insets right="15.0"/>
                     </HBox.margin>
                 </Button>
-                <Button alignment="BOTTOM_CENTER" mnemonicParsing="false"
-                        onMouseClicked="#onAddStockButtonClick" style="-fx-background-color: red;"
-                        text="Ajouter Stock" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onMouseClicked="#onAddStockButtonClick"
+                        style="-fx-background-color: red;" text="Ajouter du stock" textAlignment="CENTER"
+                        textFill="WHITE" wrapText="true">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -260,6 +259,9 @@
                     </HBox.margin>
                 </Button>
             </HBox>
+            <Label fx:id="errorField" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308"
+                   maxWidth="1.7976931348623157E308" textAlignment="CENTER" textFill="RED" wrapText="true"
+                   GridPane.rowIndex="3"/>
         </GridPane>
     </center>
 </BorderPane>
