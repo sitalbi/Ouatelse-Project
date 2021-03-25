@@ -313,6 +313,8 @@ public class ManagementProductController extends BaseController {
         this.currentProduct.setPurchasePrice(pricesTreeTreeItem.getValue().getBuyingPrice().getValue());
 
         this.entityManagerProduct.update(currentProduct);
+
+        this.addProductToTreeTable(this.currentProduct);
     }
     // ##########################################
 
