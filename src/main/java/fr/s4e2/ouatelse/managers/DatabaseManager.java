@@ -37,6 +37,8 @@ public class DatabaseManager {
     private EntityManagerVendor entityManagerVendor;
     private EntityManagerScheduledOrder entityManagerScheduledOrder;
     private EntityManagerClient entityManagerClient;
+    private EntityManagerCart entityManagerCart;
+    private EntityManagerClientStock entityManagerClientStock;
     private EntityManagerSalary entityManagerSalary;
 
     /**
@@ -96,6 +98,7 @@ public class DatabaseManager {
         TableUtils.createTableIfNotExists(connectionSource, User.class);
         TableUtils.createTableIfNotExists(connectionSource, Vendor.class);
         TableUtils.createTableIfNotExists(connectionSource, ScheduledOrder.class);
+        TableUtils.createTableIfNotExists(connectionSource, ClientStock.class);
     }
 
     /**
@@ -111,6 +114,8 @@ public class DatabaseManager {
         this.entityManagerProductStock = new EntityManagerProductStock(connectionSource);
         this.entityManagerScheduledOrder = new EntityManagerScheduledOrder(connectionSource);
         this.entityManagerClient = new EntityManagerClient(connectionSource);
+        this.entityManagerCart = new EntityManagerCart(connectionSource);
+        this.entityManagerClientStock = new EntityManagerClientStock(connectionSource);
         this.entityManagerSalary = new EntityManagerSalary(connectionSource);
     }
 
@@ -123,6 +128,7 @@ public class DatabaseManager {
         this.setupRoles();
         this.setupTestStore();
         this.setupTestUser();
+        this.setupTestClient();
     }
 
     /**
@@ -184,6 +190,33 @@ public class DatabaseManager {
             this.entityManagerAddress.create(address);
             this.entityManagerStore.create(store);
         }
+    }
+
+    /**
+     * Fills the database with standard client data
+     */
+    private void setupTestClient() {
+        if (this.connectionSource == null || this.entityManagerStore == null) return;
+
+        if (this.entityManagerClient.getClientIfExists(1, "test", "client") != null) return;
+
+        Client client = new Client();
+        client.setName("test");
+        client.setSurname("client");
+        client.setMobilePhoneNumber("123456789");
+        client.setEmail("client@test.com");
+        client.setBirthDate(new Date());
+        client.setCivility(Civility.M);
+
+        Address address = new Address();
+        address.setAddress("Test Address");
+        address.setCity("Test City");
+        address.setZipCode(0);
+
+        client.setAddress(address);
+
+        this.entityManagerAddress.create(address);
+        this.entityManagerClient.create(client);
     }
 
     /**
