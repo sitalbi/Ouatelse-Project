@@ -142,7 +142,7 @@ public class ManagementStockController extends BaseController {
             this.errorField.setText(ERROR_NEGATIVE_OR_ZERO_QUANTITY);
             return;
         }
-        if (currentStock.getQuantity() - quantity <= 0) {
+        if (currentStock.getQuantity() - quantity < 0) {
             this.errorField.setText(NOT_ENOUGH_QUANTITY);
             return;
         }
