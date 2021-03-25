@@ -132,9 +132,7 @@ public class HomeController extends BaseController {
      * Opens the Monitoring Screen
      */
     private void onMonitoringButtonClick() {
-        //todo : open monitoring screen
-
-        System.out.println("Open monitoring screen");
+        throw new UnsupportedOperationException("Open monitoring screen");
     }
 
     /**
@@ -143,9 +141,7 @@ public class HomeController extends BaseController {
      * Opens the Planning Management Screen
      */
     private void onPlanningButtonClick() {
-        //todo : open planning screen
-
-        System.out.println("Open planning screen");
+        throw new UnsupportedOperationException("Open planning screen");
     }
 
     /**
@@ -163,9 +159,7 @@ public class HomeController extends BaseController {
      * Opens the Statistics Screen
      */
     private void onStatisticsButtonClick() {
-        //todo : open statistics screen
-
-        System.out.println("Open statistics screen");
+        throw new UnsupportedOperationException("Open statistics screen");
     }
 
     /**
