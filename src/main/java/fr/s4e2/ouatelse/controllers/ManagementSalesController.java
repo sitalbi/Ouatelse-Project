@@ -24,6 +24,7 @@ import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -360,7 +361,7 @@ public class ManagementSalesController extends BaseController {
         this.entityManagerClient.update(currentClient);
 
         try {
-            currentCart.getClientStocks().forEach(this.entityManagerClientStock::delete);
+            this.getClientStocks().forEach(this.entityManagerClientStock::delete);
         } catch (NullPointerException ignored) {
         }
 
@@ -368,6 +369,29 @@ public class ManagementSalesController extends BaseController {
 
         this.currentClientsCartTreeTableView.getRoot().getChildren().remove(currentClientsCartTreeTableView.getSelectionModel().getSelectedItem());
         this.currentCart = null;
+    }
+
+    /**
+     * Gets the clientStocks from a cart because ORMLite is buggy
+     *
+     * @return A List<ClientStocks> of the cart's ClientStock
+     */
+    private List<ClientStock> getClientStocks() {
+        if (this.currentCart == null) return new ArrayList<>();
+
+        List<ClientStock> result = new ArrayList<>();
+
+        try {
+            result = this.entityManagerClientStock.executeQuery(
+                    this.entityManagerClientStock.getQueryBuilder()
+                            .where().eq("cart_id", this.currentCart.getId())
+                            .prepare()
+            );
+        } catch (SQLException exception) {
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+        }
+
+        return result;
     }
 
 
