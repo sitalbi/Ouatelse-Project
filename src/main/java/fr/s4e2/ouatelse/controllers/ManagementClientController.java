@@ -20,7 +20,10 @@ import javafx.scene.input.KeyCode;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementClientScreen}
@@ -33,6 +36,7 @@ public class ManagementClientController extends BaseController {
 
     private final EntityManagerClient entityManagerClient = Main.getDatabaseManager().getEntityManagerClient();
     private final EntityManagerAddress entityManagerAddress = Main.getDatabaseManager().getEntityManagerAddress();
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     @FXML
     private Label errorMessage;
@@ -60,6 +64,8 @@ public class ManagementClientController extends BaseController {
     private JFXDatePicker clientBirthDate;
     @FXML
     private JFXTreeTableView<Client.ClientTree> clientTreeTableView;
+    @FXML
+    private JFXTextField clientSearchBar;
     private Client currentClient;
 
     /**
@@ -106,6 +112,9 @@ public class ManagementClientController extends BaseController {
             this.loadClientInformation();
 
         });
+
+        // search employee
+        this.clientSearchBar.textProperty().addListener((observable, oldValue, newValue) -> searchClientFromText(newValue.trim()));
     }
 
     /**
@@ -293,5 +302,31 @@ public class ManagementClientController extends BaseController {
      */
     private boolean isEditing() {
         return this.currentClient != null;
+    }
+
+    /**
+     * Searches a client in the database from its credentials
+     *
+     * @param input the searched client name
+     */
+    private void searchClientFromText(String input) {
+        this.clientTreeTableView.getRoot().getChildren().clear();
+
+        if (input.isEmpty()) {
+            this.loadClientTreeTable();
+            return;
+        }
+
+        this.clearInformation();
+
+        try {
+            List<Client> searchResults = entityManagerClient.executeQuery(entityManagerClient.getQueryBuilder()
+                    .where().like("surname", "%" + input + "%")
+                    .prepare()
+            );
+            searchResults.forEach(client -> this.clientTreeTableView.getRoot().getChildren().add(new TreeItem<>(client.toClientTree())));
+        } catch (SQLException exception) {
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+        }
     }
 }
