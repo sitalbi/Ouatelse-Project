@@ -109,7 +109,7 @@ public class ManagementOrdersController extends BaseController {
     /**
      * On confirmation button, check if fields are corrects, then insert the order in the database
      *
-     * @throws SQLException
+     * @throws SQLException An exception related to the database, not the application
      */
     public void onConfirmButtonClick() throws SQLException {
         if (this.articleReferenceField.getText().trim().isEmpty()
