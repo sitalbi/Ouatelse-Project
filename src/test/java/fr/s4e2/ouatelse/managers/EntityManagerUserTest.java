@@ -3,12 +3,14 @@ package fr.s4e2.ouatelse.managers;
 import com.j256.ormlite.dao.CloseableIterator;
 import fr.s4e2.ouatelse.objects.Civility;
 import fr.s4e2.ouatelse.objects.PersonState;
+import fr.s4e2.ouatelse.objects.Product;
 import fr.s4e2.ouatelse.objects.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -180,13 +182,18 @@ class EntityManagerUserTest {
                 - The query is not empty, nothing is thrown
      */
     @Test
-    void executeQuery() {
+    void executeQuery() throws SQLException {
         // Query is empty
         assertThrows(NullPointerException.class, () -> this.entityManagerUser.executeQuery(null));
 
 
         // Query is not empty
         assertDoesNotThrow(() -> this.entityManagerUser.executeQuery(this.entityManagerUser.getQueryBuilder().prepare()));
+
+        this.entityManagerUser.create(createCompliantUser());
+        List<User> results = this.entityManagerUser.executeQuery(this.entityManagerUser.getQueryBuilder().prepare());
+
+        assertEquals(1, results.size());
     }
 
     /*

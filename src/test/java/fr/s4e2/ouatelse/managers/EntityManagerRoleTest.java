@@ -1,12 +1,15 @@
 package fr.s4e2.ouatelse.managers;
 
 import com.j256.ormlite.dao.CloseableIterator;
+import fr.s4e2.ouatelse.objects.Client;
+import fr.s4e2.ouatelse.objects.ClientStock;
 import fr.s4e2.ouatelse.objects.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,13 +159,17 @@ class EntityManagerRoleTest {
                 - The query is not empty, nothing is thrown
      */
     @Test
-    void executeQuery() {
+    void executeQuery() throws SQLException {
         // Query is empty
         assertThrows(NullPointerException.class, () -> this.entityManagerRole.executeQuery(null));
 
 
         // Query is not empty
         assertDoesNotThrow(() -> this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().prepare()));
+        this.entityManagerRole.create("role");
+        List<Role> results = this.entityManagerRole.executeQuery(this.entityManagerRole.getQueryBuilder().prepare());
+
+        assertEquals(1, results.size());
     }
 
     /*

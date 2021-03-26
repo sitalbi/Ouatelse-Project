@@ -1,12 +1,14 @@
 package fr.s4e2.ouatelse.managers;
 
 import com.j256.ormlite.dao.CloseableIterator;
+import fr.s4e2.ouatelse.objects.ScheduledOrder;
 import fr.s4e2.ouatelse.objects.Store;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -168,13 +170,20 @@ class EntityManagerStoreTest {
                 - The query is not empty, nothing is thrown
      */
     @Test
-    void executeQuery() {
+    void executeQuery() throws SQLException {
         // Query is empty
         assertThrows(NullPointerException.class, () -> this.entityManagerStore.executeQuery(null));
 
 
         // Query is not empty
         assertDoesNotThrow(() -> this.entityManagerStore.executeQuery(this.entityManagerStore.getQueryBuilder().prepare()));
+        Store firstStore = new Store("Store1");
+        firstStore.setPassword("test");
+        this.entityManagerStore.create(firstStore);
+
+        List<Store> results = this.entityManagerStore.executeQuery(this.entityManagerStore.getQueryBuilder().prepare());
+
+        assertEquals(1, results.size());
     }
 
     /*

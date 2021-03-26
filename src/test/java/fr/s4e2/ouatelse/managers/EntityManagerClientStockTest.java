@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -197,13 +198,21 @@ class EntityManagerClientStockTest {
                 - The query is not empty, nothing is thrown
      */
     @Test
-    void executeQuery() {
+    void executeQuery() throws SQLException {
         // Query is empty
         assertThrows(NullPointerException.class, () -> this.entityManagerClientStock.executeQuery(null));
 
 
         // Query is not empty
         assertDoesNotThrow(() -> this.entityManagerClientStock.executeQuery(this.entityManagerClientStock.getQueryBuilder().prepare()));
+        ClientStock clientStock = new ClientStock();
+        clientStock.setProduct(createCompliantProduct());
+        clientStock.setClient(new Client());
+
+        this.entityManagerClientStock.create(clientStock);
+        List<ClientStock> results = this.entityManagerClientStock.executeQuery(this.entityManagerClientStock.getQueryBuilder().prepare());
+
+        assertEquals(1, results.size());
     }
 
     /*

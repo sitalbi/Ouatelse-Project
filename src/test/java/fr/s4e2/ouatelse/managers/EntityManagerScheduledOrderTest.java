@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -171,13 +172,17 @@ class EntityManagerScheduledOrderTest {
                 - The query is not empty, nothing is thrown
      */
     @Test
-    void executeQuery() {
+    void executeQuery() throws SQLException {
         // Query is empty
         assertThrows(NullPointerException.class, () -> this.entityManagerScheduledOrder.executeQuery(null));
 
 
         // Query is not empty
         assertDoesNotThrow(() -> this.entityManagerScheduledOrder.executeQuery(this.entityManagerScheduledOrder.getQueryBuilder().prepare()));
+        this.entityManagerScheduledOrder.create(createCompliantScheduledOrder(1));
+        List<ScheduledOrder> results = this.entityManagerScheduledOrder.executeQuery(this.entityManagerScheduledOrder.getQueryBuilder().prepare());
+
+        assertEquals(1, results.size());
     }
 
     /*

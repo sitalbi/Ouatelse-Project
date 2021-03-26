@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -167,13 +168,17 @@ class EntityManagerAddressTest {
                 - The query is not empty, nothing is thrown
      */
     @Test
-    void executeQuery() {
+    void executeQuery() throws SQLException {
         // Query is empty
         assertThrows(NullPointerException.class, () -> this.entityManagerAddress.executeQuery(null));
 
 
         // Query is not empty
         assertDoesNotThrow(() -> this.entityManagerAddress.executeQuery(this.entityManagerAddress.getQueryBuilder().prepare()));
+        this.entityManagerAddress.create(new Address(33000, "Bordeaux", "Some address"));
+        List<Address> results = this.entityManagerAddress.executeQuery(this.entityManagerAddress.getQueryBuilder().prepare());
+
+        assertEquals(1, results.size());
     }
 
     /*
