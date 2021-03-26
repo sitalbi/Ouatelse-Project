@@ -38,23 +38,24 @@ public class HomeController extends BaseController {
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final EntityManagerProductStock entityManagerProductStock = Main.getDatabaseManager().getEntityManagerProductStock();
-    private User authentificationUser;
-    private Store authentificationStore;
 
     @FXML
     private VBox verticalButtonsBar;
     @FXML
-    private Label roleField;
-    @FXML
     private ScrollPane scrollPanel;
     @FXML
-    private Label homeAdminName;
+    private Label roleField;
     @FXML
-    private Label homeAdminEmail;
+    private Label homeName;
+    @FXML
+    private Label homeEmail;
+    @FXML
+    private Label homeStoreLabel;
     @FXML
     private Pane leftPane;
-    @FXML
-    private JFXButton disconnectionButton;
+
+    private User authentificationUser;
+    private Store authentificationStore;
 
     /**
      * Sets the current user for this Screen
@@ -64,9 +65,10 @@ public class HomeController extends BaseController {
     public void setAuthentificationUser(User user) {
         this.authentificationUser = user;
 
-        this.homeAdminName.setText(this.authentificationUser.getName() + " " + this.authentificationUser.getSurname());
-        this.homeAdminEmail.setText(this.authentificationUser.getEmail());
         this.roleField.setText(this.authentificationUser.getRole().toString());
+        this.homeName.setText(this.authentificationUser.getName() + " " + this.authentificationUser.getSurname());
+        this.homeEmail.setText(this.authentificationUser.getEmail());
+        this.homeStoreLabel.setText("Magasin : " + this.authentificationStore.getId());
 
         // Use the VBox to emulate a CSS flexbox
         this.scrollPanel.heightProperty().addListener((observable, oldValue, newValue) -> {
@@ -93,7 +95,7 @@ public class HomeController extends BaseController {
      */
     public void onDisconnectClick() {
         this.authentificationUser = null;
-        Stage stage = (Stage) this.homeAdminName.getScene().getWindow();
+        Stage stage = (Stage) this.homeName.getScene().getWindow();
         stage.close();
 
         new AuthUserScreen().open();
@@ -132,7 +134,7 @@ public class HomeController extends BaseController {
      * Opens the Monitoring Screen
      */
     private void onMonitoringButtonClick() {
-        throw new UnsupportedOperationException("Open monitoring screen");
+        logger.warning("The monitoring screen hasn't been implemented yet!");
     }
 
     /**
@@ -141,7 +143,7 @@ public class HomeController extends BaseController {
      * Opens the Planning Management Screen
      */
     private void onPlanningButtonClick() {
-        throw new UnsupportedOperationException("Open planning screen");
+        logger.warning("The planning screen hasn't been implemented yet!");
     }
 
     /**
@@ -159,7 +161,7 @@ public class HomeController extends BaseController {
      * Opens the Statistics Screen
      */
     private void onStatisticsButtonClick() {
-        throw new UnsupportedOperationException("Open statistics screen");
+        logger.warning("The statistics screen hasn't been implemented yet!");
     }
 
     /**
@@ -211,6 +213,7 @@ public class HomeController extends BaseController {
         JFXTreeTableView<ProductStock.ProductStockInfoTree> tree = new JFXTreeTableView<>();
         tree.prefWidthProperty().bind(this.leftPane.widthProperty());
         tree.prefHeightProperty().bind(this.leftPane.heightProperty());
+        tree.getStylesheets().add(Main.class.getResource("/css/management.css").toExternalForm());
 
         JFXTreeTableColumn<ProductStock.ProductStockInfoTree, Long> reference = new JFXTreeTableColumn<>("Référence");
         JFXTreeTableColumn<ProductStock.ProductStockInfoTree, Integer> stockQuantity = new JFXTreeTableColumn<>("Quantité");
