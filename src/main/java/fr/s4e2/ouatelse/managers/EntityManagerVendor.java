@@ -50,7 +50,7 @@ public class EntityManagerVendor {
         try {
             this.instance.create(vendor);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -63,7 +63,7 @@ public class EntityManagerVendor {
         try {
             this.instance.delete(vendor);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -76,7 +76,7 @@ public class EntityManagerVendor {
         try {
             this.instance.update(vendor);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -101,7 +101,7 @@ public class EntityManagerVendor {
         try {
             results = this.instance.query(query);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -118,7 +118,7 @@ public class EntityManagerVendor {
         try {
             results = this.instance.queryForAll();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -150,7 +150,7 @@ public class EntityManagerVendor {
                             .toString()).prepare()).stream().findFirst().orElse(null);
 
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
         return vendor;
     }
@@ -167,7 +167,7 @@ public class EntityManagerVendor {
         try {
             return this.instance.queryForId(vendor.getId()) != null;
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             return false;
         }
     }

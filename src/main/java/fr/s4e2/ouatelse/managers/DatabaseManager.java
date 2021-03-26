@@ -62,11 +62,13 @@ public class DatabaseManager {
      * @param databaseName database name to delete
      */
     public static void deleteDatabase(String databaseName) {
+        final Logger logger = Logger.getLogger(DatabaseManager.class.getName());
+
         if (databaseName == null || databaseName.trim().isEmpty()) return;
         try {
             Files.delete(Paths.get(databaseName));
         } catch (IOException exception) {
-            exception.printStackTrace();
+            logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -157,7 +159,7 @@ public class DatabaseManager {
             user.setHoursPerWeek(35);
 
             Address address = new Address();
-            address.setAddress("Test Address");
+            address.setStreetNameAndNumber("Test Address");
             address.setCity("Test City");
             address.setZipCode(0);
 
@@ -181,7 +183,7 @@ public class DatabaseManager {
             store.setPassword("test");
 
             Address address = new Address();
-            address.setAddress("Test Address");
+            address.setStreetNameAndNumber("Test Address");
             address.setCity("Test City");
             address.setZipCode(0);
 
@@ -209,7 +211,7 @@ public class DatabaseManager {
         client.setCivility(Civility.M);
 
         Address address = new Address();
-        address.setAddress("Test Address");
+        address.setStreetNameAndNumber("Test Address");
         address.setCity("Test City");
         address.setZipCode(0);
 

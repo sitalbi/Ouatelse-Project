@@ -45,7 +45,7 @@ public class EntityManagerClientStock {
         try {
             this.instance.create(clientStock);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -58,7 +58,7 @@ public class EntityManagerClientStock {
         try {
             this.instance.delete(clientStock);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -71,7 +71,7 @@ public class EntityManagerClientStock {
         try {
             this.instance.update(clientStock);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -96,7 +96,7 @@ public class EntityManagerClientStock {
         try {
             results = this.instance.query(query);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
         return results;
     }
@@ -112,7 +112,7 @@ public class EntityManagerClientStock {
         try {
             results = this.instance.queryForAll();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -139,7 +139,7 @@ public class EntityManagerClientStock {
         try {
             return this.instance.queryForId(clientStock.getId()) != null;
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             return false;
         }
     }

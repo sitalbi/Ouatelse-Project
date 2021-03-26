@@ -99,7 +99,7 @@ public class ManagementSalaryController extends BaseController {
                         .prepare()
                 ).stream().findFirst().orElse(null);
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             }
 
             this.loadInformation();
@@ -117,7 +117,7 @@ public class ManagementSalaryController extends BaseController {
                         .prepare()
                 ).stream().findFirst().orElse(null);
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             }
 
             this.loadSalaryInformation();

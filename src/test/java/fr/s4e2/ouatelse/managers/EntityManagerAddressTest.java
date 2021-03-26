@@ -105,27 +105,27 @@ class EntityManagerAddressTest {
 
         // Address does not exist in the database
         Address notExistingAddress = new Address(33000, "Bordeaux", ADDRESS_BEFORE_MODIFICATION);
-        notExistingAddress.setAddress(ADDRESS_AFTER_MODIFICATION);
+        notExistingAddress.setStreetNameAndNumber(ADDRESS_AFTER_MODIFICATION);
 
         long notExistingAddressIDBeforeModification = notExistingAddress.getId();
 
         assertDoesNotThrow(() -> this.entityManagerAddress.update(notExistingAddress));
 
         assertEquals(notExistingAddressIDBeforeModification, notExistingAddress.getId());
-        assertNotEquals(notExistingAddress.getAddress(), ADDRESS_BEFORE_MODIFICATION);
+        assertNotEquals(notExistingAddress.getStreetNameAndNumber(), ADDRESS_BEFORE_MODIFICATION);
 
 
         // Address exists in the database and is aftewards deleted
         Address existingAddress = new Address(33000, "Bordeaux", ADDRESS_BEFORE_MODIFICATION);
         this.entityManagerAddress.create(existingAddress);
-        existingAddress.setAddress(ADDRESS_AFTER_MODIFICATION);
+        existingAddress.setStreetNameAndNumber(ADDRESS_AFTER_MODIFICATION);
 
         this.entityManagerAddress.update(existingAddress);
         long existingAddressIDBeforeModification = existingAddress.getId();
 
         assertDoesNotThrow(() -> this.entityManagerAddress.delete(existingAddress));
         assertEquals(existingAddressIDBeforeModification, existingAddress.getId());
-        assertNotEquals(existingAddress.getAddress(), ADDRESS_BEFORE_MODIFICATION);
+        assertNotEquals(existingAddress.getStreetNameAndNumber(), ADDRESS_BEFORE_MODIFICATION);
     }
 
     /*

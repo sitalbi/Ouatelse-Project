@@ -45,7 +45,7 @@ public class EntityManagerProduct {
         try {
             this.instance.create(product);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -58,7 +58,7 @@ public class EntityManagerProduct {
         try {
             this.instance.delete(product);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -71,7 +71,7 @@ public class EntityManagerProduct {
         try {
             this.instance.update(product);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -96,7 +96,7 @@ public class EntityManagerProduct {
         try {
             results = this.instance.query(query);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -113,7 +113,7 @@ public class EntityManagerProduct {
         try {
             results = this.instance.queryForAll();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -140,7 +140,7 @@ public class EntityManagerProduct {
         try {
             return this.instance.queryForId(product.getId()) != null;
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             return false;
         }
     }

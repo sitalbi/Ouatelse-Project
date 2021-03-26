@@ -206,7 +206,7 @@ public class ManagementUserController extends BaseController {
             // edits user
             this.currentUser.getAddress().setZipCode(zipCode);
             this.currentUser.getAddress().setCity(userCityInput.getText().trim());
-            this.currentUser.getAddress().setAddress(userAddressInput.getText().trim());
+            this.currentUser.getAddress().setStreetNameAndNumber(userAddressInput.getText().trim());
             this.entityManagerAddress.update(currentUser.getAddress());
 
             this.updateUser(currentUser);
@@ -260,7 +260,7 @@ public class ManagementUserController extends BaseController {
         this.userLastNameInput.setText(currentUser.getSurname());
         this.userPhoneInput.setText(currentUser.getMobilePhoneNumber());
         this.userEmailInput.setText(currentUser.getEmail());
-        this.userAddressInput.setText(currentUser.getAddress().getAddress());
+        this.userAddressInput.setText(currentUser.getAddress().getStreetNameAndNumber());
         this.userCityInput.setText(currentUser.getAddress().getCity());
         this.userZipcodeInput.setText(String.valueOf(currentUser.getAddress().getZipCode()));
         //this.userRoleDropdown.getSelectionModel().select(currentUser.getRole()); <- doesn't work

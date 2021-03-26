@@ -25,18 +25,18 @@ public class Address {
     private String city;
 
     @DatabaseField(canBeNull = false)
-    private String address;
+    private String streetNameAndNumber;
 
     /**
      * Constructor
      *
      * @param zipCode the Zip Code
      * @param city    the City
-     * @param address the Address
+     * @param streetNameAndNumber the street name and its number
      */
-    public Address(int zipCode, String city, String address) {
+    public Address(int zipCode, String city, String streetNameAndNumber) {
         this.zipCode = zipCode;
         this.city = city;
-        this.address = address;
+        this.streetNameAndNumber = streetNameAndNumber;
     }
 }

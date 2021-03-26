@@ -48,7 +48,7 @@ public class EntityManagerClient {
         try {
             this.instance.create(client);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -61,7 +61,7 @@ public class EntityManagerClient {
         try {
             this.instance.delete(client);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -74,7 +74,7 @@ public class EntityManagerClient {
         try {
             this.instance.update(client);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -99,7 +99,7 @@ public class EntityManagerClient {
         try {
             results = this.instance.query(query);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
         return results;
     }
@@ -115,7 +115,7 @@ public class EntityManagerClient {
         try {
             results = this.instance.queryForAll();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -145,7 +145,7 @@ public class EntityManagerClient {
             client = this.instance.query(this.instance.queryBuilder().where().eq("id", id)
                     .and().eq("name", firstName).and().eq("surname", lastName).prepare()).stream().findFirst().orElse(null);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
         return client;
     }
@@ -162,7 +162,7 @@ public class EntityManagerClient {
         try {
             return this.instance.queryForId(client.getId()) != null;
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             return false;
         }
     }
