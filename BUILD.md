@@ -2,7 +2,7 @@
 
 ## Prérequis
 
-- [IntelliJ IDEA](https://www.jetbrains.com/idea/) (Peut importe Community ou Ultimate)
+- [IntelliJ IDEA](https://www.jetbrains.com/idea/) (Peu importe Community ou Ultimate)
 - [JDK 8u281](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
 - [Gluon's Scene Builder](https://gluonhq.com/products/scene-builder/#download)
 
