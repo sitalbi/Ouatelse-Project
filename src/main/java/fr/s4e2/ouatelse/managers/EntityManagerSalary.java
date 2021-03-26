@@ -49,7 +49,7 @@ public class EntityManagerSalary {
         try {
             this.instance.create(salary);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -62,7 +62,7 @@ public class EntityManagerSalary {
         try {
             this.instance.delete(salary);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -75,7 +75,7 @@ public class EntityManagerSalary {
         try {
             this.instance.update(salary);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -100,7 +100,7 @@ public class EntityManagerSalary {
         try {
             results = this.instance.query(query);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
         return results;
     }
@@ -116,7 +116,7 @@ public class EntityManagerSalary {
         try {
             results = this.instance.queryForAll();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -145,7 +145,7 @@ public class EntityManagerSalary {
             salary = this.instance.query(this.instance.queryBuilder().where().eq("id", id)
                     .and().eq("user_id", user.getId()).prepare()).stream().findFirst().orElse(null);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
         return salary;
     }
@@ -162,7 +162,7 @@ public class EntityManagerSalary {
         try {
             return this.instance.queryForId(salary.getId()) != null;
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             return false;
         }
     }

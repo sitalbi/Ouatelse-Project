@@ -55,8 +55,6 @@ public class ManagementSalesController extends BaseController {
     @FXML
     private Button newSaleButton;
     @FXML
-    private Button saveCurrentSaleButton;
-    @FXML
     private Button createBillButton;
     @FXML
     private Button cancelSaleButton;
@@ -342,10 +340,11 @@ public class ManagementSalesController extends BaseController {
 
     }
 
-    public void onSaveCurrentSaleButtonClick(MouseEvent mouseEvent) {
-    }
-
-    public void onCreateBillButtonClick(MouseEvent mouseEvent) {
+    /**
+     * Creates a bill from the user's cart
+     */
+    public void onCreateBillButtonClick() {
+        throw new UnsupportedOperationException("Create bill");
     }
 
     /**
@@ -362,7 +361,8 @@ public class ManagementSalesController extends BaseController {
 
         try {
             this.getClientStocks().forEach(this.entityManagerClientStock::delete);
-        } catch (NullPointerException ignored) {
+        } catch (NullPointerException exception) {
+            this.logger.log(Level.WARNING, exception.getMessage(), exception);
         }
 
         this.entityManagerCart.delete(currentCart);
