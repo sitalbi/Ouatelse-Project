@@ -108,7 +108,7 @@ public class ManagementClientController extends BaseController {
                         .prepare()
                 ).stream().findFirst().orElse(null);
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             }
 
             this.loadClientInformation();
@@ -169,7 +169,7 @@ public class ManagementClientController extends BaseController {
             // edits client
             this.currentClient.getAddress().setZipCode(zipCode);
             this.currentClient.getAddress().setCity(clientCityInput.getText().trim());
-            this.currentClient.getAddress().setAddress(clientAddressInput.getText().trim());
+            this.currentClient.getAddress().setStreetNameAndNumber(clientAddressInput.getText().trim());
             this.entityManagerAddress.update(currentClient.getAddress());
 
             this.updateClient(currentClient);
@@ -241,7 +241,7 @@ public class ManagementClientController extends BaseController {
         this.clientLastNameInput.setText(currentClient.getSurname());
         this.clientPhoneInput.setText(currentClient.getMobilePhoneNumber());
         this.clientEmailInput.setText(currentClient.getEmail());
-        this.clientAddressInput.setText(currentClient.getAddress().getAddress());
+        this.clientAddressInput.setText(currentClient.getAddress().getStreetNameAndNumber());
         this.clientCityInput.setText(currentClient.getAddress().getCity());
         this.clientZipInput.setText(String.valueOf(currentClient.getAddress().getZipCode()));
         this.clientFaxInput.setText(currentClient.getFax());

@@ -50,7 +50,7 @@ public class EntityManagerUser {
         try {
             this.instance.create(user);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -63,7 +63,7 @@ public class EntityManagerUser {
         try {
             this.instance.delete(user);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -76,7 +76,7 @@ public class EntityManagerUser {
         try {
             this.instance.update(user);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -101,7 +101,7 @@ public class EntityManagerUser {
         try {
             results = this.instance.query(query);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -118,7 +118,7 @@ public class EntityManagerUser {
         try {
             results = this.instance.queryForAll();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -150,7 +150,7 @@ public class EntityManagerUser {
                             .toString()).prepare()).stream().findFirst().orElse(null);
 
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
         return user;
     }
@@ -167,7 +167,7 @@ public class EntityManagerUser {
         try {
             return this.instance.queryForId(user.getId()) != null;
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             return false;
         }
     }

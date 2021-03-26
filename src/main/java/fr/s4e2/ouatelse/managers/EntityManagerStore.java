@@ -50,7 +50,7 @@ public class EntityManagerStore {
         try {
             this.instance.create(store);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -63,7 +63,7 @@ public class EntityManagerStore {
         try {
             this.instance.delete(store);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -76,7 +76,7 @@ public class EntityManagerStore {
         try {
             this.instance.update(store);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -101,7 +101,7 @@ public class EntityManagerStore {
         try {
             results = this.instance.query(query);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -118,7 +118,7 @@ public class EntityManagerStore {
         try {
             results = this.instance.queryForAll();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -150,7 +150,7 @@ public class EntityManagerStore {
                     .and().eq("password", Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString()
                     ).prepare()).stream().findFirst().orElse(null);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return store;
@@ -170,7 +170,7 @@ public class EntityManagerStore {
                     .eq("id", id)
                     .prepare()).stream().findFirst().orElse(null);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return store;
@@ -186,7 +186,7 @@ public class EntityManagerStore {
         try {
             return this.instance.queryForId(store.getId()) != null;
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             return false;
         }
     }

@@ -19,6 +19,8 @@ import lombok.Setter;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Base Screen for all screens
@@ -30,6 +32,8 @@ public abstract class BaseScreen {
     public static final Image OUATELSE_ICON = new Image(Objects.requireNonNull(Main.class.getClassLoader().getResource("images/ouatelse_icon.png")).toExternalForm());
     private static final String FXML_PATH = "fxml/";
     private static final String PREFIX = "Ouatelse - ";
+
+    protected final Logger logger = Logger.getLogger(this.getClass().getName());
 
     private Stage stage;
 
@@ -60,7 +64,7 @@ public abstract class BaseScreen {
             scene.getStylesheets().add("css/base.css");
             stage.setScene(scene);
         } catch (IOException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -92,7 +96,7 @@ public abstract class BaseScreen {
             scene.getStylesheets().add("css/base.css");
             stage.setScene(scene);
         } catch (IOException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 

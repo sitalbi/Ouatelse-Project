@@ -45,7 +45,7 @@ public class EntityManagerScheduledOrder {
         try {
             this.instance.create(scheduledOrder);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -58,7 +58,7 @@ public class EntityManagerScheduledOrder {
         try {
             this.instance.delete(scheduledOrder);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -71,7 +71,7 @@ public class EntityManagerScheduledOrder {
         try {
             this.instance.update(scheduledOrder);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -96,7 +96,7 @@ public class EntityManagerScheduledOrder {
         try {
             results = this.instance.query(query);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -113,7 +113,7 @@ public class EntityManagerScheduledOrder {
         try {
             results = this.instance.queryForAll();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -139,7 +139,7 @@ public class EntityManagerScheduledOrder {
         try {
             return this.instance.queryForId(scheduledOrder.getId()) != null;
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             return false;
         }
     }
