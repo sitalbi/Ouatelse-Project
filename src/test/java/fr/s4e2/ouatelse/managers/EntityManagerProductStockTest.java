@@ -1,15 +1,13 @@
 package fr.s4e2.ouatelse.managers;
 
 import com.j256.ormlite.dao.CloseableIterator;
-import fr.s4e2.ouatelse.objects.Product;
-import fr.s4e2.ouatelse.objects.ProductState;
-import fr.s4e2.ouatelse.objects.ProductStock;
-import fr.s4e2.ouatelse.objects.Store;
+import fr.s4e2.ouatelse.objects.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -195,13 +193,22 @@ class EntityManagerProductStockTest {
                 - The query is not empty, nothing is thrown
      */
     @Test
-    void executeQuery() {
+    void executeQuery() throws SQLException {
         // Query is empty
         assertThrows(NullPointerException.class, () -> this.entityManagerProductStock.executeQuery(null));
 
 
         // Query is not empty
         assertDoesNotThrow(() -> this.entityManagerProductStock.executeQuery(this.entityManagerProductStock.getQueryBuilder().prepare()));
+
+        ProductStock productStock = new ProductStock();
+        productStock.setProduct(createCompliantProduct());
+        productStock.setQuantity(1);
+
+        this.entityManagerProductStock.create(productStock);
+        List<ProductStock> results = this.entityManagerProductStock.executeQuery(this.entityManagerProductStock.getQueryBuilder().prepare());
+
+        assertEquals(1, results.size());
     }
 
     /*

@@ -3,11 +3,13 @@ package fr.s4e2.ouatelse.managers;
 import com.j256.ormlite.dao.CloseableIterator;
 import fr.s4e2.ouatelse.objects.Civility;
 import fr.s4e2.ouatelse.objects.Client;
+import fr.s4e2.ouatelse.objects.ClientStock;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -70,7 +72,7 @@ class EntityManagerClientTest {
     void create() {
         // Client is not compliant
         Client notCompliantClient = new Client();
-        assertDoesNotThrow(() -> this.entityManagerClient.create(null));
+        assertDoesNotThrow(() -> this.entityManagerClient.create(notCompliantClient));
         // Inserted objects have an ID > 0
         assertFalse(this.entityManagerClient.exists(notCompliantClient));
 
@@ -175,13 +177,18 @@ class EntityManagerClientTest {
                 - The query is not empty, nothing is thrown
      */
     @Test
-    void executeQuery() {
+    void executeQuery() throws SQLException {
         // Query is empty
         assertThrows(NullPointerException.class, () -> this.entityManagerClient.executeQuery(null));
 
 
         // Query is not empty
         assertDoesNotThrow(() -> this.entityManagerClient.executeQuery(this.entityManagerClient.getQueryBuilder().prepare()));
+
+        this.entityManagerClient.create(createCompliantClient());
+        List<Client> results = this.entityManagerClient.executeQuery(this.entityManagerClient.getQueryBuilder().prepare());
+
+        assertEquals(1, results.size());
     }
 
     /*

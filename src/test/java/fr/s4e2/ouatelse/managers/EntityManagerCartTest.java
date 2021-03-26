@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -184,13 +185,17 @@ class EntityManagerCartTest {
                 - The query is not empty, nothing is thrown
      */
     @Test
-    void executeQuery() {
+    void executeQuery() throws SQLException {
         // Query is empty
         assertThrows(NullPointerException.class, () -> this.entityManagerCart.executeQuery(null));
 
 
         // Query is not empty
         assertDoesNotThrow(() -> this.entityManagerCart.executeQuery(this.entityManagerCart.getQueryBuilder().prepare()));
+        this.entityManagerCart.create(createCompliantCart());
+
+        List<Cart> results =  this.entityManagerCart.executeQuery(this.entityManagerCart.getQueryBuilder().prepare());
+        assertEquals(1, results.size());
     }
 
     /*
@@ -218,7 +223,8 @@ class EntityManagerCartTest {
        Simple wrapper, nothing should have to be tested
    */
     @Test
-    void getQueryBuilder() { assertNotNull(this.entityManagerCart.getQueryBuilder());
+    void getQueryBuilder() {
+        assertNotNull(this.entityManagerCart.getQueryBuilder());
     }
 
     /*
