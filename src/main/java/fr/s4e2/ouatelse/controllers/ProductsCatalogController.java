@@ -110,14 +110,10 @@ public class ProductsCatalogController extends BaseController {
         });
 
         // Enables or disables button on select and unselect
-        this.notInCartTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            selectProductFromTable(newValue);
-        });
+        this.notInCartTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selectProductFromTable(newValue));
 
         // Enables or disables button on select and unselect
-        this.inCartTreeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            selectProductFromTable(newValue);
-        });
+        this.inCartTreeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selectProductFromTable(newValue));
     }
 
     private void selectProductFromTable(TreeItem<Product.ProductTree> newValue) {
@@ -298,7 +294,8 @@ public class ProductsCatalogController extends BaseController {
 
         try {
             this.getClientStocks().add(clientStock);
-        } catch (NullPointerException ignored) {
+        } catch (NullPointerException exception) {
+            this.logger.log(Level.WARNING, exception.getMessage(), exception);
         }
 
         this.entityManagerCart.update(this.currentCart);

@@ -156,7 +156,7 @@ public class ManagementStoreController extends BaseController {
             // edits store
             this.currentStore.getAddress().setZipCode(zipCode);
             this.currentStore.getAddress().setCity(newStoreCityField.getText().trim());
-            this.currentStore.getAddress().setAddress(newStoreAddressField.getText().trim());
+            this.currentStore.getAddress().setStreetNameAndNumber(newStoreAddressField.getText().trim());
             this.entityManagerAddress.update(currentStore.getAddress());
 
             if (!newStoreConfirmPasswordField.getText().isEmpty()) {
@@ -213,7 +213,7 @@ public class ManagementStoreController extends BaseController {
         }
 
         if (store.getAddress() == null) return;
-        this.newStoreAddressField.setText(store.getAddress().getAddress());
+        this.newStoreAddressField.setText(store.getAddress().getStreetNameAndNumber());
         this.newStoreCityField.setText(store.getAddress().getCity());
         this.newStoreZipcodeField.setText(String.valueOf(store.getAddress().getZipCode()));
     }

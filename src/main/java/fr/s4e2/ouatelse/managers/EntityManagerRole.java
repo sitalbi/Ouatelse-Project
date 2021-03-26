@@ -53,7 +53,7 @@ public class EntityManagerRole {
             newRole = new Role(roleName);
             this.instance.create(newRole);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return newRole;
@@ -68,7 +68,7 @@ public class EntityManagerRole {
         try {
             this.instance.delete(role);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -81,7 +81,7 @@ public class EntityManagerRole {
         try {
             this.instance.update(role);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -106,7 +106,7 @@ public class EntityManagerRole {
         try {
             results = this.instance.query(query);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -123,7 +123,7 @@ public class EntityManagerRole {
         try {
             results = this.instance.queryForAll();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -150,7 +150,7 @@ public class EntityManagerRole {
         try {
             return this.instance.queryForId(role.getId()) != null;
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             return false;
         }
     }
