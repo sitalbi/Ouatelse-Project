@@ -39,20 +39,20 @@
 4. Fonction du module de gestion des stocks\
    ~~4.1 Ajouter du stock~~\
    ~~4.2 Retirer du stock~~\
-   4.3 Alerter les ruptures de stock\
-   4.4 Programmer une commande\
+   ~~4.3 Alerter les ruptures de stock\~~
+   ~~4.4 Programmer une commande\~~
    4.5 Accès aux statistiques des commandes
 5. Fonction du module de gestion des clients\
-   5.1 Ajouter un client\
-   5.2 Modifier les caractéristiques d’un client\
-   5.3 Supprimer un client\
-   5.4 Rechercher un client\
+   ~~5.1 Ajouter un client\~~
+   ~~5.2 Modifier les caractéristiques d’un client\~~
+   ~~5.3 Supprimer un client\~~
+   ~~5.4 Rechercher un client\~~
    5.5 Envoie de promotions à un client
 6. Fonction du module de gestion des ventes\
-   6.1 Créer un panier\
-   6.2 Modifier un panier\
-   6.3 Supprimer un panier\
-   6.4 Retour de produits par un client\
+   ~~6.1 Créer un panier\~~
+   ~~6.2 Modifier un panier\~~
+   ~~6.3 Supprimer un panier\~~
+   ~~6.4 Retour de produits par un client\~~
    6.5 Imprimer la facture du panier\
    6.6 Accès aux statistiques de vente d’un magasin\
    6.7 Accès aux statistiques de vente au niveau national
