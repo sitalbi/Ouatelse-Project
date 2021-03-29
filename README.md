@@ -1,30 +1,10 @@
 # Projet PT4
 
-## Base de données
-
-**Products :**
-
-- Externalisation des taxes, prix calculés dynamiquement
-- Couleur
-- Type ??
-
-**Cart :**
-
-- Fusion date / heure
-
-**PaySheet :**
-
-- ded
-
-**Store :**
-
-- Adresse : String -> Address
-
-## Spécifications
+## Specifications checklist
 
 1. Fonction du module de gestion des rôles (GR)\
    ~~1.1 Sélection d’un rôle~~\
-   ~~1.2 Ajouter/supprimer des droits d’accès à des fonctionnalités~~ (Penser à modifier les specs détaillées)\
+   ~~1.2 Ajouter/supprimer des droits d’accès à des fonctionnalités~~\
    ~~1.3 Changement de rôle~~
 2. Fonction du module de gestion des magasins (GM)\
    ~~2.1 Ajouter un magasin~~\
@@ -52,7 +32,7 @@
    ~~6.1 Créer un panier~~\
    ~~6.2 Modifier un panier~~\
    ~~6.3 Supprimer un panier~~\
-   ~~6.4 Retour de produits par un client~~\
+   6.4 Retour de produits par un client\
    6.5 Imprimer la facture du panier\
    6.6 Accès aux statistiques de vente d’un magasin\
    6.7 Accès aux statistiques de vente au niveau national
