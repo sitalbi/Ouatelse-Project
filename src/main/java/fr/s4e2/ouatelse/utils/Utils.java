@@ -36,6 +36,7 @@ public class Utils {
      * @return the double value or null in the case of failure
      */
     public static Double getDouble(String s) {
+        if (s == null) return null;
         try {
             return Double.parseDouble(s);
         } catch (NumberFormatException e) {
