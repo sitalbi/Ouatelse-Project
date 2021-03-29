@@ -41,6 +41,12 @@ public class DatabaseManager {
     private EntityManagerClientStock entityManagerClientStock;
     private EntityManagerSalary entityManagerSalary;
 
+    private static final String DEFAULT_CLIENT_PHONE_NUMBER = "123456789";
+    private static final String DEFAULT_USER_PHONE_NUMBER = "00 00 00 00 00";
+    private static final String DEFAULT_USER_ADDRESS = "15 Rue de Naudet";
+    private static final String DEFAULT_USER_CITY = "Gradignan";
+    private static final String DEFAULT_PASSWORD = "password";
+
     /**
      * Constructs the DatabaseManager
      */
@@ -128,97 +134,9 @@ public class DatabaseManager {
      */
     public void fillDatabase() throws SQLException {
         this.setupRoles();
-        this.setupTestStore();
-        this.setupTestUser();
+        this.setupTestStores();
+        this.setupTestUsers();
         this.setupTestClient();
-    }
-
-    /**
-     * Fills the database with standard user data
-     *
-     * @throws SQLException occurs when there is a connection that can't be established
-     */
-    private void setupTestUser() throws SQLException {
-        if (this.connectionSource == null || this.entityManagerUser == null || this.entityManagerRole == null) return;
-
-        if (this.entityManagerUser.getUserIfExists("test", "test") == null) {
-            User user = new User();
-            user.setSurname("test");
-            user.setName("test");
-            user.setMobilePhoneNumber("00 00 00 00 00");
-            user.setEmail("test@test.com");
-            user.setBirthDate(new Date());
-            user.setCivility(Civility.M);
-            user.setStatus(PersonState.EMPLOYED);
-            user.setCredentials("test");
-            user.setPassword("test");
-            user.setRole(entityManagerRole.executeQuery(
-                    entityManagerRole.getQueryBuilder().where().eq("name", "Admin").prepare()
-            ).stream().findFirst().orElse(null));
-            user.setHiringDate(new Date());
-            user.setHoursPerWeek(35);
-
-            Address address = new Address();
-            address.setStreetNameAndNumber("Test Address");
-            address.setCity("Test City");
-            address.setZipCode(0);
-
-            user.setAddress(address);
-            user.setWorkingStore(this.entityManagerStore.getQueryForAll().stream().findFirst().orElse(null));
-
-            this.entityManagerAddress.create(address);
-            this.entityManagerUser.create(user);
-        }
-    }
-
-    /**
-     * Fills the database with standard store data
-     */
-    private void setupTestStore() {
-        if (this.connectionSource == null || this.entityManagerStore == null) return;
-
-        if (this.entityManagerStore.authGetStoreIfExists("test", "test") == null) {
-            Store store = new Store();
-            store.setId("test");
-            store.setPassword("test");
-
-            Address address = new Address();
-            address.setStreetNameAndNumber("Test Address");
-            address.setCity("Test City");
-            address.setZipCode(0);
-
-            store.setAddress(address);
-
-            this.entityManagerAddress.create(address);
-            this.entityManagerStore.create(store);
-        }
-    }
-
-    /**
-     * Fills the database with standard client data
-     */
-    private void setupTestClient() {
-        if (this.connectionSource == null || this.entityManagerStore == null) return;
-
-        if (this.entityManagerClient.getClientIfExists(1, "test", "client") != null) return;
-
-        Client client = new Client();
-        client.setName("test");
-        client.setSurname("client");
-        client.setMobilePhoneNumber("123456789");
-        client.setEmail("client@test.com");
-        client.setBirthDate(new Date());
-        client.setCivility(Civility.M);
-
-        Address address = new Address();
-        address.setStreetNameAndNumber("Test Address");
-        address.setCity("Test City");
-        address.setZipCode(0);
-
-        client.setAddress(address);
-
-        this.entityManagerAddress.create(address);
-        this.entityManagerClient.create(client);
     }
 
     /**
@@ -227,33 +145,21 @@ public class DatabaseManager {
      * @throws SQLException occurs when there is a connection that can't be established
      */
     private void setupRoles() throws SQLException {
-        final String DIRECTOR_ROLE_NAME = "Director";
+        final String DIRECTOR_ROLE_NAME = "Directeur";
         final String ADMIN_ROLE_NAME = "Admin";
         final String BUYINGS_AND_STOCKS_MANAGER_ROLE_NAME = "Responsables des achats et stocks";
         final String SALES_MANAGER_ROLE_NAME = "Responsable des ventes";
         final String HUMAN_RESOURCES_MANAGER_ROLE_NAME = "Responsable des Ressources Humaines";
+        final String VENDOR_ROLE_NAME = "Vendeur";
 
-        if (this.connectionSource == null || this.entityManagerRole == null) return;
+        if (connectionSource == null || entityManagerRole == null) return;
 
         List<Role> temporaryResultsList = entityManagerRole.executeQuery(
                 entityManagerRole.getQueryBuilder().where().eq("name", DIRECTOR_ROLE_NAME).prepare()
         );
         if (temporaryResultsList.isEmpty()) {
             Role director = entityManagerRole.create(DIRECTOR_ROLE_NAME);
-            ArrayList<Permission> directorPermission = new ArrayList<>(Arrays.asList(
-                    Permission.CLIENTS_MANAGEMENT,
-                    Permission.USER_MANAGEMENT,
-                    Permission.ROLE_MANAGEMENT,
-                    Permission.STORE_MANAGEMENT,
-                    Permission.MONITORING,
-                    Permission.SALARY_MANAGEMENT,
-                    Permission.STATISTICS,
-                    Permission.PRODUCTS_MANAGEMENT,
-                    Permission.STOCKS_MANAGEMENT,
-                    Permission.SALES_MANAGEMENT,
-                    Permission.PLANNING_MANAGEMENT,
-                    Permission.VENDORS_MANAGEMENT
-            ));
+            ArrayList<Permission> directorPermission = new ArrayList<>(Arrays.asList(Permission.values()));
             director.setPermissions(directorPermission);
             this.entityManagerRole.update(director);
         }
@@ -264,16 +170,8 @@ public class DatabaseManager {
         if (temporaryResultsList.isEmpty()) {
             Role admin = entityManagerRole.create(ADMIN_ROLE_NAME);
             ArrayList<Permission> adminPermission = new ArrayList<>(Arrays.asList(
-                    Permission.CLIENTS_MANAGEMENT,
                     Permission.USER_MANAGEMENT,
-                    Permission.ROLE_MANAGEMENT,
-                    Permission.STORE_MANAGEMENT,
-                    Permission.SALARY_MANAGEMENT,
-                    Permission.PRODUCTS_MANAGEMENT,
-                    Permission.STOCKS_MANAGEMENT,
-                    Permission.SALES_MANAGEMENT,
-                    Permission.PLANNING_MANAGEMENT,
-                    Permission.VENDORS_MANAGEMENT
+                    Permission.ROLE_MANAGEMENT
             ));
             admin.setPermissions(adminPermission);
             this.entityManagerRole.update(admin);
@@ -286,7 +184,9 @@ public class DatabaseManager {
             Role buyingsAndStocksManager = entityManagerRole.create(BUYINGS_AND_STOCKS_MANAGER_ROLE_NAME);
             ArrayList<Permission> buyingsAndStocksManagerPermission = new ArrayList<>(Arrays.asList(
                     Permission.PRODUCTS_MANAGEMENT,
-                    Permission.STOCKS_MANAGEMENT
+                    Permission.STOCKS_MANAGEMENT,
+                    Permission.STATISTICS,
+                    Permission.VENDORS_MANAGEMENT
             ));
             buyingsAndStocksManager.setPermissions(buyingsAndStocksManagerPermission);
             this.entityManagerRole.update(buyingsAndStocksManager);
@@ -297,8 +197,12 @@ public class DatabaseManager {
         );
         if (temporaryResultsList.isEmpty()) {
             Role salesManager = entityManagerRole.create(SALES_MANAGER_ROLE_NAME);
-            ArrayList<Permission> salesManagerPermission = new ArrayList<>(Collections.singletonList(
-                    Permission.SALES_MANAGEMENT
+            ArrayList<Permission> salesManagerPermission = new ArrayList<>(Arrays.asList(
+                    Permission.SALES_MANAGEMENT,
+                    Permission.PRODUCTS_MANAGEMENT,
+                    Permission.CLIENTS_MANAGEMENT,
+                    Permission.MONITORING,
+                    Permission.STOCKS_MANAGEMENT
             ));
             salesManager.setPermissions(salesManagerPermission);
             this.entityManagerRole.update(salesManager);
@@ -310,12 +214,383 @@ public class DatabaseManager {
         if (temporaryResultsList.isEmpty()) {
             Role humanResourcesManager = entityManagerRole.create(HUMAN_RESOURCES_MANAGER_ROLE_NAME);
             ArrayList<Permission> humanResourcesManagerPermission = new ArrayList<>(Arrays.asList(
-                    Permission.CLIENTS_MANAGEMENT,
                     Permission.USER_MANAGEMENT,
+                    Permission.SALARY_MANAGEMENT,
                     Permission.PLANNING_MANAGEMENT
             ));
             humanResourcesManager.setPermissions(humanResourcesManagerPermission);
             this.entityManagerRole.update(humanResourcesManager);
+        }
+
+        temporaryResultsList = entityManagerRole.executeQuery(
+                entityManagerRole.getQueryBuilder().where().eq("name", VENDOR_ROLE_NAME).prepare()
+        );
+        if (temporaryResultsList.isEmpty()) {
+            Role vendor = entityManagerRole.create(VENDOR_ROLE_NAME);
+            ArrayList<Permission> vendorPermission = new ArrayList<>(Arrays.asList(
+                    Permission.PRODUCTS_MANAGEMENT,
+                    Permission.SALES_MANAGEMENT,
+                    Permission.CLIENTS_MANAGEMENT
+            ));
+            vendor.setPermissions(vendorPermission);
+            this.entityManagerRole.update(vendor);
+        }
+    }
+
+    /**
+     * Fills the database with test store data
+     */
+    private void setupTestStores() {
+        if (connectionSource == null || entityManagerStore == null) return;
+
+        if (entityManagerStore.authGetStoreIfExists("Ouatelse Le Haillan", DEFAULT_PASSWORD) == null) {
+            Store store = new Store();
+            store.setId("Ouatelse Le Haillan");
+            store.setPassword(DEFAULT_PASSWORD);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber("137 avenue Pasteur");
+            address.setCity("Le Haillan");
+            address.setZipCode(33185);
+
+            store.setAddress(address);
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerStore.create(store);
+        }
+
+        if (entityManagerStore.authGetStoreIfExists("Agence Ouatelse Bordeaux", DEFAULT_PASSWORD) == null) {
+            Store store = new Store();
+            store.setId("Agence Ouatelse Bordeaux");
+            store.setPassword(DEFAULT_PASSWORD);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber("Place Pey-Berland");
+            address.setCity("Bordeaux");
+            address.setZipCode(33045);
+
+            store.setAddress(address);
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerStore.create(store);
+        }
+
+        if (entityManagerStore.authGetStoreIfExists("Ouatelse Paris", DEFAULT_PASSWORD) == null) {
+            Store store = new Store();
+            store.setId("Ouatelse Paris");
+            store.setPassword(DEFAULT_PASSWORD);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber("Place de l'Hôtel-de-Ville");
+            address.setCity("Paris");
+            address.setZipCode(75196);
+
+            store.setAddress(address);
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerStore.create(store);
+        }
+
+        if (entityManagerStore.authGetStoreIfExists("Ouatelse Arcachon", DEFAULT_PASSWORD) == null) {
+            Store store = new Store();
+            store.setId("Ouatelse Arcachon");
+            store.setPassword(DEFAULT_PASSWORD);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber("Place Lucien-de-Gracia");
+            address.setCity("Arcachon");
+            address.setZipCode(33311);
+
+            store.setAddress(address);
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerStore.create(store);
+        }
+
+        if (entityManagerStore.authGetStoreIfExists("Ouatelse Nice", DEFAULT_PASSWORD) == null) {
+            Store store = new Store();
+            store.setId("Ouatelse Nice");
+            store.setPassword(DEFAULT_PASSWORD);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber("5 rue de l'Hôtel-de-Ville");
+            address.setCity("Nice");
+            address.setZipCode(6364);
+
+            store.setAddress(address);
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerStore.create(store);
+        }
+    }
+
+    /**
+     * Fills the database with standard user data
+     *
+     * @throws SQLException occurs when there is a connection that can't be established
+     */
+    private void setupTestUsers() throws SQLException {
+        if (connectionSource == null || entityManagerUser == null || entityManagerRole == null) return;
+
+        if (entityManagerUser.getUserIfExists("almardant", DEFAULT_PASSWORD) == null) {
+            User user = new User();
+            user.setSurname("Mardant");
+            user.setName("Alex");
+            user.setMobilePhoneNumber(DEFAULT_USER_PHONE_NUMBER);
+            user.setEmail("mardantalex@gmail.com");
+            user.setBirthDate(new Date());
+            user.setCivility(Civility.M);
+            user.setStatus(PersonState.EMPLOYED);
+            user.setCredentials("almardant");
+            user.setPassword(DEFAULT_PASSWORD);
+            user.setRole(entityManagerRole.executeQuery(entityManagerRole.getQueryBuilder()
+                    .where().eq("name", "Vendeur").prepare()
+            ).stream().findFirst().orElse(null));
+            user.setHiringDate(new Date());
+            user.setHoursPerWeek(35);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber(DEFAULT_USER_ADDRESS);
+            address.setCity(DEFAULT_USER_CITY);
+            address.setZipCode(33175);
+
+            user.setAddress(address);
+            user.setWorkingStore(entityManagerStore.getQueryForAll().stream().findFirst().orElse(null));
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerUser.create(user);
+        }
+
+        if (entityManagerUser.getUserIfExists("micassiope", DEFAULT_PASSWORD) == null) {
+            User user = new User();
+            user.setSurname("Cassiope");
+            user.setName("Michel");
+            user.setMobilePhoneNumber(DEFAULT_USER_PHONE_NUMBER);
+            user.setEmail("cassiopemichel@gmail.com");
+            user.setBirthDate(new Date());
+            user.setCivility(Civility.M);
+            user.setStatus(PersonState.EMPLOYED);
+            user.setCredentials("micassiope");
+            user.setPassword(DEFAULT_PASSWORD);
+            user.setRole(entityManagerRole.executeQuery(entityManagerRole.getQueryBuilder()
+                    .where().eq("name", "Responsables des achats et stocks").prepare()
+            ).stream().findFirst().orElse(null));
+            user.setHiringDate(new Date());
+            user.setHoursPerWeek(35);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber(DEFAULT_USER_ADDRESS);
+            address.setCity(DEFAULT_USER_CITY);
+            address.setZipCode(33175);
+
+            user.setAddress(address);
+            user.setWorkingStore(entityManagerStore.getQueryForAll().stream().findFirst().orElse(null));
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerUser.create(user);
+        }
+
+        if (entityManagerUser.getUserIfExists("paamidala", DEFAULT_PASSWORD) == null) {
+            User user = new User();
+            user.setSurname("Amidala");
+            user.setName("Padmé");
+            user.setMobilePhoneNumber(DEFAULT_USER_PHONE_NUMBER);
+            user.setEmail("amidalapadme@gmail.com");
+            user.setBirthDate(new Date());
+            user.setCivility(Civility.MME);
+            user.setStatus(PersonState.EMPLOYED);
+            user.setCredentials("paamidala");
+            user.setPassword(DEFAULT_PASSWORD);
+            user.setRole(entityManagerRole.executeQuery(entityManagerRole.getQueryBuilder()
+                    .where().eq("name", "Responsable des ventes").prepare()
+            ).stream().findFirst().orElse(null));
+            user.setHiringDate(new Date());
+            user.setHoursPerWeek(35);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber(DEFAULT_USER_ADDRESS);
+            address.setCity(DEFAULT_USER_CITY);
+            address.setZipCode(33175);
+
+            user.setAddress(address);
+            user.setWorkingStore(entityManagerStore.getQueryForAll().stream().findFirst().orElse(null));
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerUser.create(user);
+        }
+
+        if (entityManagerUser.getUserIfExists("jijinn", DEFAULT_PASSWORD) == null) {
+            User user = new User();
+            user.setSurname("Jinn");
+            user.setName("Qui-Gon");
+            user.setMobilePhoneNumber(DEFAULT_USER_PHONE_NUMBER);
+            user.setEmail("jinnquigon@gmail.com");
+            user.setBirthDate(new Date());
+            user.setCivility(Civility.M);
+            user.setStatus(PersonState.EMPLOYED);
+            user.setCredentials("jijinn");
+            user.setPassword(DEFAULT_PASSWORD);
+            user.setRole(entityManagerRole.executeQuery(entityManagerRole.getQueryBuilder()
+                    .where().eq("name", "Responsable des Ressources Humaines").prepare()
+            ).stream().findFirst().orElse(null));
+            user.setHiringDate(new Date());
+            user.setHoursPerWeek(35);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber(DEFAULT_USER_ADDRESS);
+            address.setCity(DEFAULT_USER_CITY);
+            address.setZipCode(33175);
+
+            user.setAddress(address);
+            user.setWorkingStore(entityManagerStore.getQueryForAll().stream().findFirst().orElse(null));
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerUser.create(user);
+        }
+
+        if (entityManagerUser.getUserIfExists("jpgeorge", DEFAULT_PASSWORD) == null) {
+            User user = new User();
+            user.setSurname("Georges");
+            user.setName("Jean-Pierre");
+            user.setMobilePhoneNumber(DEFAULT_USER_PHONE_NUMBER);
+            user.setEmail("georgesouatelse@gmail.com");
+            user.setBirthDate(new Date());
+            user.setCivility(Civility.M);
+            user.setStatus(PersonState.EMPLOYED);
+            user.setCredentials("jpgeorge");
+            user.setPassword(DEFAULT_PASSWORD);
+            user.setRole(entityManagerRole.executeQuery(entityManagerRole.getQueryBuilder()
+                    .where().eq("name", "Directeur").prepare()
+            ).stream().findFirst().orElse(null));
+            user.setHiringDate(new Date());
+            user.setHoursPerWeek(35);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber(DEFAULT_USER_ADDRESS);
+            address.setCity(DEFAULT_USER_CITY);
+            address.setZipCode(33175);
+
+            user.setAddress(address);
+            user.setWorkingStore(entityManagerStore.getQueryForAll().stream().findFirst().orElse(null));
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerUser.create(user);
+        }
+
+        if (entityManagerUser.getUserIfExists("kfeine", DEFAULT_PASSWORD) == null) {
+            User user = new User();
+            user.setSurname("Kfeiné");
+            user.setName("M.");
+            user.setMobilePhoneNumber(DEFAULT_USER_PHONE_NUMBER);
+            user.setEmail("kfeine@gmail.com");
+            user.setBirthDate(new Date());
+            user.setCivility(Civility.M);
+            user.setStatus(PersonState.EMPLOYED);
+            user.setCredentials("kfeine");
+            user.setPassword(DEFAULT_PASSWORD);
+            user.setRole(entityManagerRole.executeQuery(entityManagerRole.getQueryBuilder()
+                    .where().eq("name", "Admin").prepare()
+            ).stream().findFirst().orElse(null));
+            user.setHiringDate(new Date());
+            user.setHoursPerWeek(35);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber(DEFAULT_USER_ADDRESS);
+            address.setCity(DEFAULT_USER_CITY);
+            address.setZipCode(33175);
+
+            user.setAddress(address);
+            user.setWorkingStore(entityManagerStore.getQueryForAll().stream().findFirst().orElse(null));
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerUser.create(user);
+        }
+    }
+
+    /**
+     * Fills the database with standard client data
+     */
+    private void setupTestClient() {
+        if (connectionSource == null || entityManagerStore == null) return;
+
+        if (entityManagerClient.getClientIfExists(1, "Valentin", "Caravati") == null) {
+            Client client = new Client();
+            client.setName("Valentin");
+            client.setSurname("Caravati");
+            client.setMobilePhoneNumber(DEFAULT_CLIENT_PHONE_NUMBER);
+            client.setEmail("valentin.caravati@gmail.com");
+            client.setBirthDate(new Date());
+            client.setCivility(Civility.M);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber(DEFAULT_USER_ADDRESS);
+            address.setCity(DEFAULT_USER_CITY);
+            address.setZipCode(33175);
+
+            client.setAddress(address);
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerClient.create(client);
+        }
+
+        if (entityManagerClient.getClientIfExists(2, "Lukaz", "Talbi") == null) {
+            Client client = new Client();
+            client.setName("Lukaz");
+            client.setSurname("Talbi");
+            client.setMobilePhoneNumber(DEFAULT_CLIENT_PHONE_NUMBER);
+            client.setEmail("lukaz.talbi@gmail.com");
+            client.setBirthDate(new Date());
+            client.setCivility(Civility.M);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber(DEFAULT_USER_ADDRESS);
+            address.setCity(DEFAULT_USER_CITY);
+            address.setZipCode(33175);
+
+            client.setAddress(address);
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerClient.create(client);
+        }
+
+        if (entityManagerClient.getClientIfExists(3, "Matteo", "Volant") == null) {
+            Client client = new Client();
+            client.setName("Matteo");
+            client.setSurname("Volant");
+            client.setMobilePhoneNumber(DEFAULT_CLIENT_PHONE_NUMBER);
+            client.setEmail("matteo.volant@outlook.com");
+            client.setBirthDate(new Date());
+            client.setCivility(Civility.M);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber(DEFAULT_USER_ADDRESS);
+            address.setCity(DEFAULT_USER_CITY);
+            address.setZipCode(33175);
+
+            client.setAddress(address);
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerClient.create(client);
+        }
+
+        if (entityManagerClient.getClientIfExists(4, "Simon", "Leroy") == null) {
+            Client client = new Client();
+            client.setName("Simon");
+            client.setSurname("Leroy");
+            client.setMobilePhoneNumber(DEFAULT_CLIENT_PHONE_NUMBER);
+            client.setEmail("simon.leroy@gmail.com");
+            client.setBirthDate(new Date());
+            client.setCivility(Civility.M);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber(DEFAULT_USER_ADDRESS);
+            address.setCity(DEFAULT_USER_CITY);
+            address.setZipCode(33175);
+
+            client.setAddress(address);
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerClient.create(client);
         }
     }
 }
