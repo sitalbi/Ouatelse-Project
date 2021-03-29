@@ -202,7 +202,7 @@ public class ManagementSalesController extends BaseController {
      * Builds the clients' table
      */
     private void buildClientsTreeTableView() {
-        JFXTreeTableColumn<Client.ClientTree, Long> id = new JFXTreeTableColumn<>("ID");
+        JFXTreeTableColumn<Client.ClientTree, Long> id = new JFXTreeTableColumn<>("Identifiant");
         JFXTreeTableColumn<Client.ClientTree, String> name = new JFXTreeTableColumn<>("Nom");
         JFXTreeTableColumn<Client.ClientTree, String> surname = new JFXTreeTableColumn<>("Prénom");
         JFXTreeTableColumn<Client.ClientTree, String> email = new JFXTreeTableColumn<>("Email");
@@ -227,9 +227,9 @@ public class ManagementSalesController extends BaseController {
      * Build the current client's cart table
      */
     private void buildCurrentClientsCartTreeTableView() {
-        JFXTreeTableColumn<Cart.CartTree, Long> id = new JFXTreeTableColumn<>("ID");
+        JFXTreeTableColumn<Cart.CartTree, Long> id = new JFXTreeTableColumn<>("Identifiant");
         JFXTreeTableColumn<Cart.CartTree, String> date = new JFXTreeTableColumn<>("Date");
-        JFXTreeTableColumn<Cart.CartTree, String> hour = new JFXTreeTableColumn<>("Hour");
+        JFXTreeTableColumn<Cart.CartTree, String> hour = new JFXTreeTableColumn<>("Heure");
         JFXTreeTableColumn<Cart.CartTree, String> closed = new JFXTreeTableColumn<>("Fermer");
         id.setSortNode(id.getSortNode());
 
