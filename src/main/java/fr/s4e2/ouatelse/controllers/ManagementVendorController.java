@@ -211,7 +211,7 @@ public class ManagementVendorController extends BaseController {
         JFXTreeTableColumn<VendorTree, String> name = new JFXTreeTableColumn<>("Nom");
         JFXTreeTableColumn<VendorTree, String> city = new JFXTreeTableColumn<>("Ville");
         JFXTreeTableColumn<VendorTree, String> email = new JFXTreeTableColumn<>("Email");
-        JFXTreeTableColumn<VendorTree, String> contractState = new JFXTreeTableColumn<>("Contract State");
+        JFXTreeTableColumn<VendorTree, String> contractState = new JFXTreeTableColumn<>("Etat du contrat");
         name.setSortNode(name.getSortNode());
 
         name.setCellValueFactory(param -> param.getValue().getValue().getName());

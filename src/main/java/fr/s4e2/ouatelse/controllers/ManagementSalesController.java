@@ -9,9 +9,11 @@ import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.managers.EntityManagerCart;
 import fr.s4e2.ouatelse.managers.EntityManagerClient;
 import fr.s4e2.ouatelse.managers.EntityManagerClientStock;
+import fr.s4e2.ouatelse.managers.EntityManagerProduct;
 import fr.s4e2.ouatelse.objects.Cart;
 import fr.s4e2.ouatelse.objects.Client;
 import fr.s4e2.ouatelse.objects.ClientStock;
+import fr.s4e2.ouatelse.objects.Product;
 import fr.s4e2.ouatelse.screens.ProductsCatalogScreen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,7 +40,11 @@ public class ManagementSalesController extends BaseController {
     private final EntityManagerClient entityManagerClient = Main.getDatabaseManager().getEntityManagerClient();
     private final EntityManagerCart entityManagerCart = Main.getDatabaseManager().getEntityManagerCart();
     private final EntityManagerClientStock entityManagerClientStock = Main.getDatabaseManager().getEntityManagerClientStock();
+    private final EntityManagerProduct entityManagerProduct = Main.getDatabaseManager().getEntityManagerProduct();
+
     private final Logger logger = Logger.getLogger(this.getClass().getName());
+    public Button removeSampleButton;
+    public Button addSampleButton;
 
     @FXML
     private JFXTextField clientSearchBar;
@@ -123,6 +129,39 @@ public class ManagementSalesController extends BaseController {
                 this.currentCart = entityManagerCart.executeQuery(entityManagerCart.getQueryBuilder()
                         .where().eq("id", newValue.getValue().getId().getValue()).prepare())
                         .stream().findFirst().orElse(null);
+            } catch (SQLException exception) {
+                this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+            }
+        });
+
+        this.currentCartProductsTreetableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                this.currentClientStock = null;
+                this.removeSampleButton.setDisable(true);
+                this.addSampleButton.setDisable(true);
+                return;
+            }
+
+            try {
+                Product product = this.entityManagerProduct.executeQuery(
+                        this.entityManagerProduct.getQueryBuilder().where()
+                        .eq("reference", newValue.getValue().getReference().getValue())
+                        .prepare()
+                ).stream().findFirst().orElse(null);
+
+                if(product != null && this.currentCart != null) {
+                    this.currentClientStock = this.entityManagerClientStock.executeQuery(
+                            this.entityManagerClientStock.getQueryBuilder().where()
+                                    .eq("product_id", product.getId()).and()
+                            .eq("cart_id", this.currentCart.getId())
+                            .prepare()
+                    ).stream().findFirst().orElse(null);
+
+                    if(this.currentClientStock != null) {
+                        this.addSampleButton.setDisable(false);
+                        this.removeSampleButton.setDisable(false);
+                    }
+                }
             } catch (SQLException exception) {
                 this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             }
@@ -367,6 +406,7 @@ public class ManagementSalesController extends BaseController {
 
         this.entityManagerCart.delete(currentCart);
 
+        this.currentCartProductsTreetableView.getRoot().getChildren().clear();
         this.currentClientsCartTreeTableView.getRoot().getChildren().remove(currentClientsCartTreeTableView.getSelectionModel().getSelectedItem());
         this.currentCart = null;
     }
@@ -411,5 +451,35 @@ public class ManagementSalesController extends BaseController {
      */
     private boolean isCartSelected() {
         return this.currentCart != null;
+    }
+
+    public void onAddSampleButton(MouseEvent mouseEvent) {
+        if(this.currentClientStock == null) return;
+
+        this.currentClientStock.setQuantity(this.currentClientStock.getQuantity() + 1);
+        this.entityManagerClientStock.update(this.currentClientStock);
+
+        this.currentCartProductsTreetableView.getRoot().getChildren().clear();
+        this.currentClientsCartTreeTableView.getRoot().getChildren().clear();
+        this.loadInformation();
+    }
+
+    public void onRemoveSampleButton(MouseEvent mouseEvent) {
+        if(this.currentClientStock == null || this.currentCart == null) return;
+
+        this.currentClientStock.setQuantity(this.currentClientStock.getQuantity() - 1);
+
+        if(this.currentClientStock.getQuantity() == 0) {
+            this.getClientStocks().remove(this.currentClientStock);
+
+            this.entityManagerCart.update(this.currentCart);
+            this.entityManagerClientStock.delete(this.currentClientStock);
+        } else {
+            this.entityManagerClientStock.update(this.currentClientStock);
+        }
+
+        this.currentCartProductsTreetableView.getRoot().getChildren().clear();
+        this.currentClientsCartTreeTableView.getRoot().getChildren().clear();
+        this.loadInformation();
     }
 }
