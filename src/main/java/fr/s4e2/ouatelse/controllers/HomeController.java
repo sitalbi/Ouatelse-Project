@@ -289,7 +289,7 @@ public class HomeController extends BaseController {
                         fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.MONEY);
                         break;
                     case USER_MANAGEMENT:
-                        newButton.setText("Gestion des utilisateurs");
+                        newButton.setText("Gestion des employés");
                         newButton.setOnMouseClicked(event -> onUserManagementButtonClick());
                         fontAwesomeIconView = new FontAwesomeIconView(FontAwesomeIcon.USER_MD);
                         break;
