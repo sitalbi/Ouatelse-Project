@@ -7,6 +7,7 @@
     <groupId>fr.s4e2.ouatelse</groupId>
     <artifactId>Ouatelse</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <name>Ouatelse</name>
     <description>Ouatelse</description>
@@ -175,6 +176,18 @@
                         <version>5.7.0</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>fr.s4e2.ouatelse.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>
