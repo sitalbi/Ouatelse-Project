@@ -137,6 +137,8 @@ public class DatabaseManager {
         this.setupTestStores();
         this.setupTestUsers();
         this.setupTestClient();
+        this.setupTestVendors();
+        this.setupTestProducts();
     }
 
     /**
@@ -325,7 +327,7 @@ public class DatabaseManager {
     }
 
     /**
-     * Fills the database with standard user data
+     * Fills the database with test user data
      *
      * @throws SQLException occurs when there is a connection that can't be established
      */
@@ -508,7 +510,7 @@ public class DatabaseManager {
     }
 
     /**
-     * Fills the database with standard client data
+     * Fills the database with test client data
      */
     private void setupTestClient() {
         if (connectionSource == null || entityManagerStore == null) return;
@@ -591,6 +593,125 @@ public class DatabaseManager {
 
             this.entityManagerAddress.create(address);
             this.entityManagerClient.create(client);
+        }
+    }
+
+    /**
+     * Fills the database with test vendors
+     */
+    private void setupTestVendors() {
+        if (connectionSource == null || entityManagerVendor == null) return;
+
+        if (entityManagerVendor.getVendorIfExists("Nestlé Nespresso S.A.") == null) {
+            Vendor vendor = new Vendor();
+            vendor.setName("Nestlé Nespresso S.A.");
+            vendor.setEmail("nespresso@nestle.com");
+            vendor.setContractState(true);
+            vendor.setPhoneNumber(DEFAULT_USER_PHONE_NUMBER);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber(DEFAULT_USER_ADDRESS);
+            address.setCity(DEFAULT_USER_CITY);
+            address.setZipCode(33175);
+
+            vendor.setAddress(address);
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerVendor.create(vendor);
+        }
+
+        if (entityManagerVendor.getVendorIfExists("Senseo") == null) {
+            Vendor vendor = new Vendor();
+            vendor.setName("Senseo");
+            vendor.setEmail("vendor@senseo.com");
+            vendor.setContractState(false);
+            vendor.setPhoneNumber(DEFAULT_USER_PHONE_NUMBER);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber(DEFAULT_USER_ADDRESS);
+            address.setCity(DEFAULT_USER_CITY);
+            address.setZipCode(33175);
+
+            vendor.setAddress(address);
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerVendor.create(vendor);
+        }
+
+        if (entityManagerVendor.getVendorIfExists("Koninklijke Philips N.V.") == null) {
+            Vendor vendor = new Vendor();
+            vendor.setName("Koninklijke Philips N.V.");
+            vendor.setEmail("vendor@philips.com");
+            vendor.setContractState(true);
+            vendor.setPhoneNumber(DEFAULT_USER_PHONE_NUMBER);
+
+            Address address = new Address();
+            address.setStreetNameAndNumber(DEFAULT_USER_ADDRESS);
+            address.setCity(DEFAULT_USER_CITY);
+            address.setZipCode(33175);
+
+            vendor.setAddress(address);
+
+            this.entityManagerAddress.create(address);
+            this.entityManagerVendor.create(vendor);
+        }
+    }
+
+    /**
+     * Fills the database with test products
+     */
+    private void setupTestProducts() {
+        if (connectionSource == null || entityManagerProduct == null) return;
+
+        if (entityManagerProduct.getProductIfExists(195622386) == null) {
+            Product product = new Product();
+            product.setReference(195622386);
+            product.setBarCode("19562236");
+            product.setName("SENSEO Select");
+            product.setPurchasePrice(85.0);
+            product.setBrand("Senseo");
+            product.setMargin(0.2);
+            product.setTaxes(0.2);
+            product.setState(ProductState.IN_STOCK);
+            product.setCategory("Machine à Café");
+            product.setSoldBy(entityManagerVendor.getVendorIfExists("Senseo"));
+            product.setStore(entityManagerStore.getStoreIfExist("Ouatelse Le Haillan"));
+
+            this.entityManagerProduct.create(product);
+        }
+
+        if (entityManagerProduct.getProductIfExists(952685135) == null) {
+            Product product = new Product();
+            product.setReference(952685135);
+            product.setBarCode("952685135");
+            product.setName("Vertuo PLUS");
+            product.setPurchasePrice(199.0);
+            product.setBrand("Nespresso");
+            product.setMargin(0.2);
+            product.setTaxes(0.2);
+            product.setState(ProductState.IN_STOCK);
+            product.setCategory("Machine à Café");
+            product.setSoldBy(entityManagerVendor.getVendorIfExists("Nestlé Nespresso S.A."));
+            product.setStore(entityManagerStore.getStoreIfExist("Ouatelse Paris"));
+
+            this.entityManagerProduct.create(product);
+        }
+
+        if (entityManagerProduct.getProductIfExists(129846356) == null) {
+            Product product = new Product();
+            product.setReference(129846356);
+            product.setBarCode("129846356");
+            product.setName("Series 3200");
+            product.setPurchasePrice(569.99);
+            product.setBrand("Philips");
+            product.setMargin(0.2);
+            product.setTaxes(0.2);
+            product.setState(ProductState.IN_STOCK);
+            product.setCategory("Machine à Café");
+            product.setSoldBy(entityManagerVendor.getVendorIfExists("Koninklijke Philips N.V."));
+            product.setStore(entityManagerStore.getStoreIfExist("Ouatelse Paris"));
+
+            this.entityManagerProduct.create(product);
         }
     }
 }

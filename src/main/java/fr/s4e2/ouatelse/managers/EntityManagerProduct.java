@@ -8,6 +8,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import fr.s4e2.ouatelse.exceptions.DatabaseInitialisationException;
 import fr.s4e2.ouatelse.objects.Product;
+import fr.s4e2.ouatelse.objects.Vendor;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -126,6 +127,25 @@ public class EntityManagerProduct {
      */
     public QueryBuilder<Product, Long> getQueryBuilder() {
         return this.instance.queryBuilder();
+    }
+
+    /**
+     * Gets a corresponding product if exists, else null
+     *
+     * @param reference the reference of the product
+     * @return the product if exists, else null
+     */
+    public Product getProductIfExists(long reference) {
+        Product product = null;
+
+        try {
+            product = this.instance.query(this.instance.queryBuilder().where().eq("reference", reference).prepare())
+                    .stream().findFirst().orElse(null);
+
+        } catch (SQLException exception) {
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+        }
+        return product;
     }
 
     /**

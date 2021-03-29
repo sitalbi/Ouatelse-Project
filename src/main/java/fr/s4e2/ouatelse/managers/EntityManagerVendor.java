@@ -136,18 +136,15 @@ public class EntityManagerVendor {
     /**
      * Gets a corresponding vendor if exists, else null
      *
-     * @param credentials the credentials of the vendor
-     * @param password    the password of the vendor in plain text
+     * @param name the name of the vendor
      * @return the vendor if exists, else null
      */
-    public Vendor getVendorIfExists(String credentials, String password) {
+    public Vendor getVendorIfExists(String name) {
         Vendor vendor = null;
 
         try {
-            //noinspection UnstableApiUsage
-            vendor = this.instance.query(this.instance.queryBuilder().where().eq("credentials", credentials)
-                    .and().eq("password", Hashing.sha256().hashString(password, StandardCharsets.UTF_8)
-                            .toString()).prepare()).stream().findFirst().orElse(null);
+            vendor = this.instance.query(this.instance.queryBuilder().where().eq("name", name).prepare())
+                    .stream().findFirst().orElse(null);
 
         } catch (SQLException exception) {
             this.logger.log(Level.SEVERE, exception.getMessage(), exception);
