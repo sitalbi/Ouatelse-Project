@@ -678,6 +678,12 @@ public class DatabaseManager {
             product.setStore(entityManagerStore.getStoreIfExist("Ouatelse Le Haillan"));
 
             this.entityManagerProduct.create(product);
+
+            // creates a product stock
+            ProductStock productStock = new ProductStock();
+            productStock.setProduct(product);
+            productStock.setStore(entityManagerStore.getStoreIfExist("Ouatelse Le Haillan"));
+            this.entityManagerProductStock.create(productStock);
         }
 
         if (entityManagerProduct.getProductIfExists(952685135) == null) {
@@ -695,6 +701,12 @@ public class DatabaseManager {
             product.setStore(entityManagerStore.getStoreIfExist("Ouatelse Paris"));
 
             this.entityManagerProduct.create(product);
+
+            // creates a product stock
+            ProductStock productStock = new ProductStock();
+            productStock.setProduct(product);
+            productStock.setStore(entityManagerStore.getStoreIfExist("Ouatelse Paris"));
+            this.entityManagerProductStock.create(productStock);
         }
 
         if (entityManagerProduct.getProductIfExists(129846356) == null) {
@@ -712,6 +724,12 @@ public class DatabaseManager {
             product.setStore(entityManagerStore.getStoreIfExist("Ouatelse Paris"));
 
             this.entityManagerProduct.create(product);
+
+            // creates a product stock
+            ProductStock productStock = new ProductStock();
+            productStock.setProduct(product);
+            productStock.setStore(entityManagerStore.getStoreIfExist("Ouatelse Paris"));
+            this.entityManagerProductStock.create(productStock);
         }
     }
 }
