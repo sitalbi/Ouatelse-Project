@@ -24,6 +24,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementUserScreen}
@@ -82,6 +84,8 @@ public class ManagementUserController extends BaseController {
     private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
     private User currentUser;
 
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+
     /**
      * Initializes the controller
      *
@@ -125,7 +129,7 @@ public class ManagementUserController extends BaseController {
                             .prepare()
                     ).stream().findFirst().orElse(null);
                 } catch (SQLException exception) {
-                    exception.printStackTrace();
+                    this.logger.log(Level.SEVERE, exception.getMessage(), exception);
                 }
 
                 this.loadUserInformation();

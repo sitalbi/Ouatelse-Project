@@ -122,7 +122,7 @@ public abstract class BaseScreen {
             scene.getStylesheets().add("css/base.css");
             stage.setScene(scene);
         } catch (IOException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -155,7 +155,7 @@ public abstract class BaseScreen {
             Scene scene = new Scene(parent);
             stage.setScene(scene);
         } catch (IOException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -186,7 +186,7 @@ public abstract class BaseScreen {
             Scene scene = new Scene(parent);
             stage.setScene(scene);
         } catch (IOException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
