@@ -33,9 +33,9 @@
    ~~6.2 Modifier un panier~~\
    ~~6.3 Supprimer un panier~~\
    6.4 Retour de produits par un client\
-   6.5 Imprimer la facture du panier\
-   6.6 Accès aux statistiques de vente d’un magasin\
-   6.7 Accès aux statistiques de vente au niveau national
+   ~~6.5 Imprimer la facture du panier~~\
+   ~~6.6 Accès aux statistiques de vente d’un magasin~~\
+   ~~6.7 Accès aux statistiques de vente au niveau national~~
 7. Fonction du module de gestion des employés\
    ~~7.1 Enregistrer un nouvel employé~~\
    ~~7.2 Modifier les caractéristiques d’un salarié~~\
