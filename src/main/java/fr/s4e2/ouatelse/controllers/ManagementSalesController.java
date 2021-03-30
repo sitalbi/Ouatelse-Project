@@ -102,6 +102,8 @@ public class ManagementSalesController extends BaseController {
 
             clientsTreeTableView.getSelectionModel().clearSelection();
             currentClient = null;
+            currentCart = null;
+            currentClientStock = null;
             this.clearInformation();
         });
 
@@ -120,7 +122,7 @@ public class ManagementSalesController extends BaseController {
                 this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             }
 
-            this.currentClientsCartTreeTableView.getRoot().getChildren().clear();
+            this.clearInformation();
             this.loadInformation();
         });
 
@@ -138,6 +140,10 @@ public class ManagementSalesController extends BaseController {
             } catch (SQLException exception) {
                 this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             }
+
+            //load products
+            currentCartProductsTreetableView.getRoot().getChildren().clear();
+            getClientStocks().forEach(clientStock -> currentCartProductsTreetableView.getRoot().getChildren().add(new TreeItem<>(clientStock.toClientStockTree())));
         });
 
         this.currentCartProductsTreetableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -321,7 +327,9 @@ public class ManagementSalesController extends BaseController {
      * Clears the client sales information from the different tables
      */
     private void clearInformation() {
+        this.currentClientsCartTreeTableView.getSelectionModel().clearSelection();
         this.currentClientsCartTreeTableView.getRoot().getChildren().clear();
+        this.currentCartProductsTreetableView.getSelectionModel().clearSelection();
         this.currentCartProductsTreetableView.getRoot().getChildren().clear();
     }
 
@@ -338,17 +346,7 @@ public class ManagementSalesController extends BaseController {
                     .prepare()
             );
             clientCarts.forEach(this::addCartToTreeTable);
-        } catch (SQLException exception) {
-            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
-        }
-
-        // loads client stock
-        try {
-            List<ClientStock> clientStocks = entityManagerClientStock.executeQuery(entityManagerClientStock.getQueryBuilder()
-                    .where().eq("client_id", currentClient.getId())
-                    .prepare()
-            );
-            clientStocks.forEach(this::addClientStockToTreeTable);
+            this.currentClientsCartTreeTableView.getSelectionModel().clearSelection();
         } catch (SQLException exception) {
             this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
