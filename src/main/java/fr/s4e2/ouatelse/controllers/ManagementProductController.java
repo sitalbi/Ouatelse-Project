@@ -414,13 +414,14 @@ public class ManagementProductController extends BaseController {
     private void loadProductStockInfo() {
         this.stockOrderTreeView.getRoot().getChildren().clear();
 
-        if (currentStore != null) {
+        if (currentStore != null && currentProduct != null) {
             ObservableList<TreeItem<ProductStockInfoTree>> productStocks = stockOrderTreeView.getRoot().getChildren();
 
             try {
                 // loads all product stocks for selected store
                 this.entityManagerProductStock.executeQuery(
-                        entityManagerProductStock.getQueryBuilder().where().eq("store_id", currentStore.getId()).prepare()
+                        entityManagerProductStock.getQueryBuilder().where().eq("store_id", currentStore.getId())
+                                .and().eq("product_id", currentProduct.getId()).prepare()
                 ).forEach(productStock -> {
                     if (productStock.getProduct() != null) {
                         productStocks.add(new TreeItem<>(productStock.toProductStockInfoTree()));
