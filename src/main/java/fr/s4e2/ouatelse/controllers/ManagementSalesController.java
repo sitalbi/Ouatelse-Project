@@ -24,10 +24,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
 
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
@@ -58,15 +56,15 @@ public class ManagementSalesController extends BaseController {
     private final EntityManagerProduct entityManagerProduct = Main.getDatabaseManager().getEntityManagerProduct();
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
-    public Button removeSampleButton;
-    public Button addSampleButton;
+    @FXML
+    private Button removeSampleButton;
+    @FXML
+    private Button addSampleButton;
 
     @FXML
     private JFXTextField clientSearchBar;
     @FXML
     private JFXTreeTableView<Client.ClientTree> clientsTreeTableView;
-    @FXML
-    private Label errorMessageField;
     @FXML
     private JFXTreeTableView<Cart.CartTree> currentClientsCartTreeTableView;
     @FXML
@@ -633,7 +631,7 @@ public class ManagementSalesController extends BaseController {
         return this.currentCart != null;
     }
 
-    public void onAddSampleButton(MouseEvent mouseEvent) {
+    public void onAddSampleButton() {
         if (this.currentClientStock == null) return;
 
         this.currentClientStock.setQuantity(this.currentClientStock.getQuantity() + 1);
@@ -644,7 +642,7 @@ public class ManagementSalesController extends BaseController {
         this.loadInformation();
     }
 
-    public void onRemoveSampleButton(MouseEvent mouseEvent) {
+    public void onRemoveSampleButton() {
         if (this.currentClientStock == null || this.currentCart == null) return;
 
         this.currentClientStock.setQuantity(this.currentClientStock.getQuantity() - 1);

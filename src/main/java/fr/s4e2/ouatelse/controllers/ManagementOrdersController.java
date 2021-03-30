@@ -4,7 +4,6 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.managers.EntityManagerProduct;
-import fr.s4e2.ouatelse.managers.EntityManagerProductStock;
 import fr.s4e2.ouatelse.managers.EntityManagerScheduledOrder;
 import fr.s4e2.ouatelse.objects.Product;
 import fr.s4e2.ouatelse.objects.ScheduledOrder;
@@ -36,7 +35,6 @@ public class ManagementOrdersController extends BaseController {
     private static final String NON_VALID_QUANTITY = "Veuillez entrer un nombre correct de produits à commander";
     private static final String PRODUCT_DOES_NOT_EXIST = "Produit inexistant";
     private static final String VENDOR_NOT_SET = "Fournisseur du produit non défini";
-    private final EntityManagerProductStock entityManagerProductStock = Main.getDatabaseManager().getEntityManagerProductStock();
 
     @FXML
     private Label errorMessage;

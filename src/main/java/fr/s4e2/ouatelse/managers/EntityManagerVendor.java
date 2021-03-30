@@ -1,6 +1,5 @@
 package fr.s4e2.ouatelse.managers;
 
-import com.google.common.hash.Hashing;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -10,7 +9,6 @@ import com.j256.ormlite.support.ConnectionSource;
 import fr.s4e2.ouatelse.exceptions.DatabaseInitialisationException;
 import fr.s4e2.ouatelse.objects.Vendor;
 
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
