@@ -240,7 +240,7 @@ public class ManagementSalesController extends BaseController {
         JFXTreeTableColumn<Cart.CartTree, Long> id = new JFXTreeTableColumn<>("Identifiant");
         JFXTreeTableColumn<Cart.CartTree, String> date = new JFXTreeTableColumn<>("Date");
         JFXTreeTableColumn<Cart.CartTree, String> hour = new JFXTreeTableColumn<>("Heure");
-        JFXTreeTableColumn<Cart.CartTree, String> closed = new JFXTreeTableColumn<>("Etat pannier");
+        JFXTreeTableColumn<Cart.CartTree, String> closed = new JFXTreeTableColumn<>("Etat panier");
         id.setSortNode(id.getSortNode());
 
         id.setCellValueFactory(param -> param.getValue().getValue().getId().asObject());
