@@ -8,7 +8,6 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import fr.s4e2.ouatelse.exceptions.DatabaseInitialisationException;
 import fr.s4e2.ouatelse.objects.Product;
-import fr.s4e2.ouatelse.objects.Vendor;
 
 import java.sql.SQLException;
 import java.util.List;
