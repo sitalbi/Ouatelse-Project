@@ -1,0 +1,86 @@
+/* MENU BAR */
+.menu-bar {
+    -fx-background-color: #242e41;
+}
+
+.menu, .menu-button {
+    -fx-background-color: #242e41;
+    -fx-border-width: 0;
+}
+
+.menu .label {
+    -fx-text-fill: white;
+}
+
+.menu-item .label {
+    -fx-text-fill: white;
+}
+
+.menu-item:focused, .menu:hover, .menu:focused, .menu:selected, .menu:armed, .menu:showing {
+    -fx-background-color: #2f3b52;
+}
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color: #242e41;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em;
+}
+
+#menuBarFileQuit {
+    -fx-background-color: #b30000;
+}
+
+#menuBarFileQuit:hover {
+    -fx-background-color: red;
+}
+
+.menu-item {
+    -fx-background-color: #242e41;
+}
+
+/* FOOTER */
+.footer {
+    -fx-background-color: #242e41;
+}
+
+/* OTHER */
+.content {
+    -fx-background-color: #2f3b52;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-border-color: transparent #242e41 transparent transparent;
+}
+
+.text-field, .password-field, .text-area {
+    -fx-text-fill: #ffbfbf;
+    -fx-prompt-text-fill: #d3d3d3;
+}
+
+.text-area .content {
+    -fx-background-color: transparent;
+    -fx-border-width: 0px;
+}
+
+.text-area *.text {
+    -fx-text-alignment: center;
+    -fx-text-fill: white;
+}
+
+.text-field:focused, .password-field:focused, .text-area:focused {
+    -fx-prompt-text-fill: transparent;
+}
+
+.jfx-date-picker .jfx-text-field {
+    -jfx-unfocus-color: white;
+}
+
+.jfx-combo-box {
+    -fx-prompt-text-fill: white;
+}
+
+.combo-box {
+    -fx-background-color: #242e41;
+}
