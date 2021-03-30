@@ -161,7 +161,7 @@ public class HomeController extends BaseController {
      * Opens the Statistics Screen
      */
     private void onStatisticsButtonClick() {
-        logger.warning("The statistics screen hasn't been implemented yet!");
+        new StatisticsSalesScreen(this.authentificationStore).open();
     }
 
     /**

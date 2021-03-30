@@ -19,6 +19,7 @@ import fr.s4e2.ouatelse.objects.Client;
 import fr.s4e2.ouatelse.objects.ClientStock;
 import fr.s4e2.ouatelse.objects.Product;
 import fr.s4e2.ouatelse.screens.ProductsCatalogScreen;
+import fr.s4e2.ouatelse.screens.StatisticsSalesScreen;
 import fr.s4e2.ouatelse.utils.PDFUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,7 +47,7 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 /**
- * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementSalesScreen}
+ * Controller for the {@link fr.s4e2.ouatelse.screens.StatisticsSalesScreen}
  */
 public class ManagementSalesController extends BaseController {
 
@@ -69,9 +70,6 @@ public class ManagementSalesController extends BaseController {
     private JFXTreeTableView<Cart.CartTree> currentClientsCartTreeTableView;
     @FXML
     private JFXTreeTableView<ClientStock.ClientStockTree> currentCartProductsTreetableView;
-
-    // left -> all the carts of the client
-    // right -> client stock
 
     private Client currentClient;
     private Cart currentCart;
@@ -310,20 +308,6 @@ public class ManagementSalesController extends BaseController {
     }
 
     /**
-     * Adds a client stock to the sheet at the bottom middle of the window
-     *
-     * @param clientStock The client stock to add to the sheet
-     */
-    private void addClientStockToTreeTable(ClientStock clientStock) {
-        TreeItem<ClientStock.ClientStockTree> clientStockrow = new TreeItem<>(clientStock.toClientStockTree());
-
-        this.currentCartProductsTreetableView.getRoot().getChildren().add(clientStockrow);
-        this.currentCartProductsTreetableView.getSelectionModel().select(clientStockrow);
-        this.currentClientStock = clientStock;
-    }
-
-
-    /**
      * Clears the client sales information from the different tables
      */
     private void clearInformation() {
@@ -473,10 +457,10 @@ public class ManagementSalesController extends BaseController {
         List<PdfPTable> tables = new ArrayList<>();
 
         // PRODUCTS IN CART TABLE
-        PdfPTable productsTable = new PdfPTable(5);
+        PdfPTable productsTable = new PdfPTable(6);
 
         // add headers
-        Stream.of("Référence", "Produit", "Marque", "Quantité", "Prix TTC").forEach(columnTitle -> {
+        Stream.of("Référence", "Produit", "Marque", "Quantité", "Prix Unitaire", "Total Prix TTC").forEach(columnTitle -> {
             PdfPCell header = new PdfPCell();
             header.setBackgroundColor(BaseColor.LIGHT_GRAY);
             header.setBorderWidth(2);
@@ -496,6 +480,8 @@ public class ManagementSalesController extends BaseController {
             cell.setPhrase(new Phrase(clientStock.getProduct().getBrand()));
             productsTable.addCell(cell);
             cell.setPhrase(new Phrase(String.valueOf(clientStock.getQuantity())));
+            productsTable.addCell(cell);
+            cell.setPhrase(new Phrase(clientStock.getProduct().getSellingPrice() + " €"));
             productsTable.addCell(cell);
             cell.setPhrase(new Phrase(clientStock.getQuantity() * clientStock.getProduct().getSellingPrice() + " €"));
             productsTable.addCell(cell);
