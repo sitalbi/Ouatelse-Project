@@ -115,6 +115,7 @@ public class ManagementSalesController extends BaseController {
                 this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             }
 
+            this.currentClientsCartTreeTableView.getRoot().getChildren().clear();
             this.loadInformation();
         });
 
@@ -375,7 +376,8 @@ public class ManagementSalesController extends BaseController {
         this.currentClient.getCarts().add(cart);
         this.entityManagerClient.update(currentClient);
 
-        this.addCartToTreeTable(cart);
+        this.currentClientsCartTreeTableView.getRoot().getChildren().clear();
+        this.loadInformation();
 
     }
 
