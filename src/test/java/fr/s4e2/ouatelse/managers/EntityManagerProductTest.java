@@ -243,4 +243,20 @@ class EntityManagerProductTest {
         // Product is null
         assertFalse(this.entityManagerProduct.exists(null));
     }
+
+    /*
+    Use cases :
+        - Product reference exists
+        - Product reference does not exist
+   */
+    @Test
+    void getProductIfExists() {
+        // Product reference exists
+        Product existingProduct = createCompliantProduct();
+        this.entityManagerProduct.create(existingProduct);
+        assertNotNull(this.entityManagerProduct.getProductIfExists(existingProduct.getReference()));
+
+        // Product reference does not exist
+        assertNull(this.entityManagerProduct.getProductIfExists(-1));
+    }
 }
