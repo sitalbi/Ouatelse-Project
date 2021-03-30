@@ -41,6 +41,7 @@ public class StatisticsSalesController extends BaseController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        this.lineChart.setAnimated(false);
 
         try {
             this.closedCarts = this.entityManagerCart.executeQuery(entityManagerCart.getQueryBuilder()
