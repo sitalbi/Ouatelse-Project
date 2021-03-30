@@ -4,7 +4,7 @@
 
 - [IntelliJ IDEA](https://www.jetbrains.com/idea/) (Peu importe Community ou Ultimate)
 - [JDK 8u281](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
-- [Gluon's Scene Builder](https://gluonhq.com/products/scene-builder/#download)
+- [Gluon's Scene Builder 15.0.1](https://gluonhq.com/products/scene-builder/#download)
 
 ## Guide
 
@@ -37,5 +37,14 @@
   SceneBuilder"
 - Sélectionner le binaire de SceneBuilder à l'emplacement où il est installé
 - Une fois SceneBuilder ouvert sans problèmes, le fermer
-
+- Dans l'onglet "Maven" à droite, cliquer sur "Execute Maven Goal"
+  ![](markdown_assets/images/BUILD.md/maven01.png)
+- Lancer la commande "mvn clean install"
 - Vous pouvez maintenant construire le projet
+
+### Lancer le projet
+- Chercher le fichier src/main/java/fr.s4e2.ouatelse.Main
+- Faire un clic droit dessus
+- Cliquer sur "Run 'Main.main()'"
+  ![](markdown_assets/images/BUILD.md/run01.png)
+
