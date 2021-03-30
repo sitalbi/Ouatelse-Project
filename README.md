@@ -50,19 +50,4 @@
    8.3 Accès à l’affichage des graphiques de statistiques en superposes\
    8.4 Accès à l’affichage des graphiques de statistiques en combinés
 
-## Configuration SceneBuilder
 
-1. S'assurer de bien avoir SceneBuilder 15.0.1
-2. Une fois SceneBuilder ouvert, cliquer sur la route crantée à droite de la barre de recherche "Library"
-3. Cliquer sur "JAR/FXML Manager"
-4. Cliquer sur "Manually add Library from repository"
-5. Ajouter les deux libraries suivantes : \
-   **JFOENIX**\
-   **Group ID :** com.jfoenix\
-   **Artifact ID :** jfoenix\
-   **Version :** 9.0.10\
-   **FONTAWESOME**\
-   **Group ID :** de.jensd\
-   **Artifact ID :** fontawesomefx-fontawesome\
-   **Version :** 4.7.0-9.1.2
- 
