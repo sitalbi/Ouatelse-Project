@@ -62,6 +62,9 @@ public class ProductsCatalogController extends BaseController {
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
 
+        this.putInCartButton.setDisable(true);
+        this.removeFromCartButton.setDisable(true);
+
         this.buildNotInCartTableView();
         this.buildInCartTreeTableView();
 
@@ -69,7 +72,7 @@ public class ProductsCatalogController extends BaseController {
         this.notInCartSearchBar.textProperty().addListener((observable, oldValue, newValue) -> {
             notInCartTableView.getRoot().getChildren().clear();
 
-            if(newValue.trim().isEmpty()) {
+            if (newValue.trim().isEmpty()) {
                 loadNotInCartTableView();
             } else {
                 try {
@@ -91,7 +94,7 @@ public class ProductsCatalogController extends BaseController {
         this.inCartSearchBar.textProperty().addListener((observable, oldValue, newValue) -> {
             inCartTreeTableView.getRoot().getChildren().clear();
 
-            if(newValue.trim().isEmpty()) {
+            if (newValue.trim().isEmpty()) {
                 loadInCartTableView();
             } else {
                 try {
@@ -110,10 +113,30 @@ public class ProductsCatalogController extends BaseController {
         });
 
         // Enables or disables button on select and unselect
-        this.notInCartTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selectProductFromTable(newValue));
+        this.notInCartTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            selectProductFromTable(newValue);
+
+            if (this.currentProduct == null) {
+                this.putInCartButton.setDisable(true);
+                this.removeFromCartButton.setDisable(true);
+            } else {
+                this.putInCartButton.setDisable(false);
+                this.removeFromCartButton.setDisable(true);
+            }
+        });
 
         // Enables or disables button on select and unselect
-        this.inCartTreeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selectProductFromTable(newValue));
+        this.inCartTreeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            selectProductFromTable(newValue);
+
+            if (this.currentProduct == null) {
+                this.putInCartButton.setDisable(true);
+                this.removeFromCartButton.setDisable(true);
+            } else {
+                this.putInCartButton.setDisable(true);
+                this.removeFromCartButton.setDisable(false);
+            }
+        });
     }
 
     private void selectProductFromTable(TreeItem<Product.ProductTree> newValue) {

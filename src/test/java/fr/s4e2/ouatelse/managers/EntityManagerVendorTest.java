@@ -237,4 +237,28 @@ class EntityManagerVendorTest {
         // Vendor is null
         assertFalse(this.entityManagerVendor.exists(null));
     }
+
+    /*
+        Use cases :
+            - Vendor name exists
+            - Vendor does not exists
+            - Vendor name is empty
+            - Vendor name is null
+     */
+    @Test
+    void getVendorIfExists() {
+        // Vendor name exists
+        Vendor existingVendor = createCompliantVendor();
+        this.entityManagerVendor.create(existingVendor);
+        assertNotNull(this.entityManagerVendor.getVendorIfExists(existingVendor.getName()));
+
+        // Vendor does not exists
+        assertNull(this.entityManagerVendor.getVendorIfExists("Not in the database"));
+
+        // Vendor name is empty
+        assertNull(this.entityManagerVendor.getVendorIfExists(""));
+
+        // Vendor name is null
+        assertNull(this.entityManagerVendor.getVendorIfExists(null));
+    }
 }
