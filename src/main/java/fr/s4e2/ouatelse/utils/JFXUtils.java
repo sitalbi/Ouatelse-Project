@@ -5,6 +5,9 @@ import javafx.util.StringConverter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Multitude of reusable and useful functions specific to JFX
+ */
 public class JFXUtils {
 
     /**

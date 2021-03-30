@@ -1,5 +1,9 @@
 package fr.s4e2.ouatelse.controllers;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
@@ -15,6 +19,7 @@ import fr.s4e2.ouatelse.objects.Client;
 import fr.s4e2.ouatelse.objects.ClientStock;
 import fr.s4e2.ouatelse.objects.Product;
 import fr.s4e2.ouatelse.screens.ProductsCatalogScreen;
+import fr.s4e2.ouatelse.utils.PDFUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,13 +29,23 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 
+import javax.swing.filechooser.FileSystemView;
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 /**
  * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementSalesScreen}
@@ -55,15 +70,7 @@ public class ManagementSalesController extends BaseController {
     @FXML
     private JFXTreeTableView<Cart.CartTree> currentClientsCartTreeTableView;
     @FXML
-    private Button productCatalogButton;
-    @FXML
     private JFXTreeTableView<ClientStock.ClientStockTree> currentCartProductsTreetableView;
-    @FXML
-    private Button newSaleButton;
-    @FXML
-    private Button createBillButton;
-    @FXML
-    private Button cancelSaleButton;
 
     // left -> all the carts of the client
     // right -> client stock
@@ -145,19 +152,19 @@ public class ManagementSalesController extends BaseController {
             try {
                 Product product = this.entityManagerProduct.executeQuery(
                         this.entityManagerProduct.getQueryBuilder().where()
-                        .eq("reference", newValue.getValue().getReference().getValue())
-                        .prepare()
+                                .eq("reference", newValue.getValue().getReference().getValue())
+                                .prepare()
                 ).stream().findFirst().orElse(null);
 
-                if(product != null && this.currentCart != null) {
+                if (product != null && this.currentCart != null) {
                     this.currentClientStock = this.entityManagerClientStock.executeQuery(
                             this.entityManagerClientStock.getQueryBuilder().where()
                                     .eq("product_id", product.getId()).and()
-                            .eq("cart_id", this.currentCart.getId())
-                            .prepare()
+                                    .eq("cart_id", this.currentCart.getId())
+                                    .prepare()
                     ).stream().findFirst().orElse(null);
 
-                    if(this.currentClientStock != null) {
+                    if (this.currentClientStock != null) {
                         this.addSampleButton.setDisable(false);
                         this.removeSampleButton.setDisable(false);
                     }
@@ -360,13 +367,8 @@ public class ManagementSalesController extends BaseController {
      */
     public void onNewSaleButtonClick() {
         if (!this.isClientSelected()) return;
-        int numberOfClosedCarts = 0;
 
-        // KEEP THIS BECAUSE WITH A STREAM THERE IS A BUG
-        for (Cart c : currentClient.getCarts()) {
-            if (c.isClosed()) numberOfClosedCarts++;
-        }
-
+        int numberOfClosedCarts = (int) currentClient.getCarts().stream().filter(Cart::isClosed).count();
         if (numberOfClosedCarts != currentClient.getCarts().size()) return;
 
         Cart cart = new Cart();
@@ -376,14 +378,189 @@ public class ManagementSalesController extends BaseController {
         this.entityManagerClient.update(currentClient);
 
         this.addCartToTreeTable(cart);
-
     }
 
     /**
      * Creates a bill from the user's cart
      */
-    public void onCreateBillButtonClick() {
-        throw new UnsupportedOperationException("Create bill");
+    public void onCreateBillButtonClick() throws IOException, DocumentException {
+        if (!this.isCartSelected()) return;
+        if (this.currentCart.getClientStocks() == null || this.currentCart.getClientStocks().isEmpty()) return;
+
+        this.currentCart.setClosed(true);
+        this.entityManagerCart.update(currentCart);
+        this.currentClientsCartTreeTableView.getRoot().getChildren().remove(
+                currentClientsCartTreeTableView.getSelectionModel().getSelectedItem()
+        );
+        this.addCartToTreeTable(currentCart);
+
+        this.generateInvoice();
+    }
+
+    /**
+     * Generates the invoice for the current selected cart
+     */
+    private void generateInvoice() throws IOException, DocumentException {
+        // generate document
+
+        String filePath = FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath()
+                + File.separator + currentCart.getClient().getId() + "-" + currentCart.getId() + ".pdf";
+        Document document = new Document();
+        PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(filePath));
+        document.open();
+        // header
+        document.addTitle("Facture Ouatelse");
+        document.addHeader("title", "Ouatelse");
+
+        // top section
+        Paragraph headerTitle = PDFUtils.buildH1Title("FACTURE OUATELSE #" + currentCart.getClient().getId() + "-" + currentCart.getId());
+        headerTitle.getFont().setSize(20f);
+        headerTitle.setAlignment(Element.ALIGN_RIGHT);
+        headerTitle.setSpacingAfter(25);
+        document.add(headerTitle);
+
+        // client section
+        Client client = currentCart.getClient();
+        Paragraph id = PDFUtils.buildH2Title("N° Client : " + client.getId());
+        id.setAlignment(Element.ALIGN_LEFT);
+        document.add(id);
+
+        Paragraph date = PDFUtils.buildH2Title("Date : " + new SimpleDateFormat("yyyy/MM/dd").format(new Date()));
+        date.setAlignment(Element.ALIGN_LEFT);
+        date.setSpacingAfter(15);
+        document.add(date);
+
+        Paragraph clientName = PDFUtils.buildH2Title(client.getSurname() + ", " + client.getName());
+        clientName.setAlignment(Element.ALIGN_LEFT);
+        document.add(clientName);
+
+        Paragraph clientEmail = PDFUtils.buildH2Title(client.getEmail());
+        clientEmail.setAlignment(Element.ALIGN_LEFT);
+        document.add(clientEmail);
+
+        Paragraph clientAdress = PDFUtils.buildH2Title(client.getAddress().getStreetNameAndNumber());
+        clientAdress.setAlignment(Element.ALIGN_LEFT);
+        document.add(clientAdress);
+
+        Paragraph clientCity = PDFUtils.buildH2Title(client.getAddress().getZipCode() + ", " + client.getAddress().getCity());
+        clientCity.setAlignment(Element.ALIGN_LEFT);
+        document.add(clientCity);
+
+        // cart section
+        document.add(PDFUtils.buildH1Title("Informations Panier"));
+        document.add(getCartTable());
+
+        // products section
+        document.add(PDFUtils.buildH1Title("Produits"));
+        getProductsTable().forEach(table -> {
+            try {
+                document.add(table);
+            } catch (DocumentException e) {
+                e.printStackTrace();
+            }
+        });
+        document.close();
+        pdfWriter.close();
+
+        Desktop.getDesktop().open(new File(filePath));
+    }
+
+    /**
+     * Returns the pdf tables for the products in the cart
+     *
+     * @return the pdf tables for the products in the cart
+     */
+    private List<PdfPTable> getProductsTable() {
+        List<PdfPTable> tables = new ArrayList<>();
+
+        // PRODUCTS IN CART TABLE
+        PdfPTable productsTable = new PdfPTable(5);
+
+        // add headers
+        Stream.of("Référence", "Produit", "Marque", "Quantité", "Prix TTC").forEach(columnTitle -> {
+            PdfPCell header = new PdfPCell();
+            header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            header.setBorderWidth(2);
+            header.setPhrase(new Phrase(columnTitle));
+            productsTable.addCell(header);
+        });
+
+        AtomicReference<Double> totalCost = new AtomicReference<>((double) 0);
+        AtomicInteger articleCount = new AtomicInteger();
+        // add cells
+        currentCart.getClientStocks().forEach(clientStock -> {
+            PdfPCell cell = new PdfPCell();
+            cell.setPhrase(new Phrase("#" + clientStock.getProduct().getReference()));
+            productsTable.addCell(cell);
+            cell.setPhrase(new Phrase(clientStock.getProduct().getName()));
+            productsTable.addCell(cell);
+            cell.setPhrase(new Phrase(clientStock.getProduct().getBrand()));
+            productsTable.addCell(cell);
+            cell.setPhrase(new Phrase(String.valueOf(clientStock.getQuantity())));
+            productsTable.addCell(cell);
+            cell.setPhrase(new Phrase(clientStock.getQuantity() * clientStock.getProduct().getSellingPrice() + " €"));
+            productsTable.addCell(cell);
+
+            totalCost.updateAndGet(v -> v + clientStock.getQuantity() * clientStock.getProduct().getSellingPrice());
+            articleCount.incrementAndGet();
+        });
+        productsTable.setSpacingAfter(50);
+        tables.add(productsTable);
+
+        // TOTAL TABLE
+        PdfPTable totalTable = new PdfPTable(4);
+        Stream.of("Nb. Articles", "", "", "Prix Total").forEach(columnTitle -> {
+            PdfPCell header = new PdfPCell();
+            header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            header.setBorderWidth(2);
+            header.setPhrase(new Phrase(columnTitle));
+            totalTable.addCell(header);
+        });
+
+        PdfPCell cell = new PdfPCell();
+        cell.setPhrase(new Phrase(String.valueOf(articleCount.get())));
+        totalTable.addCell(cell);
+        cell.setPhrase(new Phrase(""));
+        totalTable.addCell(cell);
+        cell.setPhrase(new Phrase(""));
+        totalTable.addCell(cell);
+        cell.setPhrase(new Phrase(totalCost.get() + " €"));
+        totalTable.addCell(cell);
+        tables.add(totalTable);
+
+        return tables;
+    }
+
+    /**
+     * Returns the pdf table for the cart
+     *
+     * @return the pdf table for the cart
+     */
+    private PdfPTable getCartTable() {
+        PdfPTable cartTable = new PdfPTable(3);
+
+        // add headers
+        Stream.of("Identifiant", "Date", "Heure").forEach(columnTitle -> {
+            PdfPCell header = new PdfPCell();
+            header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            header.setBorderWidth(2);
+            header.setPhrase(new Phrase(columnTitle));
+            cartTable.addCell(header);
+        });
+
+        // add cell
+        Date date = currentCart.getDate();
+        PdfPCell cell = new PdfPCell();
+
+        cell.setPhrase(new Phrase(String.valueOf(currentCart.getId())));
+        cartTable.addCell(cell);
+        cell.setPhrase(new Phrase(date != null ? new SimpleDateFormat("yyyy/MM/dd").format(date) : ""));
+        cartTable.addCell(cell);
+        cell.setPhrase(new Phrase(date != null ? new SimpleDateFormat("hh:mm:ss").format(date) : ""));
+        cartTable.addCell(cell);
+
+        cartTable.setSpacingAfter(50);
+        return cartTable;
     }
 
     /**
@@ -454,7 +631,7 @@ public class ManagementSalesController extends BaseController {
     }
 
     public void onAddSampleButton(MouseEvent mouseEvent) {
-        if(this.currentClientStock == null) return;
+        if (this.currentClientStock == null) return;
 
         this.currentClientStock.setQuantity(this.currentClientStock.getQuantity() + 1);
         this.entityManagerClientStock.update(this.currentClientStock);
@@ -465,11 +642,11 @@ public class ManagementSalesController extends BaseController {
     }
 
     public void onRemoveSampleButton(MouseEvent mouseEvent) {
-        if(this.currentClientStock == null || this.currentCart == null) return;
+        if (this.currentClientStock == null || this.currentCart == null) return;
 
         this.currentClientStock.setQuantity(this.currentClientStock.getQuantity() - 1);
 
-        if(this.currentClientStock.getQuantity() == 0) {
+        if (this.currentClientStock.getQuantity() == 0) {
             this.getClientStocks().remove(this.currentClientStock);
 
             this.entityManagerCart.update(this.currentCart);
