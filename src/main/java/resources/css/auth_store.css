@@ -1,0 +1,19 @@
+.jfx-combo-box > .prompt-container {
+    -fx-font-size: 12pt;
+    -fx-alignment: center;
+    -fx-prompt-text-fill: white;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: #ff0000;
+    -fx-text-fill: white;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #ffbfbf;
+    -fx-text-fill: #b30000;
+}
+
+.jfx-rippler {
+    -jfx-rippler-fill: #b30000;
+}
