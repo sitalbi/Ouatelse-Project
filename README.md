@@ -43,7 +43,7 @@
    ~~7.4 Transférer un employé~~\
    7.5 Gérer les plannings des salariés\
    7.6 Gérer les congés des salariés\
-   7.7 Gérer la distribution des salaires
+   ~~7.7 Gérer la distribution des salaires~~
 8. Fonction de gestion de l’affichage graphique\
    8.1 Accès à l’affichage des graphiques de statistiques en bâtons\
    8.2 Accès à l’affichage des graphiques de statistiques en courbes\
