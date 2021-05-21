@@ -18,6 +18,8 @@ import javafx.scene.input.KeyCode;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static fr.s4e2.ouatelse.objects.Vendor.VendorTree;
 
@@ -50,6 +52,7 @@ public class ManagementVendorController extends BaseController {
     @FXML
     private JFXTreeTableView<VendorTree> vendorsTreeTableView;
     private Vendor currentVendor;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     /**
      * Called to initialize a controller after its root element has been
@@ -84,7 +87,7 @@ public class ManagementVendorController extends BaseController {
                             .prepare()
                     ).stream().findFirst().orElse(null);
                 } catch (SQLException exception) {
-                    exception.printStackTrace();
+                    this.logger.log(Level.SEVERE, exception.getMessage(), exception);
                 }
 
                 this.loadVendorInformation();
@@ -131,7 +134,7 @@ public class ManagementVendorController extends BaseController {
             // edits vendor
             this.currentVendor.getAddress().setZipCode(zipCode);
             this.currentVendor.getAddress().setCity(vendorCityInput.getText().trim());
-            this.currentVendor.getAddress().setAddress(vendorAddressInput.getText().trim());
+            this.currentVendor.getAddress().setStreetNameAndNumber(vendorAddressInput.getText().trim());
             this.entityManagerAddress.update(currentVendor.getAddress());
 
             this.updateVendor(currentVendor);
@@ -178,7 +181,7 @@ public class ManagementVendorController extends BaseController {
         if (currentVendor == null) return;
 
         this.vendorNameInput.setText(currentVendor.getName());
-        this.vendorAddressInput.setText(currentVendor.getAddress().getAddress());
+        this.vendorAddressInput.setText(currentVendor.getAddress().getStreetNameAndNumber());
         this.vendorCityInput.setText(currentVendor.getAddress().getCity());
         this.vendorZipcodeInput.setText(String.valueOf(currentVendor.getAddress().getZipCode()));
         this.vendorEmailInput.setText(currentVendor.getEmail());
@@ -208,7 +211,7 @@ public class ManagementVendorController extends BaseController {
         JFXTreeTableColumn<VendorTree, String> name = new JFXTreeTableColumn<>("Nom");
         JFXTreeTableColumn<VendorTree, String> city = new JFXTreeTableColumn<>("Ville");
         JFXTreeTableColumn<VendorTree, String> email = new JFXTreeTableColumn<>("Email");
-        JFXTreeTableColumn<VendorTree, String> contractState = new JFXTreeTableColumn<>("Contract State");
+        JFXTreeTableColumn<VendorTree, String> contractState = new JFXTreeTableColumn<>("Etat du contrat");
         name.setSortNode(name.getSortNode());
 
         name.setCellValueFactory(param -> param.getValue().getValue().getName());

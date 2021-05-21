@@ -48,7 +48,7 @@ public class EntityManagerAddress {
         try {
             this.instance.create(address);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -61,7 +61,7 @@ public class EntityManagerAddress {
         try {
             this.instance.delete(address);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -74,7 +74,7 @@ public class EntityManagerAddress {
         try {
             this.instance.update(address);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -99,7 +99,7 @@ public class EntityManagerAddress {
         try {
             results = this.instance.query(query);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -116,7 +116,7 @@ public class EntityManagerAddress {
         try {
             results = this.instance.queryForAll();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -143,7 +143,7 @@ public class EntityManagerAddress {
         try {
             return this.instance.queryForId(address.getId()) != null;
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             return false;
         }
     }

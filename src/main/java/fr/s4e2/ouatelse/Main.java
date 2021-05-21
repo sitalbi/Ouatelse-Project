@@ -1,5 +1,6 @@
 package fr.s4e2.ouatelse;
 
+import com.j256.ormlite.logger.LocalLog;
 import fr.s4e2.ouatelse.managers.DatabaseManager;
 import fr.s4e2.ouatelse.screens.AuthUserScreen;
 import javafx.application.Application;
@@ -15,6 +16,7 @@ public class Main extends Application {
     private static DatabaseManager databaseManager;
 
     static {
+        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
         Main.databaseManager = new DatabaseManager("sqlite.db");
     }
 

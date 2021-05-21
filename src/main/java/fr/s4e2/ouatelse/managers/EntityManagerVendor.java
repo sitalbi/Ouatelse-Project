@@ -1,6 +1,5 @@
 package fr.s4e2.ouatelse.managers;
 
-import com.google.common.hash.Hashing;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -10,7 +9,6 @@ import com.j256.ormlite.support.ConnectionSource;
 import fr.s4e2.ouatelse.exceptions.DatabaseInitialisationException;
 import fr.s4e2.ouatelse.objects.Vendor;
 
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -50,7 +48,7 @@ public class EntityManagerVendor {
         try {
             this.instance.create(vendor);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -63,7 +61,7 @@ public class EntityManagerVendor {
         try {
             this.instance.delete(vendor);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -76,7 +74,7 @@ public class EntityManagerVendor {
         try {
             this.instance.update(vendor);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -101,7 +99,7 @@ public class EntityManagerVendor {
         try {
             results = this.instance.query(query);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -118,7 +116,7 @@ public class EntityManagerVendor {
         try {
             results = this.instance.queryForAll();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
 
         return results;
@@ -136,21 +134,18 @@ public class EntityManagerVendor {
     /**
      * Gets a corresponding vendor if exists, else null
      *
-     * @param credentials the credentials of the vendor
-     * @param password    the password of the vendor in plain text
+     * @param name the name of the vendor
      * @return the vendor if exists, else null
      */
-    public Vendor getVendorIfExists(String credentials, String password) {
+    public Vendor getVendorIfExists(String name) {
         Vendor vendor = null;
 
         try {
-            //noinspection UnstableApiUsage
-            vendor = this.instance.query(this.instance.queryBuilder().where().eq("credentials", credentials)
-                    .and().eq("password", Hashing.sha256().hashString(password, StandardCharsets.UTF_8)
-                            .toString()).prepare()).stream().findFirst().orElse(null);
+            vendor = this.instance.query(this.instance.queryBuilder().where().eq("name", name).prepare())
+                    .stream().findFirst().orElse(null);
 
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
         return vendor;
     }
@@ -167,7 +162,7 @@ public class EntityManagerVendor {
         try {
             return this.instance.queryForId(vendor.getId()) != null;
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
             return false;
         }
     }

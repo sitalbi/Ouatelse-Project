@@ -250,12 +250,13 @@ public class ManagementProductController extends BaseController {
             // update product
             this.entityManagerProduct.create(newProduct);
             this.currentProduct = newProduct;
+
+            // creates a product stock
+            ProductStock productStock = new ProductStock();
+            productStock.setProduct(this.currentProduct);
+            productStock.setStore(selectedStore);
+            this.entityManagerProductStock.create(productStock);
         }
-        // creates a product stock
-        ProductStock productStock = new ProductStock();
-        productStock.setProduct(this.currentProduct);
-        productStock.setStore(selectedStore);
-        this.entityManagerProductStock.create(productStock);
 
         // Updates product in the table
         this.addProductToTreeTable(this.currentProduct);
@@ -312,6 +313,8 @@ public class ManagementProductController extends BaseController {
         this.currentProduct.setPurchasePrice(pricesTreeTreeItem.getValue().getBuyingPrice().getValue());
 
         this.entityManagerProduct.update(currentProduct);
+
+        this.addProductToTreeTable(this.currentProduct);
     }
     // ##########################################
 
@@ -326,7 +329,7 @@ public class ManagementProductController extends BaseController {
         JFXTreeTableColumn<ProductTree, String> brand = new JFXTreeTableColumn<>("Marque");
         JFXTreeTableColumn<ProductTree, String> state = new JFXTreeTableColumn<>("Etat");
         JFXTreeTableColumn<ProductTree, String> category = new JFXTreeTableColumn<>("Catégorie");
-        JFXTreeTableColumn<ProductTree, String> soldByName = new JFXTreeTableColumn<>("Vendeur");
+        JFXTreeTableColumn<ProductTree, String> soldByName = new JFXTreeTableColumn<>("Fournisseur");
         reference.setSortNode(reference.getSortNode());
 
         reference.setCellValueFactory(param -> param.getValue().getValue().getReference().asObject());
@@ -411,13 +414,14 @@ public class ManagementProductController extends BaseController {
     private void loadProductStockInfo() {
         this.stockOrderTreeView.getRoot().getChildren().clear();
 
-        if (currentStore != null) {
+        if (currentStore != null && currentProduct != null) {
             ObservableList<TreeItem<ProductStockInfoTree>> productStocks = stockOrderTreeView.getRoot().getChildren();
 
             try {
                 // loads all product stocks for selected store
                 this.entityManagerProductStock.executeQuery(
-                        entityManagerProductStock.getQueryBuilder().where().eq("store_id", currentStore.getId()).prepare()
+                        entityManagerProductStock.getQueryBuilder().where().eq("store_id", currentStore.getId())
+                                .and().eq("product_id", currentProduct.getId()).prepare()
                 ).forEach(productStock -> {
                     if (productStock.getProduct() != null) {
                         productStocks.add(new TreeItem<>(productStock.toProductStockInfoTree()));

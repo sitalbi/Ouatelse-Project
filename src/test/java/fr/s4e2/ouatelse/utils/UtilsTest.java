@@ -47,6 +47,36 @@ class UtilsTest {
     }
 
     /*
+    Use cases :
+        - String is null = null
+        - String contains a double = double
+        - String does not contain a double = null
+        - String contains not only a double = null
+        - String contains multiple double = null
+    */
+    @Test
+    void getDouble() {
+        Double result;
+
+
+        //noinspection ConstantConditions
+        result = Utils.getDouble(null);
+        assertNull(result);
+
+        result = Utils.getDouble("1337.0");
+        assertEquals(1337.0, result);
+
+        result = Utils.getDouble("This String does not contain any number");
+        assertNull(result);
+
+        result = Utils.getDouble("This String does not contain only 4096");
+        assertNull(result);
+
+        result = Utils.getDouble("1337 4096");
+        assertNull(result);
+    }
+
+    /*
         Use cases :
             - date to convert is null
             - date to convert is valid

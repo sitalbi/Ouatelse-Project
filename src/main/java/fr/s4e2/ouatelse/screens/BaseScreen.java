@@ -2,7 +2,10 @@ package fr.s4e2.ouatelse.screens;
 
 import fr.s4e2.ouatelse.Main;
 import fr.s4e2.ouatelse.controllers.AuthStoreController;
+import fr.s4e2.ouatelse.controllers.BaseController;
 import fr.s4e2.ouatelse.controllers.HomeController;
+import fr.s4e2.ouatelse.controllers.ProductsCatalogController;
+import fr.s4e2.ouatelse.objects.Cart;
 import fr.s4e2.ouatelse.objects.Store;
 import fr.s4e2.ouatelse.objects.User;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +19,8 @@ import lombok.Setter;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Base Screen for all screens
@@ -28,6 +33,8 @@ public abstract class BaseScreen {
     private static final String FXML_PATH = "fxml/";
     private static final String PREFIX = "Ouatelse - ";
 
+    protected final Logger logger = Logger.getLogger(this.getClass().getName());
+
     private Stage stage;
 
     /**
@@ -36,22 +43,86 @@ public abstract class BaseScreen {
      * @param fxml  name of the fxml file to load from (must be in the fxml folder in resources)
      * @param title the title of the window (the title suffixes the set prefix)
      */
-    protected BaseScreen(String fxml, String title) {
+    protected BaseScreen(String fxml, String title, Store authentificationStore) {
         this.stage = new Stage();
 
-        FXMLLoader loader = new FXMLLoader(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
         stage.getIcons().add(OUATELSE_ICON);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinHeight(650);
         stage.setMinWidth(825);
-        stage.setTitle(title);
+        stage.setTitle(PREFIX + title);
+
+        try {
+            Parent parent = loader.load();
+
+            BaseController controller = loader.getController();
+            controller.setAuthentificationStore(authentificationStore);
+
+            Scene scene = new Scene(parent);
+            scene.getStylesheets().add("css/base.css");
+            stage.setScene(scene);
+        } catch (IOException exception) {
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+        }
+    }
+
+    /**
+     * Creates a Base Screen (Used for the {@link fr.s4e2.ouatelse.controllers.ProductsCatalogController})
+     *
+     * @param fxml  name of the fxml file to load from (must be in the fxml folder in resources)
+     * @param title the title of the window (the title suffixes the set prefix)
+     */
+    protected BaseScreen(String fxml, String title, Store authentificationStore, Cart currentCart) {
+        this.stage = new Stage();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
+        stage.getIcons().add(OUATELSE_ICON);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setMinHeight(650);
+        stage.setMinWidth(825);
+        stage.setTitle(PREFIX + title);
+
+        try {
+            Parent parent = loader.load();
+
+            ProductsCatalogController controller = loader.getController();
+            controller.setAuthentificationStore(authentificationStore);
+            controller.setCurrentCart(currentCart);
+
+            Scene scene = new Scene(parent);
+            scene.getStylesheets().add("css/base.css");
+            stage.setScene(scene);
+        } catch (IOException exception) {
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
+        }
+    }
+
+    /**
+     * Creates a Base Screen (Used for the {@link fr.s4e2.ouatelse.controllers.AuthUserController})
+     *
+     * @param fxml  name of the fxml file to load from (must be in the fxml folder in resources)
+     * @param title the title of the window (the title suffixes the set prefix)
+     */
+    protected BaseScreen(String fxml, String title) {
+        this.stage = new Stage();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getClassLoader().getResource(FXML_PATH + fxml));
+        stage.getIcons().add(OUATELSE_ICON);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setMinHeight(650);
+        stage.setMinWidth(825);
+        stage.setTitle(PREFIX + title);
 
         try {
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add("css/base.css");
             stage.setScene(scene);
         } catch (IOException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -63,7 +134,7 @@ public abstract class BaseScreen {
      * @param user  the authentified user
      * @param store the authentified store
      */
-    protected BaseScreen(String fxml, String title, User user, Store store) {
+    protected BaseScreen(String fxml, String title, Store store, User user) {
         this.stage = new Stage();
 
         FXMLLoader loader = new FXMLLoader();
@@ -78,13 +149,13 @@ public abstract class BaseScreen {
             Parent parent = loader.load();
 
             HomeController homeController = loader.getController();
-            homeController.setCurrentUser(user);
-            homeController.setCurrentStore(store);
+            homeController.setAuthentificationStore(store);
+            homeController.setAuthentificationUser(user);
 
             Scene scene = new Scene(parent);
             stage.setScene(scene);
         } catch (IOException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
 
@@ -104,7 +175,7 @@ public abstract class BaseScreen {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinHeight(650);
         stage.setMinWidth(825);
-        stage.setTitle(title);
+        stage.setTitle(PREFIX + title);
 
         try {
             Parent parent = loader.load();
@@ -115,9 +186,10 @@ public abstract class BaseScreen {
             Scene scene = new Scene(parent);
             stage.setScene(scene);
         } catch (IOException exception) {
-            exception.printStackTrace();
+            this.logger.log(Level.SEVERE, exception.getMessage(), exception);
         }
     }
+
 
     /**
      * Allows to open the Stage
