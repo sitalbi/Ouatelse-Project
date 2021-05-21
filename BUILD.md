@@ -47,4 +47,3 @@
 - Faire un clic droit dessus
 - Cliquer sur "Run 'Main.main()'"
   ![](markdown_assets/images/BUILD.md/run01.png)
-
