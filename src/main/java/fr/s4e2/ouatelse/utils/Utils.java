@@ -10,12 +10,6 @@ import java.util.Date;
 public class Utils {
 
     /**
-<<<<<<< HEAD
-     * Get a Integer from a String
-     *
-     * @param s the String to be changed
-     * @return the Integer
-=======
      * Empty Constructor
      */
     private Utils() {
@@ -26,11 +20,25 @@ public class Utils {
      *
      * @param s the String to be changed
      * @return the integer value or null in the case of failure
->>>>>>> productsManagement
      */
     public static Integer getNumber(String s) {
         try {
             return Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Returns a double from a string
+     *
+     * @param s the String to be changed
+     * @return the double value or null in the case of failure
+     */
+    public static Double getDouble(String s) {
+        if (s == null) return null;
+        try {
+            return Double.parseDouble(s);
         } catch (NumberFormatException e) {
             return null;
         }

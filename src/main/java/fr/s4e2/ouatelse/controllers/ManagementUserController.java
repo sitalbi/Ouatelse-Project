@@ -22,7 +22,10 @@ import javafx.scene.input.KeyCode;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller for the {@link fr.s4e2.ouatelse.screens.ManagementUserScreen}
@@ -34,6 +37,7 @@ public class ManagementUserController extends BaseController {
     private static final String NOT_A_ZIPCODE = "Le code postal est incorrect!";
     private static final String NOT_AN_HOUR = "Les heures par semaine sont incorrectes!";
     private static final String PASSWORD_NOT_MATCHING = "Mot de passe non concordants!";
+    private static final String NOT_A_VALID_DOB = "La date de naissance est invalide!";
 
     @FXML
     private Label errorMessage;
@@ -80,6 +84,8 @@ public class ManagementUserController extends BaseController {
     private final EntityManagerStore entityManagerStore = Main.getDatabaseManager().getEntityManagerStore();
     private User currentUser;
 
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+
     /**
      * Initializes the controller
      *
@@ -123,7 +129,7 @@ public class ManagementUserController extends BaseController {
                             .prepare()
                     ).stream().findFirst().orElse(null);
                 } catch (SQLException exception) {
-                    exception.printStackTrace();
+                    this.logger.log(Level.SEVERE, exception.getMessage(), exception);
                 }
 
                 this.loadUserInformation();
@@ -193,11 +199,18 @@ public class ManagementUserController extends BaseController {
             return;
         }
 
+        // incorrect date of birth
+        Date dob = Utils.localDateToDate(userBirthDate.getValue());
+        if (dob.after(new Date())) {
+            this.errorMessage.setText(NOT_A_VALID_DOB);
+            return;
+        }
+
         if (this.isEditing()) {
             // edits user
             this.currentUser.getAddress().setZipCode(zipCode);
             this.currentUser.getAddress().setCity(userCityInput.getText().trim());
-            this.currentUser.getAddress().setAddress(userAddressInput.getText().trim());
+            this.currentUser.getAddress().setStreetNameAndNumber(userAddressInput.getText().trim());
             this.entityManagerAddress.update(currentUser.getAddress());
 
             this.updateUser(currentUser);
@@ -251,7 +264,7 @@ public class ManagementUserController extends BaseController {
         this.userLastNameInput.setText(currentUser.getSurname());
         this.userPhoneInput.setText(currentUser.getMobilePhoneNumber());
         this.userEmailInput.setText(currentUser.getEmail());
-        this.userAddressInput.setText(currentUser.getAddress().getAddress());
+        this.userAddressInput.setText(currentUser.getAddress().getStreetNameAndNumber());
         this.userCityInput.setText(currentUser.getAddress().getCity());
         this.userZipcodeInput.setText(String.valueOf(currentUser.getAddress().getZipCode()));
         //this.userRoleDropdown.getSelectionModel().select(currentUser.getRole()); <- doesn't work
